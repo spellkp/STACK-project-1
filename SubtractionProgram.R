@@ -3,15 +3,16 @@
 centy <- 39.2846
 centx <- -96.1150
 
-AGL0m <- read.delim("0mcdump2.txt", header = TRUE, sep = "", dec = ".")
-AGL200m <- read.delim("200mcdump2.txt", header = TRUE, sep = "", dec = ".")
+AGL0m <- read.delim("0mcdump.txt", header = TRUE, sep = "", dec = ".")
+AGL200m <- read.delim("200mcdump.txt", header = TRUE, sep = "", dec = ".")
 
 resolution <- 30
 
 #############################
-
-require(rgl)
-require(patchPlot)
+library(ggplot2)
+library(rgl)
+library(patchPlot)
+library(reshape2)
 source("http://www.phaget4.org/R/myImagePlot.R")
 
 y1 <- AGL0m[[5]]
@@ -75,10 +76,17 @@ Grid2[is.nan(Grid2)] <- 0
 GridPlot <- as.matrix(200*(Grid2-Grid1)/(Grid2+Grid1))
 GridPlot[is.nan(GridPlot)] <- 0
 
-myImagePlot(Grid1, title = c("Concentration at 0m AGL"))
-myImagePlot(Grid2, title = c("Concentration at 200m AGL"))
+#myImagePlot(Grid1, title = c("Concentration at 0m AGL"))
+#myImagePlot(Grid2, title = c("Concentration at 200m AGL"))
 
-myImagePlot(GridPlot, title = c("Dispersion % Difference"))
+#myImagePlot(GridPlot, title = c("Dispersion % Difference"))
 mean(GridPlot)
 # rgl.surface(1:(maxx1-minx1), 1:(maxy1-miny1), GridPlot)
+
+dd <- melt(GridPlot)
+names(dd) <- c('x','y','Concentration')
+
+## Does the contour plot
+d <- ggplot(dd, aes(x,y,z='concentration'))
+d + geom_tile(aes(fill=Concentration))  + scale_fill_gradient2(low="blue", high="red")
 
