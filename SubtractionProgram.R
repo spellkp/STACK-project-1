@@ -3,8 +3,8 @@
 centy <- 39.2846
 centx <- -96.1150
 
-AGL0m <- read.delim("0mcdump.txt", header = TRUE, sep = "", dec = ".")
-AGL200m <- read.delim("200mcdump.txt", header = TRUE, sep = "", dec = ".")
+AGL0m <- read.delim("0mcdump2.txt", header = TRUE, sep = "", dec = ".")
+AGL200m <- read.delim("200mcdump2.txt", header = TRUE, sep = "", dec = ".")
 
 resolution <- 30
 
