@@ -36,45 +36,45 @@ maxx1 <- round(max(max(y1), max(y2)), 0)+1
 miny1 <- round(min(min(y1), min(y2)), 0)-1
 maxy1 <- round(max(max(y1), max(y2)), 0)+1
 
-Grid1 <- matrix(0, nrow = 400, ncol = 400)
-Grid2 <- matrix(0, nrow = 400, ncol = 400)
+Grid1 <- matrix(0, nrow = 200, ncol = 200)
+Grid2 <- matrix(0, nrow = 200, ncol = 200)
 
 #####
 
-for (i in 1:400) {
+for (i in 1:200) {
   
-  for (j in 1:400) {
+  for (j in 1:200) {
     
-    Grid1[i,j] = mean(metfile0$Concentration0[metfile0$x1 >= centx+(-20+0.1*j) & metfile0$x1 
-                                              <= centx+(-20+0.1*(j+1)) & metfile0$y1 >= centy+(-20+0.1*i) 
-                                              & metfile0$y1 <= centy+(-20+0.1*(i+1))])
+    Grid1[i,j] = mean(metfile0$Concentration0[metfile0$x1 >= centx+(-10+0.1*j) & metfile0$x1 
+                                              <= centx+(-10+0.1*(j+1)) & metfile0$y1 >= centy+(-10+0.1*i) 
+                                              & metfile0$y1 <= centy+(-10+0.1*(i+1))])
     
   }
   
 }
 
-Grid1[is.nan(Grid1)] <- 0
+#Grid1[is.nan(Grid1)] <- 0
 
 #####
 
-for (k in 1:400) {
+for (k in 1:200) {
   
-  for (l in 1:400) {
+  for (l in 1:200) {
     
-    Grid2[k,l] = mean(metfile1$Concentration1[metfile1$x2 >= centx+(-20+0.1*l) & metfile1$x2 
-                                              <= centx+(-20+0.1*(l+1)) & metfile1$y2 >= centy+(-20+0.1*k) 
-                                              & metfile1$y2 <= centy+(-20+0.1*(k+1))])
+    Grid2[k,l] = mean(metfile1$Concentration1[metfile1$x2 >= centx+(-10+0.1*l) & metfile1$x2 
+                                              <= centx+(-10+0.1*(l+1)) & metfile1$y2 >= centy+(-10+0.1*k) 
+                                              & metfile1$y2 <= centy+(-10+0.1*(k+1))])
     
   }
   
 }
 
-Grid2[is.nan(Grid2)] <- 0
+#Grid2[is.nan(Grid2)] <- 0
 
 #####
 
 GridPlot <- as.matrix(200*(Grid2-Grid1)/(Grid2+Grid1))
-GridPlot[is.nan(GridPlot)] <- 0
+#GridPlot[is.nan(GridPlot)] <- 0
 
 #myImagePlot(Grid1, title = c("Concentration at 0m AGL"))
 #myImagePlot(Grid2, title = c("Concentration at 200m AGL"))
@@ -86,7 +86,6 @@ mean(GridPlot)
 dd <- melt(GridPlot)
 names(dd) <- c('x','y','Concentration')
 
-## Does the contour plot
 d <- ggplot(dd, aes(x,y,z='concentration'))
-d + geom_tile(aes(fill=Concentration))  + scale_fill_gradient2(low="blue", high="red")
+d + geom_tile(aes(fill=Concentration))  + scale_fill_gradient2(low="darkgreen", high="red")
 
