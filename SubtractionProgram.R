@@ -45,7 +45,7 @@ for (i in 1:200) {
   
   for (j in 1:200) {
     
-    Grid1[i,j] = mean(metfile0$Concentration0[metfile0$x1 >= centx+(-10+0.1*j) & metfile0$x1 
+    Grid1[i,j] = sum(metfile0$Concentration0[metfile0$x1 >= centx+(-10+0.1*j) & metfile0$x1 
                                               <= centx+(-10+0.1*(j+1)) & metfile0$y1 >= centy+(-10+0.1*i) 
                                               & metfile0$y1 <= centy+(-10+0.1*(i+1))])
     
@@ -61,7 +61,7 @@ for (k in 1:200) {
   
   for (l in 1:200) {
     
-    Grid2[k,l] = mean(metfile1$Concentration1[metfile1$x2 >= centx+(-10+0.1*l) & metfile1$x2 
+    Grid2[k,l] = sum(metfile1$Concentration1[metfile1$x2 >= centx+(-10+0.1*l) & metfile1$x2 
                                               <= centx+(-10+0.1*(l+1)) & metfile1$y2 >= centy+(-10+0.1*k) 
                                               & metfile1$y2 <= centy+(-10+0.1*(k+1))])
     
@@ -86,6 +86,6 @@ mean(GridPlot)
 dd <- melt(GridPlot)
 names(dd) <- c('x','y','Concentration')
 
-d <- ggplot(dd, aes(x,y,z='concentration'))
+d <- ggplot(dd, aes(x,y,z='Concentration'))
 d + geom_tile(aes(fill=Concentration))  + scale_fill_gradient2(low="darkgreen", high="red")
 
