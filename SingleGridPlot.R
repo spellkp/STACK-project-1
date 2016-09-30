@@ -8,7 +8,7 @@ d2 + geom_tile(aes(fill=Concentration))  + scale_fill_gradient2(low="white", hig
 
 
 dd3 <- melt(abs(log10(Grid2)))
-names(dd2) <- c('x','y','Concentration')
+names(dd3) <- c('x','y','Concentration')
 
 d3 <- ggplot(dd3, aes(x,y,z='Concentration'))
 d3 + geom_tile(aes(fill=Concentration))  + scale_fill_gradient2(low="white", high="red")
