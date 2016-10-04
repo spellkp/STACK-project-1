@@ -9,7 +9,7 @@ e <- d + div1
 f <- e + div1
 g <- f + div1
 
-dd2$value2 <- cut(dd2$value, breaks = c(b, c, d, e, f), right = FALSE)
+value2 <- cut(dd2$value, breaks = c(a:b, b:c, c:d, d:e, e:f, f:g), right = FALSE)
 
 d2 <- ggplot(dd2, aes(x,y,z='Concentration'))
 d2 + geom_tile(aes(fill=value)) +
