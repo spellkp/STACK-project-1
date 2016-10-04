@@ -1,17 +1,19 @@
 dd2 <- melt(Grid1)
 
-div1 <- (max(AGL0m$CO2)-min(AGL0m$CO2))/6
-a <- min(AGL0m$CO2)
-b <- min(AGL0m$CO2) + div1
+div1 <- (max(dd2$value)-min(dd2$value))/6
+a <- min(dd2$value)
+b <- min(dd2$value) + div1
 c <- b + div1
 d <- c + div1
 e <- d + div1
 f <- e + div1
 g <- f + div1
 
+dd2$value2 <- cut(dd2$value, breaks = c(a, b, c, d, e, f, g), right = FALSE)
+
 d2 <- ggplot(dd2, aes(x,y,z='Concentration'))
-d2 + geom_tile(aes(fill=Concentration)) +
-  scale_fill_manual(breaks = c("\[-inf,a)", "\[a,b)", "\[b,c)", "\[c,d)", "\[d,e)", "\[e,f)", "\[f,g)", "\[g,inf)"), values = c("black", "green", "darkgreen", "blue", "darkblue", "red", "darkred", "deepred"))
+d2 + geom_tile(aes(fill=value2)) +
+  scale_fill_manual(breaks = c("\[a,b)", "\[b,c)", "\[c,d)", "\[d,e)", "\[e,f)", "\[f,g)"), values = c("green", "darkgreen", "blue", "darkblue", "red", "darkred"))
   
 ##########################################################
 
