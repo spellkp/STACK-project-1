@@ -9,11 +9,11 @@ e <- d + div1
 f <- e + div1
 g <- f + div1
 
-dd2$value2 <- cut(dd2$value, breaks = c(a, b, c, d, e, f, g), right = FALSE)
+dd2$value2 <- cut(dd2$value, breaks = c(b, c, d, e, f), right = FALSE)
 
 d2 <- ggplot(dd2, aes(x,y,z='Concentration'))
-d2 + geom_tile(aes(fill=value2)) +
-  scale_fill_manual(breaks = c("\[a,b)", "\[b,c)", "\[c,d)", "\[d,e)", "\[e,f)", "\[f,g)"), values = c("green", "darkgreen", "blue", "darkblue", "red", "darkred"))
+d2 + geom_tile(aes(fill=value)) +
+  scale_fill_manual(breaks = value2, values = c("green", "darkgreen", "blue", "darkblue", "red", "darkred"))
   
 ##########################################################
 
