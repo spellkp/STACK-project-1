@@ -88,5 +88,6 @@ dd <- melt(GridPlot)
 names(dd) <- c('x','y','Concentration')
 
 d <- ggplot(dd, aes(x,y,z='Concentration'))
-d + geom_tile(aes(fill = Concentration))  + scale_fill_gradient2(low="darkgreen", high="red")
+d + geom_tile(aes(fill = Concentration))  + scale_fill_gradient2(low="darkgreen", high="red") +
+  labs(x = "0.1 Degrees", y = "0.1 Degrees", title = "Percent Difference: Gridded Dispersion Concentration")
 
