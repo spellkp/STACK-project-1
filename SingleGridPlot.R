@@ -12,7 +12,6 @@ g <- 1.00e-11
 
 
 dd2$cutdata <- cut(dd2$value, breaks = c(a, b, c, d, e, f, g))
-colnames(dd2)[4] <- "Concentration"
 
 vals=c(a:b, b:c, c:d, d:e, e:f, f:g)
 
@@ -29,7 +28,6 @@ dd3 <- melt(Grid2)
 div2 <- (max(dd3$value)-min(dd3$value))/6
 
 dd3$cutdata <- cut(dd3$value, breaks = c(a, b, c, d, e, f, g))
-colnames(dd3)[4] <- "Concentration"
 
 d3 <- ggplot(dd3, aes(Var1, Var2, cutdata))
 d3 + geom_tile(aes(fill=cutdata)) +
