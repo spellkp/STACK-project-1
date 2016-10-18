@@ -3,6 +3,5 @@
 .RData
 .Ruserdata
 JEC-test
-dispersion0m
-dispersion200m
-
+dispersion200m.csv
+dispersion0m.csv
