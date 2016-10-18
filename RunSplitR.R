@@ -1,7 +1,6 @@
 library(SplitR)
 library(magrittr)
 
-setwd("~/Documents/SplitR_wd")
 
 # Create the `dispersion_model` object, add
 # a grid of starting locations, add run
@@ -23,7 +22,7 @@ dispersion_model <-
   add_params(
     lat = 39.2846,
     lon = -96.1150,
-    height = 0,
+    height = 200,
     duration = 72,
     start_day = "2012-02-01",
     start_hour = 0,
