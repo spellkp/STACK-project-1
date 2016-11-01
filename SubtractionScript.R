@@ -3,8 +3,8 @@
 centx <- -96.11694
 centy <- 39.28611
 
-AGL0m <- read.delim("0mcdump.txt", header = TRUE, sep = "", dec = ".")
-AGL200m <- read.delim("200mcdump.txt", header = TRUE, sep = "", dec = ".")
+AGL0m <- read.delim("0mJEC-Feb2012-gdas-6hr.txt", header = TRUE, sep = "", dec = ".")
+AGL200m <- read.delim("200mJEC-Feb2012-gdas-6hr.txt", header = TRUE, sep = "", dec = ".")
 
 resolution <- 30
 
@@ -37,18 +37,18 @@ maxx1 <- round(max(max(y1), max(y2)), 0)+1
 miny1 <- round(min(min(y1), min(y2)), 0)-1
 maxy1 <- round(max(max(y1), max(y2)), 0)+1
 
-Grid1 <- matrix(0, nrow = 200, ncol = 200)
-Grid2 <- matrix(0, nrow = 200, ncol = 200)
+Grid1 <- matrix(0, nrow = 300, ncol = 300)
+Grid2 <- matrix(0, nrow = 300, ncol = 300)
 
 #####
 
-for (i in 1:200) {
+for (i in 1:300) {
   
-  for (j in 1:200) {
+  for (j in 1:300) {
     
-    Grid1[i,j] = sum(metfile0$Concentration0[metfile0$t1 == 4 & metfile0$x1 >= centx+(-10+0.1*j) & metfile0$x1 
-                                              <= centx+(-10+0.1*(j+1)) & metfile0$y1 >= centy+(-10+0.1*i) 
-                                              & metfile0$y1 <= centy+(-10+0.1*(i+1))])
+    Grid1[i,j] = sum(metfile0$Concentration0[metfile0$t1 == 4 & metfile0$x1 >= centx+(-15+0.1*j) & metfile0$x1 
+                                              <= centx+(-15+0.1*(j+1)) & metfile0$y1 >= centy+(-15+0.1*i) 
+                                              & metfile0$y1 <= centy+(-15+0.1*(i+1))])
     
   }
   
@@ -58,13 +58,13 @@ Grid1[is.nan(Grid1)] <- 0
 
 #####
 
-for (k in 1:200) {
+for (k in 1:300) {
   
-  for (l in 1:200) {
+  for (l in 1:300) {
     
-    Grid2[k,l] = sum(metfile1$Concentration1[metfile1$t2 == 4 & metfile1$x2 >= centx+(-10+0.1*l) & metfile1$x2 
-                                              <= centx+(-10+0.1*(l+1)) & metfile1$y2 >= centy+(-10+0.1*k) 
-                                              & metfile1$y2 <= centy+(-10+0.1*(k+1))])
+    Grid2[k,l] = sum(metfile1$Concentration1[metfile1$t2 == 4 & metfile1$x2 >= centx+(-15+0.1*l) & metfile1$x2 
+                                              <= centx+(-15+0.1*(l+1)) & metfile1$y2 >= centy+(-15+0.1*k) 
+                                              & metfile1$y2 <= centy+(-15+0.1*(k+1))])
     
   }
   
@@ -89,5 +89,5 @@ names(dd) <- c('x','y','Concentration')
 
 d <- ggplot(dd, aes(x,y,z='Concentration'))
 d + geom_tile(aes(fill = Concentration))  + scale_fill_gradient2(low="darkgreen", high="red") +
-  labs(x = "0.1 Degrees", y = "0.1 Degrees", title = "Percent Difference: Gridded Dispersion Concentration")
+  labs(x = "0.1 Degrees", y = "0.1 Degrees", title = "(GDAS) Percent Difference: Gridded Dispersion Concentration")
 
