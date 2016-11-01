@@ -18,7 +18,7 @@ vals=c(a:b, b:c, c:d, d:e, e:f, f:g)
 d2 <- ggplot(dd2, aes(Var1, Var2, cutdata))
 d2 + geom_tile(aes(fill=cutdata)) +
   scale_colour_gradientn(colors = "green") +
-  labs(x = "0.1 Degrees", y = "0.1 Degrees", title = "Gridded Dispersion Concentration 0m AGL") +
+  labs(x = "0.1 Degrees", y = "0.1 Degrees", title = "(GDAS) Gridded Dispersion Concentration 0m AGL") +
   guides(fill=guide_legend(title="Concentration"))
   
 ##########################################################
@@ -32,5 +32,5 @@ dd3$cutdata <- cut(dd3$value, breaks = c(a, b, c, d, e, f, g))
 d3 <- ggplot(dd3, aes(Var1, Var2, cutdata))
 d3 + geom_tile(aes(fill=cutdata)) +
   scale_colour_gradientn(colours = c("firebrick4","orange","yellow", "green", "darkblue", "purple")) +
-  labs(x = "0.1 Degrees", y = "0.1 Degrees", title = "Gridded Dispersion Concentration 200m AGL", legend = "Concentration") +
+  labs(x = "0.1 Degrees", y = "0.1 Degrees", title = "(GDAS) Gridded Dispersion Concentration 200m AGL", legend = "Concentration") +
   guides(fill=guide_legend(title="Concentration"))
