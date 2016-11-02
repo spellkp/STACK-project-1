@@ -4,7 +4,7 @@ centx <- -96.11694
 centy <- 39.28611
 
 AGL0m <- read.delim("0mcdump.txt", header = TRUE, sep = "", dec = ".")
-AGL200m <- read.delim("200mcdum.txt", header = TRUE, sep = "", dec = ".")
+AGL200m <- read.delim("200mcdump.txt", header = TRUE, sep = "", dec = ".")
 
 resolution <- 30
 
@@ -89,5 +89,5 @@ names(dd) <- c('x','y','Concentration')
 
 d <- ggplot(dd, aes(x,y,z='Concentration'))
 d + geom_tile(aes(fill = Concentration))  + scale_fill_gradient2(low="darkgreen", high="red") +
-  labs(x = "0.1 Degrees", y = "0.1 Degrees", title = "(GDAS) Percent Difference: Gridded Dispersion Concentration")
+  labs(x = "0.1 Degrees", y = "0.1 Degrees", title = "(EDAS) Percent Difference: Gridded Dispersion Concentration")
 
