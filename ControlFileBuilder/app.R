@@ -16,30 +16,12 @@ ui <- fluidPage(
    titlePanel("HYSPLIT Control Parameters"),
    
    # Input the data!
-   column(3, 
-          textInput("text", label = h3("Start Date"), 
-                    value = "Year(XX) Month(XX) Day(XX)"))   
-)
-      
-      # Show a plot of the generated distribution
-      mainPanel(
-         plotOutput("distPlot")
-      )
+  column(4, textInput("01", label = h4("Dispersion Start- YY MM DD HH"), value = ""), placeholder = "YY MM DD HH"))
+
+  column(4, selectInput("02", label = h4("Number of Point Sources"), choices = c("1", "2", "3", "4", "5"),
+                          selected = NULL, multiple = FALSE, selectize = FALSE))
   
 
-# Define server logic required to draw a histogram
-server <- function(input, output) {
-   
-   output$distPlot <- renderPlot({
-      # generate bins based on input$bins from ui.R
-      x    <- faithful[, 2] 
-      bins <- seq(min(x), max(x), length.out = input$bins + 1)
-      
-      # draw the histogram with the specified number of bins
-      hist(x, breaks = bins, col = 'darkgray', border = 'white')
-   })
-}
-
 # Run the application 
-shinyApp(ui = ui, server = server)
+runApp()
 
