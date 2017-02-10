@@ -9,28 +9,23 @@
 
 library(shiny)
 
-# Define UI for application that draws a histogram
+# It's Build-A-Bear for Dispersion Modeling
 ui <- fluidPage(
    
    # Application title
-   titlePanel("Old Faithful Geyser Data"),
+   titlePanel("HYSPLIT Control Parameters"),
    
-   # Sidebar with a slider input for number of bins 
-   sidebarLayout(
-      sidebarPanel(
-         sliderInput("bins",
-                     "Number of bins:",
-                     min = 1,
-                     max = 50,
-                     value = 30)
-      ),
+   # Input the data!
+   column(3, 
+          textInput("text", label = h3("Start Date"), 
+                    value = "Year(XX) Month(XX) Day(XX)"))   
+)
       
       # Show a plot of the generated distribution
       mainPanel(
          plotOutput("distPlot")
       )
-   )
-)
+  
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
