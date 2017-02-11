@@ -70,7 +70,7 @@ CenterLatLon <- c(39.28681, -96.11721)
 Spacing <- c(0.05, 0.05)
 Span <- c(80.0, 80.0)
 OutputDir <- "./"
-OutputName <- paste(StartYear, StartMonth, StartDay, StartHour, sep = "-", collapse = NULL)
+OutputName <- paste(Start[1], Start[2], Start[3], Start[4], sep = "-", collapse = NULL)
 #####################################
 
 
@@ -174,3 +174,7 @@ cat(paste(Start, collapse = " "), "\n",
     paste(ChemParams3, collapse = " "), "\n",
     paste(ChemParams4, collapse = "\n"), "\n",
 sep='', file = "CONTROL")
+
+system("hycs_std.exe")
+
+
