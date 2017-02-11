@@ -44,7 +44,6 @@ EDASpath <- "C:/hysplit4/working/"
 EDASMonths <- c(1, 2, 3, 4, 5, 6)
 
 #Selecting MET Data
-
 MetData = NULL
 
 EDASFileNames <- c("edas.jan12.001",
@@ -69,7 +68,6 @@ for (i in 1:(2*max(EDASMonths))) {
 }
 
             
-
 #Number of Pollutant Species
 PolNum <- 1
 
@@ -91,5 +89,9 @@ cat(StartYear, " ", StartMonth, " ", StartDay, " ", StartHour, "\n",
     VertMot, "\n",
     TopLvl, "\n",
     NumMetFiles, "\n",
-    MetData, "\n",
-    sep='', file = "datetest")
+    paste(MetData, collapse = "\n"), "\n",
+    PolNum, "\n",
+    NameTemp, "\n",
+    PolRat, "\n",
+    PolDur, "\n",
+sep='', file = "datetest")
