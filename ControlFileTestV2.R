@@ -3,6 +3,17 @@
 ############################################################
 
 ####################################
+### A - EPA data used (only)   #####
+### B - 0m Stack Height        #####
+### C - 0m/s Emissions         #####
+### D - 0m^2 area              #####
+### E - Full Model             #####
+####################################
+ModelType <- "E"               #####
+####################################
+  
+  
+####################################
 ### Input Start Date and time  #####
 ### Year Month Day Hour        #####
 ####################################
@@ -70,7 +81,7 @@ CenterLatLon <- c(39.28681, -96.11721)
 Spacing <- c(0.05, 0.05)
 Span <- c(80.0, 80.0)
 OutputDir <- "./"
-OutputName <- paste(Start[1], Start[2], Start[3], Start[4], sep = "-", collapse = NULL)
+OutputName <- paste(ModelType, Start[1], Start[2], Start[3], Start[4], sep = "-", collapse = NULL)
 #####################################
 
 
