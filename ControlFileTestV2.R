@@ -1,5 +1,4 @@
 ############################################################
-############################################################
 # Building the Control File                               ##
 ############################################################
 
@@ -7,12 +6,8 @@
 ### Input Start Date and time  #####
 ### Year Month Day Hour        #####
 ####################################
-StartYear <- 12                #####
-StartMonth <- 01               #####
-StartDay <- 01                 #####
-StartHour <- 00                #####
+Start <- c(12, 01, 01, 00)     #####
 ####################################
-
 
 ####################################
 ### Number of Starting Locations ###
@@ -20,39 +15,24 @@ StartHour <- 00                #####
 NumOfStartLocs <- 3              ###
 ####################################
 
-
 ####################################
 ### StartLocInfo1 ##################
+### lat lon hght velocity area #####
 ####################################
-lat1 <- 39.28684               #####
-lon1 <- -96.11821              #####
-hght1 <- 174.96                #####
-vel1 <- 11.25                  #####
-area1 <- 47.17                 #####
+StartLocInfo1 <- c(39.28684, -96.11821, 174.96, 11.25, 47.17)
 ####################################
-
 
 ####################################
 ### StartLocInfo2 ##################
 ####################################
-lat2 <- 39.28681               #####
-lon2 <- -96.11721              #####
-hght2 <- 174.96                #####
-vel2 <- 11.57                  #####
-area2 <- 47.17                 #####
+StartLocInfo2 <- c(39.28681, -96.11721, 174.96, 11.57, 47.17)
 ####################################
-
 
 ####################################
 ### StartLocInfo3 ##################
 ####################################
-lat3 <- 39.28681               #####
-lon3 <- -96.11618              #####
-hght3 <- 174.96                #####
-vel3 <- 10.86                  #####
-area3 <- 47.17                 #####
+StartLocInfo3 <- c(39.28681, -96.11618, 174.96, 10.86, 47.17)
 ####################################
-
 
 ####################################
 ### Total Run Time (hr)        #####
@@ -63,7 +43,6 @@ TotRunTime <- 24               #####
 VertMot <- 0                   #####
 TopLvl <- 10000.0              #####
 ####################################
-
 
 ####################################
 ### Number of Pollutant Species    #
@@ -80,7 +59,6 @@ PolDur <- 24                       #
 RelStart <- c(12, 01, 01, 00, 00)  #
 ####################################
 
-
 ####################################
 ### Display Grid               #####
 ### Center (lat lon)           #####
@@ -93,7 +71,49 @@ Spacing <- c(0.05, 0.05)
 Span <- c(80.0, 80.0)
 OutputDir <- "./"
 OutputName <- paste(StartYear, StartMonth, StartDay, StartHour, sep = "-", collapse = NULL)
+#####################################
 
+
+#####################################
+### Vertical Levels             #####
+### Top of Model                #####
+#####################################
+Layers <- c(1, 10000)
+#####################################
+
+
+#####################################
+### Start/Stop Sampling         #####
+### YY MM DD HH MM              #####
+### Method (XX HH MM)           #####
+#####################################
+SampleStart <- c(12, 01, 01, 00, 00)
+SampleStop <- c(12, 01, 02, 00, 00)
+Method <- c(00, 24, 00)
+#####################################
+
+
+#####################################
+### Chemical Parameters         #####
+#####################################
+### Particle Diameter (um)      #####
+### Density (g/cc)              #####
+### Shape                       #####
+### Velocity (m/s)              #####
+### Mol Wgt (g)                 #####
+### A-Ratio                     #####
+### D-Ratio                     #####
+### Henry                       #####
+### Henry's Constant (M/a)      #####
+### In-cloud (l/l)              #####
+### Below-cloud (1/s)           #####
+### Radioactive decay (days)    #####
+### Pollutant Resus Factor (1/m)#####
+#####################################
+ChemParams1 <- c(0.000257, 0.00197, 1.0)
+ChemParams2 <- c(0.0, 0.0, 0.0, 0.0, 0.0)
+ChemParams3 <- c(101.325, 0.0, 0.0)
+ChemParams4 <- c(0.0, 0.0)
 
 #Feed in meteorology data: Number of met files and file paths
 EDASpath <- "C:/hysplit4/working/"
@@ -123,11 +143,11 @@ for (i in 1:(2*max(EDASMonths))) {
   
 }
 
-cat(StartYear, " ", StartMonth, " ", StartDay, " ", StartHour, "\n", 
+cat(paste(Start, collapse = " "), "\n",
     NumOfStartLocs, "\n",
-    lat1, " ", lon1, " ", hght1, " ", vel1, " ", area1, "\n",
-    lat2, " ", lon2, " ", hght2, " ", vel2, " ", area2, "\n",
-    lat3, " ", lon3, " ", hght3, " ", vel3, " ", area3, "\n",
+    paste(StartLocInfo1, collapse = " "), "\n",
+    paste(StartLocInfo2, collapse = " "), "\n",
+    paste(StartLocInfo3, collapse = " "), "\n",
     TotRunTime, "\n",
     VertMot, "\n",
     TopLvl, "\n",
@@ -137,9 +157,20 @@ cat(StartYear, " ", StartMonth, " ", StartDay, " ", StartHour, "\n",
     NameTemp, "\n",
     PolRat, "\n",
     PolDur, "\n",
-    paste(RelStart, collapse = "\n"),
+    paste(RelStart, collapse = " "), "\n",
     GridNum <- PolNum, "\n",
-    
-    
-    DepoNum <- PolNum, "\n",
+    paste(CenterLatLon, collapse = " "), "\n",
+    paste(Spacing, collapse = " "), "\n",
+    paste(Span, collapse = " "), "\n",
+    paste(OutputDir, collapse = " "), "\n",
+    paste(OutputName, collapse = " "), "\n",
+    paste(Layers, collapse = "\n"), "\n",
+    paste(SampleStart, collapse = " "), "\n",
+    paste(SampleStop, collapse = " "), "\n",
+    paste(Method, collapse = " "), "\n",
+    (DepoNum <- PolNum), "\n",
+    paste(ChemParams1, collapse = " "), "\n",
+    paste(ChemParams2, collapse = " "), "\n",
+    paste(ChemParams3, collapse = " "), "\n",
+    paste(ChemParams4, collapse = "\n"), "\n",
 sep='', file = "CONTROL")
