@@ -4,8 +4,11 @@
 
 #Input Start Date and time
 #Year Month Day Hour
-
-BeginDate <- "01 02 03 04 05"
+StartYear <- NULL
+StartMonth <- NULL
+StartDay <- NULL
+StartHour <- NULL
+BeginDate <- as.character(rbind(StartYear, StartMonth, StartDay, StartHour))
 
 #Number of Starting Locations
 #Enter integer number for number of starting locations.
