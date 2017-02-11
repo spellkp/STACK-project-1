@@ -1,43 +1,80 @@
 ###########################################################
-# Building Control File                                   #
+# Building the Control File                               #
 ###########################################################
 
-#Input Start Date and time
-#Year Month Day Hour
-StartYear <- 12
-StartMonth <- 01
-StartDay <- 01
-StartHour <- 00
+####################################
+### Input Start Date and time  #####
+### Year Month Day Hour        #####
+####################################
+StartYear <- 12                #####
+StartMonth <- 01               #####
+StartDay <- 01                 #####
+StartHour <- 00                #####
+####################################
 
-#Number of Starting Locations
-NumOfStartLocs <- 3
 
-#StartLocInfo1
-lat1 <- 39.28684
-lon1 <- -96.11821 
-hght1 <- 174.96
-vel1 <- 11.25 
-area1 <- 47.17
+####################################
+### Number of Starting Locations ###
+####################################
+NumOfStartLocs <- 3              ###
+####################################
 
-#StartLocInfo2
-lat2 <- 39.28681
-lon2 <- -96.11721
-hght2 <- 174.96
-vel2 <- 11.57
-area2 <- 47.17
 
-#StartLocInfo3
-lat3 <- 39.28681
-lon3 <- -96.11618
-hght3 <- 174.96 
-vel3 <- 10.86
-area3 <- 47.17
+####################################
+### StartLocInfo1 ##################
+####################################
+lat1 <- 39.28684               #####
+lon1 <- -96.11821              #####
+hght1 <- 174.96                #####
+vel1 <- 11.25                  #####
+area1 <- 47.17                 #####
+####################################
 
-#Total Run Time (hr) Vertical Motion (mAGL) Top of Model (mAGL)
-TotRunTime <- 24
-VertMot <- 0
-TopLvl <- 10000.0
 
+####################################
+### StartLocInfo2 ##################
+####################################
+lat2 <- 39.28681               #####
+lon2 <- -96.11721              #####
+hght2 <- 174.96                #####
+vel2 <- 11.57                  #####
+area2 <- 47.17                 #####
+####################################
+
+
+####################################
+### StartLocInfo3 ##################
+####################################
+lat3 <- 39.28681               #####
+lon3 <- -96.11618              #####
+hght3 <- 174.96                #####
+vel3 <- 10.86                  #####
+area3 <- 47.17                 #####
+####################################
+
+
+####################################
+### Total Run Time (hr)        #####
+### Vertical Motion (mAGL)     #####
+### Top of Model (mAGL)        #####
+####################################
+TotRunTime <- 24               #####
+VertMot <- 0                   #####
+TopLvl <- 10000.0              #####
+####################################
+
+
+####################################
+### Number of Pollutant Species ####
+### Pollutant Name (<5 char)    ####
+### Pollut. Em. Rate (mass/hr)  ####
+### Pollutant Duration (hr)     ####
+####################################
+PolNum <- 1                     ####
+NameTemp <- "CO2"               ####
+PolRat <- 560000                ####
+PolDur <- 24                    ####
+####################################
 
 #Feed in meteorology data: Number of met files and file paths
 EDASpath <- "C:/hysplit4/working/"
@@ -67,19 +104,6 @@ for (i in 1:(2*max(EDASMonths))) {
   
 }
 
-            
-#Number of Pollutant Species
-PolNum <- 1
-
-#Pollutant Name (<5 characters)
-NameTemp <- "CO2"
-
-#Pollutant Emission Rate (mass/hr)
-PolRat <- 560000
-
-#Pollutant Duration (hr)
-PolDur <- 24
-
 cat(StartYear, " ", StartMonth, " ", StartDay, " ", StartHour, "\n", 
     NumOfStartLocs, "\n",
     lat1, " ", lon1, " ", hght1, " ", vel1, " ", area1, "\n",
@@ -94,4 +118,4 @@ cat(StartYear, " ", StartMonth, " ", StartDay, " ", StartHour, "\n",
     NameTemp, "\n",
     PolRat, "\n",
     PolDur, "\n",
-sep='', file = "datetest")
+sep='', file = "CONTROL")
