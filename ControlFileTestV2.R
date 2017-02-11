@@ -188,4 +188,6 @@ sep='', file = "CONTROL")
 
 system("hycs_std.exe")
 
+system(paste("con2asc.exe", OutputName, collapse = " "))
+
 
