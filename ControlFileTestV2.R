@@ -189,5 +189,7 @@ sep='', file = "CONTROL")
 
 system("hycs_std.exe")
 system(paste("con2asc.exe", OutputName, collapse = " "))
-
+file.remove(OutputName)
+ModOutputName <- paste(OutputName,"-0_00",j+1,"_00", sep = "", collapse = "")
+file.rename(ModOutputName, OutputName)
 }
