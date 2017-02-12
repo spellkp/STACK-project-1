@@ -1,11 +1,24 @@
-#Loop HYSPLIT for an entire year!- 24hr Dispersions
+#Loop HYSPLIT for an entire year!- 24hr Dispersions (2012)
 #Dustin Roten
 
 ModelType <- "E"      #A - EPA data used (only), B - 0m Stack Height, C - 0m/s Emissions, D - 0m^2 area, E - Full Model
 
-for (j in 1:31) {
+MonthNumber <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
+MonthName <- c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+DaysInMonth <- c(31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 30) #One less day in December
+EDAS1 <- c("edas.jan12.001", "edas.feb12.001", "edas.mar12.001", "edas.apr12.001", "edas.may12.001", "edas.jun12.001",
+           "edas.jul12.001", "edas.aug12.001", "edas.sep12.001", "edas.oct12.001", "edas.nov12.001", "edas.dec12.001")
+EDAS2 <- c("edas.jan12.002", "edas.feb12.002", "edas.mar12.002", "edas.apr12.002", "edas.may12.002", "edas.jun12.002",
+           "edas.jul12.002", "edas.aug12.002", "edas.sep12.002", "edas.oct12.002", "edas.nov12.002", "edas.dec12.002")
+MonthMatrix <- data.frame(MonthNumber, MonthName, DaysInMonth, EDAS1, EDAS2)
+
+for(q in 1:12) {
+
+for (j in 1:MonthMatrix[q,3]) {
   
-Start <- c(12, 01, j, 00)     #Input model's start date and time (YY MM DD HH)
+  RunNum <- 1
+  
+Start <- c(12, q, j, 00)     #Input model's start date and time (YY MM DD HH)
 
 NumOfStartLocs <- 3           #Number of starting locations
 StartLocInfo1 <- c(39.28684, -96.11821, 174.96, 11.25, 47.17) #Starting Location #1 Parameters (lat, lon, height(AGL), velocity(m/s), area(m^2))
@@ -20,7 +33,7 @@ PolNum <- 1                       #Number of pollutant species
 NameTemp <- "CO2"                 #Name of pollutant species
 PolRat <- 560000                  #Emission rate (mass/hr)
 PolDur <- 24                      #Pollutant duration (hr)
-RelStart <- c(12, 01, j, 00, 00)  #Pollutant start (YY, MM, DD, HH, MM)
+RelStart <- c(12, q, j, 00, 00)  #Pollutant start (YY, MM, DD, HH, MM)
 
 CenterLatLon <- c(39.28681, -96.11721)        #Center the display grid (lat, lon)
 Spacing <- c(0.05, 0.05)                      #Resolution of the display grid (lat, lon)
@@ -30,8 +43,8 @@ OutputName <- paste(ModelType, Start[1], Start[2], Start[3], Start[4], sep = "-"
 
 Layers <- c(1, 10000)     #Vertical levels, top of model
 
-SampleStart <- c(12, 01, j, 00, 00)        #Start Sample Date (YY MM DD HH MM)
-SampleStop <- c(12, (if (j <= 30) {01} else {02}), (if (j <= 30) {j+1} else {1}), 00, 00) #Stop Sample Date (YY MM DD HH MM)
+SampleStart <- c(12, q, j, 00, 00)        #Start Sample Date (YY MM DD HH MM)
+SampleStop <- c(12, (if (j <= (MonthMatrix[q,3]-1)) {q} else {q+1}), (if (j <= (MonthMatrix[q,3]-1)) {j+1} else {1}), 00, 00) #Stop Sample Date (YY MM DD HH MM)
 Method <- c(00, 24, 00)    #Method (XX HH MM)
 
 ChemParams1 <- c(0.000257, 0.00197, 1.0)      #Particle Diameter (um), Density (g/cc), Shape
@@ -41,31 +54,9 @@ ChemParams4 <- c(0.0, 0.0)                    #Radioactive Decay - Halflife (day
 
 #Feed in meteorology data: Number of met files and file paths
 EDASpath <- "C:/hysplit4/working/"
-EDASMonths <- c(1, 2, 3, 4, 5, 6)
 
 #Selecting MET Data
 MetData = NULL
-
-EDASFileNames <- c("edas.jan12.001",
-                   "edas.jan12.002",
-                   "edas.feb12.001",
-                   "edas.feb12.002",
-                   "edas.mar12.001",
-                   "edas.mar12.002",
-                   "edas.apr12.001",
-                   "edas.apr12.002",
-                   "edas.may12.001",
-                   "edas.may12.002",
-                   "edas.jun12.001",
-                   "edas.jun12.002"
-)
-
-for (i in 1:(2*max(EDASMonths))) {
-  
-  MetData[2*i-1] <- EDASpath
-  MetData[2*i] <- EDASFileNames[i]
-  
-}
 
 cat(paste(Start, collapse = " "), "\n",
     NumOfStartLocs, "\n",
@@ -75,8 +66,11 @@ cat(paste(Start, collapse = " "), "\n",
     TotRunTime, "\n",
     VertMot, "\n",
     TopLvl, "\n",
-    2*max(EDASMonths), "\n",
-    paste(MetData, collapse = "\n"), "\n",
+    "2", "\n",                                #The 2 is hardcoded for now
+    EDASpath, "\n",
+    paste(MonthMatrix[q,4], collapse = "\n"), "\n",
+    EDASpath, "\n",
+    paste(MonthMatrix[q,5], collapse = "\n"), "\n",
     PolNum, "\n",
     NameTemp, "\n",
     PolRat, "\n",
@@ -102,13 +96,16 @@ sep='', file = "CONTROL")
 system("hycs_std.exe")
 system(paste("con2asc.exe", OutputName, collapse = " "))
 file.remove(OutputName)
-ModOutputName <- paste(OutputName, if (j+1 <= 9) {"_00"} else {"_0"},j+1,"_00", sep = "", collapse = "")
+ModOutputName <- paste(OutputName, if (j+1 <= 9) {"_00"} else {"_0"},j+1,"_00", RunNum, sep = "", collapse = "")
 
-FinalDestination <- paste(ModelType,"-","January", sep = "", collapse = "")
+FinalDestination <- paste(ModelType,"-", MonthMatrix[q,2], sep = "", collapse = "")
 
 file.rename(paste(getwd(), "/", ModOutputName, sep = "", collapse = ""), 
           paste(getwd(), "/", FinalDestination, "/", OutputName, sep = "", collapse = ""))
 
 }
 
+  file.remove("CONASC.OUT")
+  
+}
 
