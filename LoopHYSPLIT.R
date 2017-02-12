@@ -191,6 +191,11 @@ system("hycs_std.exe")
 system(paste("con2asc.exe", OutputName, collapse = " "))
 file.remove(OutputName)
 ModOutputName <- paste(OutputName, if (j+1 <= 9) {"_00"} else {"_0"},j+1,"_00", sep = "", collapse = "")
-file.rename((ModOutputName), as.character(OutputName))
+
+FinalDestination <- paste(ModelType,"-","January",collapse = "")
+
+file.rename(paste(getwd(),ModOutputName,collapse = ""), paste(getwd(),FinalDestination,OutputName,collapse = ""))
 
 }
+
+
