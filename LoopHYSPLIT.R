@@ -192,7 +192,7 @@ system(paste("con2asc.exe", OutputName, collapse = " "))
 file.remove(OutputName)
 ModOutputName <- paste(OutputName, if (j+1 <= 9) {"_00"} else {"_0"},j+1,"_00", sep = "", collapse = "")
 
-FinalDestination <- paste(ModelType,"-","January",collapse = "")
+FinalDestination <- paste(ModelType,"-","January", sep = "", collapse = "")
 
 file.rename(paste(getwd(),ModOutputName,collapse = ""), paste(getwd(),FinalDestination,OutputName,collapse = ""))
 
