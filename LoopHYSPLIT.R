@@ -194,7 +194,8 @@ ModOutputName <- paste(OutputName, if (j+1 <= 9) {"_00"} else {"_0"},j+1,"_00", 
 
 FinalDestination <- paste(ModelType,"-","January", sep = "", collapse = "")
 
-file.rename(paste(getwd(),ModOutputName,collapse = ""), paste(getwd(),FinalDestination,OutputName,collapse = ""))
+file.rename(paste(getwd(), "/", ModOutputName, sep = "", collapse = ""), 
+          paste(getwd(), "/", FinalDestination, "/", OutputName, sep = "", collapse = ""))
 
 }
 
