@@ -1,131 +1,43 @@
-############################################################
-# Building the Control File                               ##
-############################################################
+#Loop HYSPLIT for an entire year!- 24hr Dispersions
+#Dustin Roten
 
-####################################
-### A - EPA data used (only)   #####
-### B - 0m Stack Height        #####
-### C - 0m/s Emissions         #####
-### D - 0m^2 area              #####
-### E - Full Model             #####
-####################################
-ModelType <- "E"               #####
-####################################
+ModelType <- "E"      #A - EPA data used (only), B - 0m Stack Height, C - 0m/s Emissions, D - 0m^2 area, E - Full Model
 
 for (j in 1:31) {
   
-####################################
-### Input Start Date and time  #####
-### Year Month Day Hour        #####
-####################################
-Start <- c(12, 01, j, 00)     #####
-####################################
+Start <- c(12, 01, j, 00)     #Input model's start date and time (YY MM DD HH)
 
-####################################
-### Number of Starting Locations ###
-####################################
-NumOfStartLocs <- 3              ###
-####################################
+NumOfStartLocs <- 3           #Number of starting locations
+StartLocInfo1 <- c(39.28684, -96.11821, 174.96, 11.25, 47.17) #Starting Location #1 Parameters (lat, lon, height(AGL), velocity(m/s), area(m^2))
+StartLocInfo2 <- c(39.28681, -96.11721, 174.96, 11.57, 47.17) #Starting Location #2 Parameters (lat, lon, height(AGL), velocity(m/s), area(m^2))
+StartLocInfo3 <- c(39.28681, -96.11618, 174.96, 10.86, 47.17) #Starting Location #3 Parameters (lat, lon, height(AGL), velocity(m/s), area(m^2))
 
-####################################
-### StartLocInfo1 ##################
-### lat lon hght velocity area #####
-####################################
-StartLocInfo1 <- c(39.28684, -96.11821, 174.96, 11.25, 47.17)
-####################################
+TotRunTime <- 24  #Total run time (hr)
+VertMot <- 0      #Method of vertical motion
+TopLvl <- 10000.0 #Upper level of the model
 
-####################################
-### StartLocInfo2 ##################
-####################################
-StartLocInfo2 <- c(39.28681, -96.11721, 174.96, 11.57, 47.17)
-####################################
+PolNum <- 1                       #Number of pollutant species
+NameTemp <- "CO2"                 #Name of pollutant species
+PolRat <- 560000                  #Emission rate (mass/hr)
+PolDur <- 24                      #Pollutant duration (hr)
+RelStart <- c(12, 01, j, 00, 00)  #Pollutant start (YY, MM, DD, HH, MM)
 
-####################################
-### StartLocInfo3 ##################
-####################################
-StartLocInfo3 <- c(39.28681, -96.11618, 174.96, 10.86, 47.17)
-####################################
+CenterLatLon <- c(39.28681, -96.11721)        #Center the display grid (lat, lon)
+Spacing <- c(0.05, 0.05)                      #Resolution of the display grid (lat, lon)
+Span <- c(80.0, 80.0)                         #size of the display grid (lat, lon)
+OutputDir <- "./"                             #Output directory
+OutputName <- paste(ModelType, Start[1], Start[2], Start[3], Start[4], sep = "-", collapse = NULL) #output name (YY-MM-DD-HH)
 
-####################################
-### Total Run Time (hr)        #####
-### Vertical Motion (mAGL)     #####
-### Top of Model (mAGL)        #####
-####################################
-TotRunTime <- 24               #####
-VertMot <- 0                   #####
-TopLvl <- 10000.0              #####
-####################################
+Layers <- c(1, 10000)     #Vertical levels, top of model
 
-####################################
-### Number of Pollutant Species    #
-### (Number of grids/dep. same)    #
-### Pollutant Name (<5 char)       #
-### Pollut. Em. Rate (mass/hr)     #
-### Pollutant Duration (hr)        #
-### Release Start (YY MM DD HH MM) #
-####################################
-PolNum <- 1                        #
-NameTemp <- "CO2"                  #
-PolRat <- 560000                   #
-PolDur <- 24                       #
-RelStart <- c(12, 01, j, 00, 00)  #
-####################################
+SampleStart <- c(12, 01, j, 00, 00)        #Start Sample Date (YY MM DD HH MM)
+SampleStop <- c(12, (if (j <= 30) {01} else {02}), (if (j <= 30) {j+1} else {1}), 00, 00) #Stop Sample Date (YY MM DD HH MM)
+Method <- c(00, 24, 00)    #Method (XX HH MM)
 
-####################################
-### Display Grid               #####
-### Center (lat lon)           #####
-### Spacing (lat lon)          #####
-### Span (lat lon)             #####
-### Output directory           #####
-####################################
-CenterLatLon <- c(39.28681, -96.11721)
-Spacing <- c(0.05, 0.05)
-Span <- c(80.0, 80.0)
-OutputDir <- "./"
-OutputName <- paste(ModelType, Start[1], Start[2], Start[3], Start[4], sep = "-", collapse = NULL)
-#####################################
-
-
-#####################################
-### Vertical Levels             #####
-### Top of Model                #####
-#####################################
-Layers <- c(1, 10000)
-#####################################
-
-
-#####################################
-### Start/Stop Sampling         #####
-### YY MM DD HH MM              #####
-### Method (XX HH MM)           #####
-#####################################
-SampleStart <- c(12, 01, j, 00, 00)
-SampleStop <- c(12, (if (j <= 30) {01} else {02}), (if (j <= 30) {j+1} else {1}), 00, 00)
-Method <- c(00, 24, 00)
-#####################################
-
-
-#####################################
-### Chemical Parameters         #####
-#####################################
-### Particle Diameter (um)      #####
-### Density (g/cc)              #####
-### Shape                       #####
-### Velocity (m/s)              #####
-### Mol Wgt (g)                 #####
-### A-Ratio                     #####
-### D-Ratio                     #####
-### Henry                       #####
-### Henry's Constant (M/a)      #####
-### In-cloud (l/l)              #####
-### Below-cloud (1/s)           #####
-### Radioactive decay (days)    #####
-### Pollutant Resus Factor (1/m)#####
-#####################################
-ChemParams1 <- c(0.000257, 0.00197, 1.0)
-ChemParams2 <- c(0.0, 0.0, 0.0, 0.0, 0.0)
-ChemParams3 <- c(101.325, 0.0, 0.0)
-ChemParams4 <- c(0.0, 0.0)
+ChemParams1 <- c(0.000257, 0.00197, 1.0)      #Particle Diameter (um), Density (g/cc), Shape
+ChemParams2 <- c(0.0, 0.0, 0.0, 0.0, 0.0)     #Deposition Velocity (m/s), Mol Wgt (g), A-Ratio, D-Ratio, Henry
+ChemParams3 <- c(101.325, 0.0, 0.0)           #Henry's Constant (M/a), In-cloud (l/l), Below-cloud (1/s)
+ChemParams4 <- c(0.0, 0.0)                    #Radioactive Decay - Halflife (days), Pollutant Resuspension Factor (1/m)
 
 #Feed in meteorology data: Number of met files and file paths
 EDASpath <- "C:/hysplit4/working/"
