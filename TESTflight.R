@@ -96,7 +96,12 @@ sep='', file = "CONTROL")
 system("hycs_std.exe")
 system(paste("con2asc.exe", OutputName, collapse = " "))
 file.remove(OutputName)
-ModOutputName <- paste(OutputName, if (j+1 <= 9) {"_00"} else {"_0"},j+1,"_00", RunNum, sep = "", collapse = "")
+
+ModOutputName <- paste(OutputName, 
+                       if ((sum(MonthMatrix$DaysInMonth[1:q])-(MonthMatrix[q,3]-j)+1) <= 9) {"_00"}
+                       else if ((sum(MonthMatrix$DaysInMonth[1:q])-(MonthMatrix[q,3]-j)+1) <= 99) {"_0"}
+                       else {"_"}, (sum(MonthMatrix$DaysInMonth[1:q])-(MonthMatrix[q,3]-j)+1)      
+                       , "_00", sep = "", collapse = "")
 
 FinalDestination <- paste(ModelType,"-", MonthMatrix[q,2], sep = "", collapse = "")
 
@@ -104,8 +109,7 @@ file.rename(paste(getwd(), "/", ModOutputName, sep = "", collapse = ""),
           paste(getwd(), "/", FinalDestination, "/", OutputName, sep = "", collapse = ""))
 
 }
-
-  file.remove("CONASC.OUT")
   
 }
+
 
