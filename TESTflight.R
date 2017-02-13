@@ -1,7 +1,7 @@
 #Loop HYSPLIT for an entire year!- 24hr Dispersions (2012)
 #Dustin Roten
 
-ModelType <- "E"      #A - EPA data used (only), B - 0m Stack Height, C - 0m/s Emissions, D - 0m^2 area, E - Full Model
+ModelType <- "A"      #A - EPA data used (only), B - 0m Stack Height, C - 0m/s Emissions, D - 0m^2 area, E - Full Model
 
 MonthNumber <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
 MonthName <- c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
@@ -21,9 +21,9 @@ for (j in 1:MonthMatrix[q,3]) {
 Start <- c(12, q, j, 00)     #Input model's start date and time (YY MM DD HH)
 
 NumOfStartLocs <- 3           #Number of starting locations
-StartLocInfo1 <- c(39.28684, -96.11821, 174.96, 11.25, 47.17) #Starting Location #1 Parameters (lat, lon, height(AGL), velocity(m/s), area(m^2))
-StartLocInfo2 <- c(39.28681, -96.11721, 174.96, 11.57, 47.17) #Starting Location #2 Parameters (lat, lon, height(AGL), velocity(m/s), area(m^2))
-StartLocInfo3 <- c(39.28681, -96.11618, 174.96, 10.86, 47.17) #Starting Location #3 Parameters (lat, lon, height(AGL), velocity(m/s), area(m^2))
+StartLocInfo1 <- c(39.28684, -96.11821, 0.0, 0.0, 0.0) #Starting Location #1 Parameters (lat, lon, height(AGL), velocity(m/s), area(m^2))
+StartLocInfo2 <- c(39.28681, -96.11721, 0.0, 0.0, 0.0) #Starting Location #2 Parameters (lat, lon, height(AGL), velocity(m/s), area(m^2))
+StartLocInfo3 <- c(39.28681, -96.11618, 0.0, 0.0, 0.0) #Starting Location #3 Parameters (lat, lon, height(AGL), velocity(m/s), area(m^2))
 
 TotRunTime <- 24  #Total run time (hr)
 VertMot <- 0      #Method of vertical motion
@@ -96,6 +96,16 @@ sep='', file = "CONTROL")
 system("hycs_std.exe")
 system(paste("con2asc.exe", OutputName, collapse = " "))
 file.remove(OutputName)
+
+FolderName <- paste(ModelType,"-", MonthMatrix[q,2], sep = "", collapse = "")
+
+if (dir.exists(file.path(getwd(), FolderName)) == TRUE) {
+  paste(ModelType,"-",MonthMatrix[q,2], sep = "", collapse = "")
+}
+
+else {
+  dir.create((file.path(getwd(), FolderName)))
+}
 
 ModOutputName <- paste(OutputName, 
                        if ((sum(MonthMatrix$DaysInMonth[1:q])-(MonthMatrix[q,3]-j)+1) <= 9) {"_00"}
