@@ -15,15 +15,14 @@ MonthMatrix <- data.frame(MonthNumber, MonthName, DaysInMonth, EDAS1, EDAS2)
 for(q in 1:12) {
 
 for (j in 1:MonthMatrix[q,3]) {
-  
-  RunNum <- 1
-  
-Start <- c(12, q, j, 00)     #Input model's start date and time (YY MM DD HH)
+
+StartYear <- 2012
+StartTime <- c(12, q, j, 00)     #Input model's start date and time (YY MM DD HH)
 
 NumOfStartLocs <- 3           #Number of starting locations
-StartLocInfo1 <- c(39.28684, -96.11821, 0.0, 0.0, 0.0) #Starting Location #1 Parameters (lat, lon, height(AGL), velocity(m/s), area(m^2))
-StartLocInfo2 <- c(39.28681, -96.11721, 0.0, 0.0, 0.0) #Starting Location #2 Parameters (lat, lon, height(AGL), velocity(m/s), area(m^2))
-StartLocInfo3 <- c(39.28681, -96.11618, 0.0, 0.0, 0.0) #Starting Location #3 Parameters (lat, lon, height(AGL), velocity(m/s), area(m^2))
+StartLocInfo1 <- c(39.28684, -96.11821, 0.0, 0.0, 0.0, 0.0) #Starting Location #1 Parameters (lat, lon, height(AGL), velocity(mass/h), area(m^2), heat(W))
+StartLocInfo2 <- c(39.28681, -96.11721, 0.0, 0.0, 0.0, 0.0) #Starting Location #2 Parameters (lat, lon, height(AGL), velocity(mass/h), area(m^2), heat(W))
+StartLocInfo3 <- c(39.28681, -96.11618, 0.0, 0.0, 0.0, 0.0) #Starting Location #3 Parameters (lat, lon, height(AGL), velocity(mass/h), area(m^2), heat(W))
 
 TotRunTime <- 24  #Total run time (hr)
 VertMot <- 0      #Method of vertical motion
@@ -39,7 +38,7 @@ CenterLatLon <- c(39.28681, -96.11721)        #Center the display grid (lat, lon
 Spacing <- c(0.05, 0.05)                      #Resolution of the display grid (lat, lon)
 Span <- c(80.0, 80.0)                         #size of the display grid (lat, lon)
 OutputDir <- "./"                             #Output directory
-OutputName <- paste(ModelType, Start[1], Start[2], Start[3], Start[4], sep = "-", collapse = NULL) #output name (YY-MM-DD-HH)
+OutputName <- paste(ModelType, StartTime[1], StartTime[2], StartTime[3], StartTime[4], sep = "-", collapse = NULL) #output name (YY-MM-DD-HH)
 
 Layers <- c(1, 10000)     #Vertical levels, top of model
 
@@ -58,11 +57,36 @@ EDASpath <- "C:/hysplit4/working/"
 #Selecting MET Data
 MetData = NULL
 
-cat(paste(Start, collapse = " "), "\n",
+#EMITIMES file generation
+cat(paste("YYYY MM DD HH   DURATION(hhhh) #RECORDS","\n",
+          "YYYY MM DD HH MM DURATION(hhmm) LAT LON HGT(m) RATE(/h) AREA(m2) HEAT(w)"), "\n",
+    paste(StartYear),
+    paste(StartTime[2:4], sep = " "),
+    paste("9999"),
+    paste(NumOfStartLocs, sep = " ", collapse = " "), "\n",
+    
+    paste(StartYear),
+    paste(SampleStart[2:5], sep = " "),
+    paste(PolDur,"00", sep = ""),
+    paste(StartLocInfo1, sep = " ", collapse = " "), "\n",
+    
+    paste(StartYear),
+    paste(SampleStart[2:5], sep = " "),
+    paste(PolDur,"00", sep = ""),
+    paste(StartLocInfo2, sep = " ", collapse = " "), "\n",
+    
+    paste(StartYear),
+    paste(SampleStart[2:5], sep = " "),
+    paste(PolDur,"00", sep = ""),
+    paste(StartLocInfo3, sep = " ", collapse = " "),
+    
+    file = "EMITIMES")
+
+cat(paste(StartTime, collapse = " "), "\n",
     NumOfStartLocs, "\n",
     paste(StartLocInfo1, collapse = " "), "\n",
-    paste(StartLocInfo2, collapse = " "), "\n",
-    paste(StartLocInfo3, collapse = " "), "\n",
+    #paste(StartLocInfo2, collapse = " "), "\n",
+    #paste(StartLocInfo3, collapse = " "), "\n",
     TotRunTime, "\n",
     VertMot, "\n",
     TopLvl, "\n",
