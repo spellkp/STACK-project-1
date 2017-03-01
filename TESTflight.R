@@ -1,7 +1,7 @@
 #Loop HYSPLIT for an entire year!- 24hr Dispersions (2012)
 #Dustin Roten
 
-ModelType <- "A"      #A - EPA data used (only), B - 0m Stack Height, C - 0m/s Emissions, D - 0m^2 area, E - Full Model
+ModelType <- "E"      #A - EPA data used (only), B - 0m Stack Height, C - 0m/s Emissions, D - 0m^2 area, E - Full Model
 
 MonthNumber <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
 MonthName <- c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
@@ -20,9 +20,9 @@ StartYear <- 2012
 StartTime <- c(12, q, j, 00)     #Input model's start date and time (YY MM DD HH)
 
 NumOfStartLocs <- 3           #Number of starting locations
-StartLocInfo1 <- c(39.28684, -96.11821, 0.0, 0.0, 0.0, 0.0) #Starting Location #1 Parameters (lat, lon, height(AGL), velocity(mass/h), area(m^2), heat(W))
-StartLocInfo2 <- c(39.28681, -96.11721, 0.0, 0.0, 0.0, 0.0) #Starting Location #2 Parameters (lat, lon, height(AGL), velocity(mass/h), area(m^2), heat(W))
-StartLocInfo3 <- c(39.28681, -96.11618, 0.0, 0.0, 0.0, 0.0) #Starting Location #3 Parameters (lat, lon, height(AGL), velocity(mass/h), area(m^2), heat(W))
+StartLocInfo1 <- c(39.28684, -96.11821, 174.96, 560000, 47.17, 16788214.8) #Starting Location #1 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
+StartLocInfo2 <- c(39.28681, -96.11721, 174.96, 560000, 47.17, 16788214.8) #Starting Location #2 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
+StartLocInfo3 <- c(39.28681, -96.11618, 174.96, 560000, 47.17, 16591050.0) #Starting Location #3 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
 
 TotRunTime <- 24  #Total run time (hr)
 VertMot <- 0      #Method of vertical motion
@@ -32,7 +32,7 @@ PolNum <- 1                       #Number of pollutant species
 NameTemp <- "CO2"                 #Name of pollutant species
 PolRat <- 560000                  #Emission rate (mass/hr)
 PolDur <- 24                      #Pollutant duration (hr)
-RelStart <- c(12, q, j, 00, 00)  #Pollutant start (YY, MM, DD, HH, MM)
+RelStart <- c(12, q, j, 00, 00)   #Pollutant start (YY, MM, DD, HH, MM)
 
 CenterLatLon <- c(39.28681, -96.11721)        #Center the display grid (lat, lon)
 Spacing <- c(0.05, 0.05)                      #Resolution of the display grid (lat, lon)
@@ -47,7 +47,7 @@ SampleStop <- c(12, (if (j <= (MonthMatrix[q,3]-1)) {q} else {q+1}), (if (j <= (
 Method <- c(00, 24, 00)    #Method (XX HH MM)
 
 ChemParams1 <- c(0.000257, 0.00197, 1.0)      #Particle Diameter (um), Density (g/cc), Shape
-ChemParams2 <- c(0.0, 0.0, 0.0, 0.0, 0.0)     #Deposition Velocity (m/s), Mol Wgt (g), A-Ratio, D-Ratio, Henry
+ChemParams2 <- c(0.0, 44.01, 0.0, 0.0, 0.0)     #Deposition Velocity (m/s), Mol Wgt (g), A-Ratio, D-Ratio, Henry
 ChemParams3 <- c(101.325, 0.0, 0.0)           #Henry's Constant (M/a), In-cloud (l/l), Below-cloud (1/s)
 ChemParams4 <- c(0.0, 0.0)                    #Radioactive Decay - Halflife (days), Pollutant Resuspension Factor (1/m)
 
@@ -85,8 +85,8 @@ cat(paste("YYYY MM DD HH   DURATION(hhhh) #RECORDS","\n",
 cat(paste(StartTime, collapse = " "), "\n",
     NumOfStartLocs, "\n",
     paste(StartLocInfo1, collapse = " "), "\n",
-    #paste(StartLocInfo2, collapse = " "), "\n",
-    #paste(StartLocInfo3, collapse = " "), "\n",
+    paste(StartLocInfo2, collapse = " "), "\n",
+    paste(StartLocInfo3, collapse = " "), "\n",
     TotRunTime, "\n",
     VertMot, "\n",
     TopLvl, "\n",
