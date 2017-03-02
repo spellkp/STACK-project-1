@@ -1,7 +1,7 @@
 #Loop HYSPLIT for an entire year!- 24hr Dispersions (2012)
 #Dustin Roten
 
-ModelType <- "E"      #A - EPA data used (only), B - 0m Stack Height, C - 0m/s Emissions, D - 0m^2 area, E - Full Model
+ModelType <- "A"      #A - EPA data used (only), B - 0m Stack Height, C - 0m/s Emissions, D - 0m^2 area, E - Full Model
 
 MonthNumber <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
 MonthName <- c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
@@ -19,10 +19,10 @@ for (j in 1:MonthMatrix[q,3]) {
 StartYear <- 2012
 StartTime <- c(12, q, j, 00)     #Input model's start date and time (YY MM DD HH)
 
-NumOfStartLocs <- 3           #Number of starting locations
-StartLocInfo1 <- c(39.28684, -96.11821, 174.96, 557748.97, 47.17, 16788214.8) #Starting Location #1 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
-StartLocInfo2 <- c(39.28681, -96.11721, 174.96, 557748.97, 47.17, 16788214.8) #Starting Location #2 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
-StartLocInfo3 <- c(39.28681, -96.11618, 174.96, 568829.78, 47.17, 16591050.0) #Starting Location #3 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
+NumOfStartLocs <- 1           #Number of starting locations
+StartLocInfo1 <- c(39.2865, -96.1172, 0, 1433462.63) #Starting Location #1 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
+# StartLocInfo2 <- c(39.28681, -96.11721, 174.96, 557748.97, 47.17, 16788214.8) #Starting Location #2 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
+# StartLocInfo3 <- c(39.28681, -96.11618, 174.96, 568829.78, 47.17, 16591050.0) #Starting Location #3 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
 
 TotRunTime <- 24  #Total run time (hr)
 VertMot <- 0      #Method of vertical motion
@@ -57,36 +57,36 @@ EDASpath <- "C:/hysplit4/working/"
 #Selecting MET Data
 MetData = NULL
 
-#EMITIMES file generation
-cat(paste("YYYY MM DD HH   DURATION(hhhh) #RECORDS","\n",
-          "YYYY MM DD HH MM DURATION(hhmm) LAT LON HGT(m) RATE(/h) AREA(m2) HEAT(w)"), "\n",
-    paste(StartYear),
-    paste(StartTime[2:4], sep = " "),
-    paste("9999"),
-    paste(NumOfStartLocs, sep = " ", collapse = " "), "\n",
-    
-    paste(StartYear),
-    paste(SampleStart[2:5], sep = " "),
-    paste(PolDur,"00", sep = ""),
-    paste(StartLocInfo1, sep = " ", collapse = " "), "\n",
-    
-    paste(StartYear),
-    paste(SampleStart[2:5], sep = " "),
-    paste(PolDur,"00", sep = ""),
-    paste(StartLocInfo2, sep = " ", collapse = " "), "\n",
-    
-    paste(StartYear),
-    paste(SampleStart[2:5], sep = " "),
-    paste(PolDur,"00", sep = ""),
-    paste(StartLocInfo3, sep = " ", collapse = " "),
-    
-    file = "EMITIMES")
+# #EMITIMES file generation
+# cat(paste("YYYY MM DD HH   DURATION(hhhh) #RECORDS","\n",
+#           "YYYY MM DD HH MM DURATION(hhmm) LAT LON HGT(m) RATE(/h) AREA(m2) HEAT(w)"), "\n",
+#     paste(StartYear),
+#     paste(StartTime[2:4], sep = " "),
+#     paste("9999"),
+#     paste(NumOfStartLocs, sep = " ", collapse = " "), "\n",
+#     
+#     paste(StartYear),
+#     paste(SampleStart[2:5], sep = " "),
+#     paste(PolDur,"00", sep = ""),
+#     paste(StartLocInfo1, sep = " ", collapse = " "), "\n",
+#     
+#     paste(StartYear),
+#     paste(SampleStart[2:5], sep = " "),
+#     paste(PolDur,"00", sep = ""),
+#     paste(StartLocInfo2, sep = " ", collapse = " "), "\n",
+#     
+#     paste(StartYear),
+#     paste(SampleStart[2:5], sep = " "),
+#     paste(PolDur,"00", sep = ""),
+#     paste(StartLocInfo3, sep = " ", collapse = " "),
+#     
+#     file = "EMITIMES")
 
 cat(paste(StartTime, collapse = " "), "\n",
     NumOfStartLocs, "\n",
     paste(StartLocInfo1, collapse = " "), "\n",
-    paste(StartLocInfo2, collapse = " "), "\n",
-    paste(StartLocInfo3, collapse = " "), "\n",
+   # paste(StartLocInfo2, collapse = " "), "\n",
+   # paste(StartLocInfo3, collapse = " "), "\n",
     TotRunTime, "\n",
     VertMot, "\n",
     TopLvl, "\n",
