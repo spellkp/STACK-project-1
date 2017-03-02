@@ -20,9 +20,9 @@ StartYear <- 2012
 StartTime <- c(12, q, j, 00)     #Input model's start date and time (YY MM DD HH)
 
 NumOfStartLocs <- 3           #Number of starting locations
-StartLocInfo1 <- c(39.28684, -96.11821, 174.96, 560000, 47.17, 16788214.8) #Starting Location #1 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
-StartLocInfo2 <- c(39.28681, -96.11721, 174.96, 560000, 47.17, 16788214.8) #Starting Location #2 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
-StartLocInfo3 <- c(39.28681, -96.11618, 174.96, 560000, 47.17, 16591050.0) #Starting Location #3 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
+StartLocInfo1 <- c(39.28684, -96.11821, 174.96, 557748.97, 47.17, 16788214.8) #Starting Location #1 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
+StartLocInfo2 <- c(39.28681, -96.11721, 174.96, 557748.97, 47.17, 16788214.8) #Starting Location #2 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
+StartLocInfo3 <- c(39.28681, -96.11618, 174.96, 568829.78, 47.17, 16591050.0) #Starting Location #3 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
 
 TotRunTime <- 24  #Total run time (hr)
 VertMot <- 0      #Method of vertical motion
