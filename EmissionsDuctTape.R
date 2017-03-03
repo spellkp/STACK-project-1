@@ -35,3 +35,19 @@ Day[,6] <- NULL
   write.csv(Month, paste(ModelType, "-", MonthName[i], ".csv", sep = ""))
 
 }
+
+Model = NULL
+temp = NULL
+
+for (i in 1:12) {
+
+    temp <- paste("data", i, sep = "")
+    assign(temp, read.csv(paste(ModelType, "-", MonthName[i], ".csv", sep = "")))
+
+}
+
+Model <- rbind(data1, data2, data3, data4, data5, data6, data7, data8, data9, data10, data11, data12)
+Model <- Model[2:6]
+Model <- Model[order(Model$Day),]
+
+write.csv(Model, paste(ModelType,"-",2012,sep = ""))
