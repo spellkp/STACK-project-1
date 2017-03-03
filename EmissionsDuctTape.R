@@ -1,4 +1,4 @@
-ModelType <- "E"
+ModelType <- "A"
 MonthName <- c("January",
                "February",
                "March",
