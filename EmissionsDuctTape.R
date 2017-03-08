@@ -14,7 +14,7 @@ MonthName <- c("January",
 
 for (i in 1:12) {
   
-  filepath <- paste("C:/Users/dusti/Documents/ResearchScripts/STACK-project/JEC-2012/", ModelType, "-", MonthName[i], sep = "")
+  filepath <- paste("~/JEC-2012/", ModelType, "-", MonthName[i], sep = "")
   files <- dir(path = filepath, pattern = "", full.names = TRUE, recursive = TRUE)
   
 for (j in 1:length(files)) {
