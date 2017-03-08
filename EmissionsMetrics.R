@@ -89,9 +89,6 @@ ggplot(data = CenterConc2, aes(x = Day2, y = PercentDifference3)) +
   theme_bw()
 
 #Comparing area of dispersion
-Day4 = NULL
-PercentDifference4 = NULL
-
 for (i in 2:366) {
 
   tempModelA <- subset(ModelA, ModelA$Day == i)
@@ -114,19 +111,21 @@ temp1 = 1
     test1 <- which(ModelA$Lon > min(ModelA$Lon)+0.01*i & ModelA$Lon < min(ModelA$Lon) + 0.01*(i+1)
                 & ModelA$Lat > min(ModelA$Lat)+0.01*j & ModelA$Lat < min(ModelA$Lat) + 0.01*(j+1))
      
-    if (length(test1) == 0) {}
-     else {store1[q1] <- 1
-           q1=q1+1}
+        if (length(test1) == 0) {}
+        else {store1[q1] <- 1
+             q1=q1+1}
   
     
-    if (round(j/deltaLon1, 2)*100 == temp1) {}
-    else {temp1 <- 100*round((j/deltaLon1), 2)
+        if (round(j/deltaLon1, 2)*100 == temp1) {}
+        else {temp1 <- 100*round((j/deltaLon1), 2)
    
           print(paste("Model A", "     ", "Year:", round(i/366, 2)*100, "%", "     ","Latitude Complete:", round(q/deltaLat1, 2)*100, "%", "     ",
                 "Longitude Complete:", temp1, "%", sep = ""))
-   }
+           }
 
-    }
+      }
+    
+  }
   
 #Begin finding the area of the dispersion for Day[i], ModelE
     deltaLat2 <- (max(tempModelE$Lat)-min(tempModelE$Lat))/0.01
@@ -139,7 +138,7 @@ temp1 = 1
       
       for (j in 0:deltaLon2) {
         
-        test2 <- which(ModelE$LON > min(ModelE$Lon)+0.01*i & ModelE$Lon < min(ModelE$Lon) + 0.01*(i+1)
+        test2 <- which(ModelE$Lon > min(ModelE$Lon)+0.01*i & ModelE$Lon < min(ModelE$Lon) + 0.01*(i+1)
                        & ModelE$Lat > min(ModelE$Lat)+0.01*j & ModelE$Lat < min(ModelE$Lat) + 0.01*(j+1))
         
         if (length(test2) == 0) {}
@@ -160,4 +159,3 @@ temp1 = 1
   }
 
   }
-}
