@@ -116,7 +116,7 @@ deltaLon1 <- (max(tempModelA$Lon)-min(tempModelA$Lon))/0.01
     test1 <- subset(tempModelA, tempModelA$Lon >= (min(tempModelA$Lon)+(0.01*j)) & tempModelA$Lon < (min(tempModelA$Lon)+0.01*(j+1)))
     test1 <- subset(test1, test1$Lat >= (min(tempModelA$Lat)+(0.01*q)) & test1$Lat < (min(tempModelA$Lat)+0.01*(q+1)))
      
-    if (nrow(test1) != 0) {AreaA[j,q] <- 1}
+    if (nrow(test1) != 0) {AreaA[j+1,q+1] <- 1}
      else {AreaA[j+1,q+1] <- 0}
   
     print(paste("Model A", "     ", "Year:", round(i/366, 2)*100, "%", "     ","Latitude Complete:", round(q/deltaLat1, 2)*100, "%", "     ",
@@ -137,7 +137,7 @@ for (q in 0:deltaLat2) {
       test2 <- subset(tempModelE, tempModelE$Lon >= (min(tempModelE$Lon)+(0.01*j)) & tempModelE$Lon < (min(tempModelE$Lon)+0.01*(j+1)))
       test2 <- subset(test2, test2$Lat >= (min(tempModelE$Lat)+(0.01*q)) & test2$Lat < (min(tempModelE$Lat)+0.01*(q+1)))
       
-      if (nrow(test2) != 0) {AreaE[j,q] <- 1}
+      if (nrow(test2) != 0) {AreaE[j+1,q+1] <- 1}
       else {AreaE[j+1,q+1] <- 0}
       
       print(paste("Model B", "     ", "Year:", round(i/366, 2)*100, "%", "     ","Latitude Complete:", round(q/deltaLat1, 2)*100, "%", "     ",
