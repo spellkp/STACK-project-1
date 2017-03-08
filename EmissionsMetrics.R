@@ -120,7 +120,7 @@ temp1 = 1
   
     
     if (round(j/deltaLon1, 2)*100 == temp1) {}
-    else {temp1 <- round(100*(j/deltaLon1), 2)
+    else {temp1 <- 100*round((j/deltaLon1), 2)
    
           print(paste("Model A", "     ", "Year:", round(i/366, 2)*100, "%", "     ","Latitude Complete:", round(q/deltaLat1, 2)*100, "%", "     ",
                 "Longitude Complete:", temp1, "%", sep = ""))
@@ -148,7 +148,7 @@ temp1 = 1
         
         
         if (round(j/deltaLon2, 2)*100 == temp2) {}
-        else {temp2 <- round(100*(j/deltaLon2), 2)
+        else {temp2 <- 100*round((j/deltaLon2), 2)
         
         print(paste("Model B", "     ", "Year:", round(i/366, 2)*100, "%", "     ","Latitude Complete:", round(q/deltaLat2, 2)*100, "%", "     ",
                     "Longitude Complete:", temp2, "%", sep = ""))
