@@ -100,10 +100,10 @@ for (i in 2:366) {
   tempModelE <- subset(ModelE, ModelE$Day == i)
   tempModelE <- as.data.frame(tempModelE[order(tempModelE$Lon, tempModelE$Lat),])
   
-  AreaA <- matrix(data = 0, nrow = (max(tempModelA$Lon)-min(tempModelA$Lon))/0.01,
-                                    (max(tempModelA$Lat)-min(tempModelA$Lat))/0.01)
-  AreaE <- matrix(data = 0, nrow = (max(tempModelE$Lon)-min(tempModelE$Lon))/0.01,
-                                    (max(tempModelE$Lat)-min(tempModelE$Lat))/0.01)
+  AreaA <- matrix(data = 0, nrow = ((max(tempModelA$Lon)-min(tempModelA$Lon))/0.01)+1,
+                                    ((max(tempModelA$Lat)-min(tempModelA$Lat))/0.01)+1)
+  AreaE <- matrix(data = 0, nrow = ((max(tempModelE$Lon)-min(tempModelE$Lon))/0.01)+1,
+                                    ((max(tempModelE$Lat)-min(tempModelE$Lat))/0.01)+1)
   
 #Begin finding the area of the dispersion for Day[i], ModelA
 deltaLat1 <- (max(tempModelA$Lat)-min(tempModelA$Lat))/0.01
