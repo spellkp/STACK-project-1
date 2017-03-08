@@ -100,56 +100,64 @@ for (i in 2:366) {
   tempModelE <- subset(ModelE, ModelE$Day == i)
   tempModelE <- as.data.frame(tempModelE[order(tempModelE$Lon, tempModelE$Lat),])
   
-  AreaA <- matrix(data = 0, nrow = ((max(tempModelA$Lon)-min(tempModelA$Lon))/0.01)+1,
-                                    ((max(tempModelA$Lat)-min(tempModelA$Lat))/0.01)+1)
-  AreaE <- matrix(data = 0, nrow = ((max(tempModelE$Lon)-min(tempModelE$Lon))/0.01)+1,
-                                    ((max(tempModelE$Lat)-min(tempModelE$Lat))/0.01)+1)
-  
 #Begin finding the area of the dispersion for Day[i], ModelA
 deltaLat1 <- (max(tempModelA$Lat)-min(tempModelA$Lat))/0.01
 deltaLon1 <- (max(tempModelA$Lon)-min(tempModelA$Lon))/0.01
+store1 = NULL
+q1 = 1
+temp1 = 1
 
   for (q in 0:deltaLat1) {  
    
    for (j in 0:deltaLon1) {
   
-    test1 <- subset(tempModelA, tempModelA$Lon >= (min(tempModelA$Lon)+(0.01*j)) & tempModelA$Lon < (min(tempModelA$Lon)+0.01*(j+1)))
-    test1 <- subset(test1, test1$Lat >= (min(tempModelA$Lat)+(0.01*q)) & test1$Lat < (min(tempModelA$Lat)+0.01*(q+1)))
+    test1 <- which(ModelA$LON > min(ModelA$LON)+0.01*i & ModelA$LON < min(ModelA$LON) + 0.01*(i+1)
+                & ModelA$LAT > min(ModelA$LAT)+0.01*j & ModelA$LAT < min(ModelA$LAT) + 0.01*(j+1))
      
-    if (nrow(test1) != 0) {AreaA[j+1,q+1] <- 1}
-     else {AreaA[j+1,q+1] <- 0}
+    if (length(test1) == 0) {}
+     else {store1[q1] <- 1
+           q1=q1+1}
   
-    print(paste("Model A", "     ", "Year:", round(i/366, 2)*100, "%", "     ","Latitude Complete:", round(q/deltaLat1, 2)*100, "%", "     ",
-                "Longitude Complete:", round(j/deltaLon1, 2)*100, "%", sep = ""))
-     
+    
+    if (round(j/deltaLon1, 2)*100 == temp1) {}
+    else {temp1 <- round(100*(j/deltaLon1), 2)
+   
+          print(paste("Model A", "     ", "Year:", round(i/366, 2)*100, "%", "     ","Latitude Complete:", round(q/deltaLat1, 2)*100, "%", "     ",
+                "Longitude Complete:", temp1, "%", sep = ""))
    }
 
     }
   
 #Begin finding the area of the dispersion for Day[i], ModelE
-deltaLat2 <- (max(tempModelE$Lat)-min(tempModelE$Lat))/0.01
-deltaLon2 <- (max(tempModelE$Lon)-min(tempModelE$Lon))/0.01
-
-for (q in 0:deltaLat2) {  
+    deltaLat2 <- (max(tempModelE$Lat)-min(tempModelE$Lat))/0.01
+    deltaLon2 <- (max(tempModelE$Lon)-min(tempModelE$Lon))/0.01
+    store2 = NULL
+    q2 = 1
+    temp2 = 1
     
-    for (j in 0:deltaLon2) {
+    for (q in 0:deltaLat2) {  
       
-      test2 <- subset(tempModelE, tempModelE$Lon >= (min(tempModelE$Lon)+(0.01*j)) & tempModelE$Lon < (min(tempModelE$Lon)+0.01*(j+1)))
-      test2 <- subset(test2, test2$Lat >= (min(tempModelE$Lat)+(0.01*q)) & test2$Lat < (min(tempModelE$Lat)+0.01*(q+1)))
-      
-      if (nrow(test2) != 0) {AreaE[j+1,q+1] <- 1}
-      else {AreaE[j+1,q+1] <- 0}
-      
-      print(paste("Model B", "     ", "Year:", round(i/366, 2)*100, "%", "     ","Latitude Complete:", round(q/deltaLat1, 2)*100, "%", "     ",
-                  "Longitude Complete:", round(j/deltaLon1, 2)*100, "%", sep = ""))
-    }
+      for (j in 0:deltaLon2) {
+        
+        test2 <- which(ModelE$LON > min(ModelE$LON)+0.01*i & ModelE$LON < min(ModelE$LON) + 0.01*(i+1)
+                       & ModelE$LAT > min(ModelE$LAT)+0.01*j & ModelE$LAT < min(ModelE$LAT) + 0.01*(j+1))
+        
+        if (length(test2) == 0) {}
+        else {store2[q2] <- 1
+        q2=q2+1}
+        
+        
+        if (round(j/deltaLon2, 2)*100 == temp2) {}
+        else {temp2 <- round(100*(j/deltaLon2), 2)
+        
+        print(paste("Model B", "     ", "Year:", round(i/366, 2)*100, "%", "     ","Latitude Complete:", round(q/deltaLat2, 2)*100, "%", "     ",
+                    "Longitude Complete:", temp2, "%", sep = ""))
+        }
+        
+      }
   
+
   }
-  
-Day4[i] <- i
-PercentDifference4[i] <- 100*(sum(AreaE, na.rm = TRUE)-sum(AreaA, na.rm = TRUE))/mean(c(sum(AreaE), sum(AreaA)))
-print(paste("Percent Complete:", " ", 100*(i/366), sep = ""))
 
+  }
 }
-
-AreaComp <- data.frame(Day4, PercentDifference4)
