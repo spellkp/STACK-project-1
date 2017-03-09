@@ -10,19 +10,21 @@ ModelA <- read.csv("A-2012")
 ModelA <- ModelA[2:6]
 ModelE <- read.csv("E-2012")
 ModelE <- ModelE[2:6]
-
-#Comparing maximum concentration
-Day = NULL
+#################################
+#Comparing maximum concentration#
+#################################
+##### Working in Parallel #######
+#################################
 PercentDifference = NULL
-
-foreach(i=2:366) %dopar% {
-
-  Day[i] <- i
+MaxConc = foreach(i=2:366, .combine = rbind) %dopar% {
   tempModelA <- subset(ModelA, ModelA$Day == i)
   tempModelE <- subset(ModelE, ModelE$Day == i)
   PercentDifference[i] <- ((max(tempModelE$Conc)-max(tempModelA$Conc))/mean(c(max(tempModelA$Conc), max(tempModelE$Conc))))*100
 }
-MaxConc <- data.frame(Day, PercentDifference)
+
+MaxConc <- data.frame(c(2:366),MaxConc[,1])
+colnames(MaxConc)[1] <- "Day"
+colnames(MaxConc)[2] <- "PercentDifference"
 
 ggplot(data = MaxConc, aes(x = Day, y = PercentDifference)) +
   geom_point() +
@@ -31,15 +33,19 @@ ggplot(data = MaxConc, aes(x = Day, y = PercentDifference)) +
   ylab("Percent Difference (%)") +
   ggtitle("Jeffrey Energy Center (2012): \n Percent Difference in Simulated Maximum Concentration per Day") +
   theme_bw()
+###############################
+###############################
 
 
-#Comparing location of COM (Unweighted)
-Day2 = NULL
+########################################
+#Comparing location of COM (Unweighted)#
+########################################
+##### Working in Parallel ##############
+########################################
 PercentDifference2 = NULL
 
-foreach(i=2:366) %dopar% {
+CenterConc = foreach(i=2:366, .combine = rbind) %dopar% {
   
-  Day2[i] <- i
   tempModelA <- subset(ModelA, ModelA$Day == i)
   tempModelE <- subset(ModelE, ModelE$Day == i)
   
@@ -52,7 +58,9 @@ foreach(i=2:366) %dopar% {
   
 }
   
-CenterConc <- data.frame(Day2, PercentDifference2)
+CenterConc <- data.frame(c(2:366), CenterConc[,1])
+colnames(CenterConc)[1] <- "Day2"
+colnames(CenterConc)[2] <- "PercentDifference2"
 
 ggplot(data = CenterConc, aes(x = Day2, y = PercentDifference2)) +
   geom_point() +
@@ -62,14 +70,15 @@ ggplot(data = CenterConc, aes(x = Day2, y = PercentDifference2)) +
   ggtitle("Jeffrey Energy Center (2012): \n Percent Difference in Center of Dispersion (Unweighted) per Day") +
   theme_bw()
 
-
-#Comparing location of COM (Weighted)
-Day3 = NULL
+######################################
+#Comparing location of COM (Weighted)#
+######################################
+##### Working in Parallel ############
+######################################
 PercentDifference3 = NULL
   
-foreach(i=2:366) %dopar% {
+CenterConc2 = foreach(i=2:366, .combine = rbind) %dopar% {
 
-  Day3[i] <- i
   tempModelA <- subset(ModelA, ModelA$Day == i)
   tempModelE <- subset(ModelE, ModelE$Day == i)
   
@@ -82,9 +91,11 @@ foreach(i=2:366) %dopar% {
   
 }
 
-CenterConc2 <- data.frame(Day3, PercentDifference3)
+CenterConc2 <- data.frame(c(2:366), CenterConc2[,1])
+colnames(CenterConc2)[1] <- "Day3"
+colnames(CenterConc2)[2] <- "PercentDifference3"
 
-ggplot(data = CenterConc2, aes(x = Day2, y = PercentDifference3)) +
+ggplot(data = CenterConc2, aes(x = Day3, y = PercentDifference3)) +
   geom_point() +
   geom_smooth(se = FALSE) +
   xlab("Day of 2012") +
