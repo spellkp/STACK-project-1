@@ -89,7 +89,9 @@ ggplot(data = CenterConc2, aes(x = Day2, y = PercentDifference3)) +
   theme_bw()
 
 #Comparing area of dispersion
-for (i in 2:366) {
+## Remove library(foreach)
+
+## Remove foreach(i=2:366) %dopar% {
 
   tempModelA <- subset(ModelA, ModelA$Day == i)
   tempModelA <- as.data.frame(tempModelA[order(tempModelA$Lon, tempModelA$Lat),])
@@ -98,8 +100,8 @@ for (i in 2:366) {
   tempModelE <- as.data.frame(tempModelE[order(tempModelE$Lon, tempModelE$Lat),])
   
 #Begin finding the area of the dispersion for Day[i], ModelA
-deltaLat1 <- (max(tempModelA$Lat)-min(tempModelA$Lat))/0.01
-deltaLon1 <- (max(tempModelA$Lon)-min(tempModelA$Lon))/0.01
+deltaLat1 <- (max(tempModelA$Lat)-min(tempModelA$Lat))/0.1
+deltaLon1 <- (max(tempModelA$Lon)-min(tempModelA$Lon))/0.1
 store1 = NULL
 q1 = 1
 temp1 = 1
@@ -108,8 +110,8 @@ temp1 = 1
    
    for (j in 0:deltaLon1) {
   
-    test1 <- which(ModelA$Lon > min(ModelA$Lon)+0.01*j & ModelA$Lon < min(ModelA$Lon) + 0.01*(j+1)
-                & ModelA$Lat > min(ModelA$Lat)+0.01*q & ModelA$Lat < min(ModelA$Lat) + 0.01*(q+1))
+    test1 <- which(ModelA$Lon > min(ModelA$Lon)+0.1*j & ModelA$Lon < min(ModelA$Lon) + 0.1*(j+1)
+                & ModelA$Lat > min(ModelA$Lat)+0.1*q & ModelA$Lat < min(ModelA$Lat) + 0.1*(q+1))
      
         if (length(test1) == 0) {}
         else {store1[q1] <- 1
@@ -127,9 +129,20 @@ temp1 = 1
     
   }
   
-#Begin finding the area of the dispersion for Day[i], ModelE
-    deltaLat2 <- (max(tempModelE$Lat)-min(tempModelE$Lat))/0.01
-    deltaLon2 <- (max(tempModelE$Lon)-min(tempModelE$Lon))/0.01
+}
+
+
+for (i in 2:366) {
+  
+  tempModelA <- subset(ModelA, ModelA$Day == i)
+  tempModelA <- as.data.frame(tempModelA[order(tempModelA$Lon, tempModelA$Lat),])
+  
+  tempModelE <- subset(ModelE, ModelE$Day == i)
+  tempModelE <- as.data.frame(tempModelE[order(tempModelE$Lon, tempModelE$Lat),])
+
+  #Begin finding the area of the dispersion for Day[i], ModelE
+    deltaLat2 <- (max(tempModelE$Lat)-min(tempModelE$Lat))/0.1
+    deltaLon2 <- (max(tempModelE$Lon)-min(tempModelE$Lon))/0.1
     store2 = NULL
     q2 = 1
     temp2 = 1
@@ -138,8 +151,8 @@ temp1 = 1
       
       for (j in 0:deltaLon2) {
         
-        test2 <- which(ModelE$Lon > min(ModelE$Lon)+0.01*j & ModelE$Lon < min(ModelE$Lon) + 0.01*(j+1)
-                       & ModelE$Lat > min(ModelE$Lat)+0.01*q & ModelE$Lat < min(ModelE$Lat) + 0.01*(q+1))
+        test2 <- which(ModelE$Lon > min(ModelE$Lon)+0.1*j & ModelE$Lon < min(ModelE$Lon) + 0.1*(j+1)
+                       & ModelE$Lat > min(ModelE$Lat)+0.1*q & ModelE$Lat < min(ModelE$Lat) + 0.1*(q+1))
         
         if (length(test2) == 0) {}
         else {store2[q2] <- 1
