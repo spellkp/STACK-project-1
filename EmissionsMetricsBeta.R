@@ -1,9 +1,9 @@
 library(ggplot2)
 library(dplyr)
-library(parallel)
 library(foreach)
+library(doParallel)
 cl <- detectCores()-1
-makeCluster(cl)
+registerDoParallel(cl)
 
 #Read in models to compare
 ModelA <- read.csv("A-2012")
@@ -21,7 +21,7 @@ foreach(i=2:366) %dopar% {
   tempModelA <- subset(ModelA, ModelA$Day == i)
   tempModelE <- subset(ModelE, ModelE$Day == i)
   PercentDifference[i] <- ((max(tempModelE$Conc)-max(tempModelA$Conc))/mean(c(max(tempModelA$Conc), max(tempModelE$Conc))))*100
-
+}
 MaxConc <- data.frame(Day, PercentDifference)
 
 ggplot(data = MaxConc, aes(x = Day, y = PercentDifference)) +
@@ -32,9 +32,12 @@ ggplot(data = MaxConc, aes(x = Day, y = PercentDifference)) +
   ggtitle("Jeffrey Energy Center (2012): \n Percent Difference in Simulated Maximum Concentration per Day") +
   theme_bw()
 
+
 #Comparing location of COM (Unweighted)
 Day2 = NULL
 PercentDifference2 = NULL
+
+foreach(i=2:366) %dopar% {
   
   Day2[i] <- i
   tempModelA <- subset(ModelA, ModelA$Day == i)
@@ -47,7 +50,8 @@ PercentDifference2 = NULL
   
   PercentDifference2[i] <- 200*sqrt(((LatA-LatE)/(LatA+LatE))^2 + ((LonA-LonE)/(LonA+LonE))^2)
   
-
+}
+  
 CenterConc <- data.frame(Day2, PercentDifference2)
 
 ggplot(data = CenterConc, aes(x = Day2, y = PercentDifference2)) +
@@ -58,10 +62,13 @@ ggplot(data = CenterConc, aes(x = Day2, y = PercentDifference2)) +
   ggtitle("Jeffrey Energy Center (2012): \n Percent Difference in Center of Dispersion (Unweighted) per Day") +
   theme_bw()
 
+
 #Comparing location of COM (Weighted)
 Day3 = NULL
 PercentDifference3 = NULL
   
+foreach(i=2:366) %dopar% {
+
   Day3[i] <- i
   tempModelA <- subset(ModelA, ModelA$Day == i)
   tempModelE <- subset(ModelE, ModelE$Day == i)
@@ -73,7 +80,7 @@ PercentDifference3 = NULL
   
   PercentDifference3[i] <- 200*sqrt(((LatA_bar-LatE)/(LatA_bar+LatE))^2 + ((LonA-LonE)/(LonA+LonE))^2)
   
-
+}
 
 CenterConc2 <- data.frame(Day3, PercentDifference3)
 
@@ -86,6 +93,7 @@ ggplot(data = CenterConc2, aes(x = Day2, y = PercentDifference3)) +
   theme_bw()
 
 #Comparing area of dispersion
+foreach(i=2:366) %dopar% {
 
   tempModelA <- subset(ModelA, ModelA$Day == i)
   tempModelA <- as.data.frame(tempModelA[order(tempModelA$Lon, tempModelA$Lat),])
@@ -94,18 +102,19 @@ ggplot(data = CenterConc2, aes(x = Day2, y = PercentDifference3)) +
   tempModelE <- as.data.frame(tempModelE[order(tempModelE$Lon, tempModelE$Lat),])
   
 #Begin finding the area of the dispersion for Day[i], ModelA
-deltaLat1 <- (max(tempModelA$Lat)-min(tempModelA$Lat))/0.1
-deltaLon1 <- (max(tempModelA$Lon)-min(tempModelA$Lon))/0.1
+deltaLat1 <- (max(tempModelA$Lat)-min(tempModelA$Lat))/0.01
+deltaLon1 <- (max(tempModelA$Lon)-min(tempModelA$Lon))/0.01
 store1 = NULL
 q1 = 1
 temp1 = 1
+AreaModelA = NULL
 
   for (q in 0:deltaLat1) {  
    
    for (j in 0:deltaLon1) {
   
-    test1 <- which(ModelA$Lon > min(ModelA$Lon)+0.1*j & ModelA$Lon < min(ModelA$Lon) + 0.1*(j+1)
-                & ModelA$Lat > min(ModelA$Lat)+0.1*q & ModelA$Lat < min(ModelA$Lat) + 0.1*(q+1))
+    test1 <- which(ModelA$Lon > min(ModelA$Lon)+0.01*j & ModelA$Lon < min(ModelA$Lon) + 0.01*(j+1)
+                & ModelA$Lat > min(ModelA$Lat)+0.01*q & ModelA$Lat < min(ModelA$Lat) + 0.01*(q+1))
      
         if (length(test1) == 0) {}
         else {store1[q1] <- 1
@@ -122,27 +131,26 @@ temp1 = 1
       }
     
   }
+AreaModelA[i] <- sum(store1)
+}
 
-  
-  tempModelA <- subset(ModelA, ModelA$Day == i)
-  tempModelA <- as.data.frame(tempModelA[order(tempModelA$Lon, tempModelA$Lat),])
-  
-  tempModelE <- subset(ModelE, ModelE$Day == i)
-  tempModelE <- as.data.frame(tempModelE[order(tempModelE$Lon, tempModelE$Lat),])
+
+foreach(i=2:366) %dopar% {
 
   #Begin finding the area of the dispersion for Day[i], ModelE
-    deltaLat2 <- (max(tempModelE$Lat)-min(tempModelE$Lat))/0.1
-    deltaLon2 <- (max(tempModelE$Lon)-min(tempModelE$Lon))/0.1
+    deltaLat2 <- (max(tempModelE$Lat)-min(tempModelE$Lat))/0.01
+    deltaLon2 <- (max(tempModelE$Lon)-min(tempModelE$Lon))/0.01
     store2 = NULL
     q2 = 1
     temp2 = 1
+    AreaModelB = NULL
     
     for (q in 0:deltaLat2) {  
       
       for (j in 0:deltaLon2) {
         
-        test2 <- which(ModelE$Lon > min(ModelE$Lon)+0.1*j & ModelE$Lon < min(ModelE$Lon) + 0.1*(j+1)
-                       & ModelE$Lat > min(ModelE$Lat)+0.1*q & ModelE$Lat < min(ModelE$Lat) + 0.1*(q+1))
+        test2 <- which(ModelE$Lon > min(ModelE$Lon)+0.01*j & ModelE$Lon < min(ModelE$Lon) + 0.01*(j+1)
+                       & ModelE$Lat > min(ModelE$Lat)+0.01*q & ModelE$Lat < min(ModelE$Lat) + 0.01*(q+1))
         
         if (length(test2) == 0) {}
         else {store2[q2] <- 1
@@ -160,9 +168,7 @@ temp1 = 1
   
 
     }
-    
+AreaModelB[i] <- sum(store2) 
 }    
-
-
 
 stopCluster(cl = NULL)
