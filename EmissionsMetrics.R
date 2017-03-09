@@ -108,8 +108,8 @@ temp1 = 1
    
    for (j in 0:deltaLon1) {
   
-    test1 <- which(ModelA$Lon > min(ModelA$Lon)+0.01*i & ModelA$Lon < min(ModelA$Lon) + 0.01*(i+1)
-                & ModelA$Lat > min(ModelA$Lat)+0.01*j & ModelA$Lat < min(ModelA$Lat) + 0.01*(j+1))
+    test1 <- which(ModelA$Lon > min(ModelA$Lon)+0.01*j & ModelA$Lon < min(ModelA$Lon) + 0.01*(j+1)
+                & ModelA$Lat > min(ModelA$Lat)+0.01*q & ModelA$Lat < min(ModelA$Lat) + 0.01*(q+1))
      
         if (length(test1) == 0) {}
         else {store1[q1] <- 1
@@ -138,8 +138,8 @@ temp1 = 1
       
       for (j in 0:deltaLon2) {
         
-        test2 <- which(ModelE$Lon > min(ModelE$Lon)+0.01*i & ModelE$Lon < min(ModelE$Lon) + 0.01*(i+1)
-                       & ModelE$Lat > min(ModelE$Lat)+0.01*j & ModelE$Lat < min(ModelE$Lat) + 0.01*(j+1))
+        test2 <- which(ModelE$Lon > min(ModelE$Lon)+0.01*j & ModelE$Lon < min(ModelE$Lon) + 0.01*(j+1)
+                       & ModelE$Lat > min(ModelE$Lat)+0.01*q & ModelE$Lat < min(ModelE$Lat) + 0.01*(q+1))
         
         if (length(test2) == 0) {}
         else {store2[q2] <- 1
