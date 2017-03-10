@@ -104,7 +104,7 @@ ggplot(data = CenterConc2, aes(x = Day3, y = PercentDifference3)) +
   theme_bw()
 
 #Comparing area of dispersion
-foreach(i=2:366) %dopar% {
+store1 <- foreach(i=2:366, .combine = rbind) %dopar% {
 
   tempModelA <- subset(ModelA, ModelA$Day == i)
   tempModelA <- as.data.frame(tempModelA[order(tempModelA$Lon, tempModelA$Lat),])
@@ -115,7 +115,6 @@ foreach(i=2:366) %dopar% {
 #Begin finding the area of the dispersion for Day[i], ModelA
 deltaLat1 <- (max(tempModelA$Lat)-min(tempModelA$Lat))/0.01
 deltaLon1 <- (max(tempModelA$Lon)-min(tempModelA$Lon))/0.01
-store1 = NULL
 q1 = 1
 temp1 = 1
 AreaModelA = NULL
@@ -128,7 +127,7 @@ AreaModelA = NULL
                 & ModelA$Lat > min(ModelA$Lat)+0.01*q & ModelA$Lat < min(ModelA$Lat) + 0.01*(q+1))
      
         if (length(test1) == 0) {}
-        else {store1[q1] <- 1
+        else {1
              q1=q1+1}
   
     
@@ -142,16 +141,15 @@ AreaModelA = NULL
       }
     
   }
-AreaModelA[i] <- sum(store1)
+
 }
 
 
-foreach(i=2:366) %dopar% {
+store2 = foreach(i=2:366, .combine = rbind) %dopar% {
 
   #Begin finding the area of the dispersion for Day[i], ModelE
     deltaLat2 <- (max(tempModelE$Lat)-min(tempModelE$Lat))/0.01
     deltaLon2 <- (max(tempModelE$Lon)-min(tempModelE$Lon))/0.01
-    store2 = NULL
     q2 = 1
     temp2 = 1
     AreaModelB = NULL
@@ -164,7 +162,7 @@ foreach(i=2:366) %dopar% {
                        & ModelE$Lat > min(ModelE$Lat)+0.01*q & ModelE$Lat < min(ModelE$Lat) + 0.01*(q+1))
         
         if (length(test2) == 0) {}
-        else {store2[q2] <- 1
+        else {1
         q2=q2+1}
         
         
@@ -179,7 +177,7 @@ foreach(i=2:366) %dopar% {
   
 
     }
-AreaModelB[i] <- sum(store2) 
+
 }    
 
 stopCluster(cl = NULL)
