@@ -1,7 +1,7 @@
 #####################################
 ##### Initialize Parameters #########
 #####################################
-IfPar <- 1            #1='Yes'; 0='No'#
+IfPar <- 0            #1='Yes'; 0='No'#
 FreeCores <- 1        #Number of cores available during computation
 
 StackLoc <- rbind(                               #Insert c(LAT,LON); more can be added.
@@ -59,15 +59,6 @@ MaxConcDist1 =
     
   }
 
-MaxConcDist1 <- as.data.frame(MaxConcDist1)
-
-Magic1 <- aggregate(. ~ Lat+Lon, data = MaxConcDist1, FUN = function(x) c(mn = mean(x)) )
-
-al1 = get_map(location = c(lon = eGRIDLoc[2], lat = eGRIDLoc[1]), zoom = 09, maptype = 'satellite')
-al1MAP = ggmap(al1)
-al1MAP + geom_tile(data = Magic1, aes(x = Lon, y = Lat, fill = Conc)) +
-                scale_colour_gradientn(colours = rev(rainbow(4)))
-
 
 ##### Model 2 (Full Model) ##########
 
@@ -86,12 +77,33 @@ MaxConcDist2 =
     
   }
 
+MaxConcDist1 <- as.data.frame(MaxConcDist1)
+
+Magic1 <- aggregate(. ~ Lat+Lon, data = MaxConcDist1, FUN = function(x) c(mn = mean(x)) )
+
+al1 = get_map(location = c(lon = eGRIDLoc[2], lat = eGRIDLoc[1]), zoom = 10, maptype = 'satellite')
+al1MAP = ggmap(al1)
+al1MAP + geom_tile(data = Magic2, aes(x = Lon, y = Lat, fill = Conc)) +
+  scale_fill_gradient(limits=c(min(min(Magic1$Conc), min(Magic2$Conc)), 
+                                max(max(Magic1$Conc), max(Magic2$Conc))), low = "yellow", high = "red")
+
 
 MaxConcDist2 <- as.data.frame(MaxConcDist2)
 
 Magic2 <- aggregate(. ~ Lat+Lon, data = MaxConcDist2, FUN = function(x) c(mn = mean(x)) )
 
-al1 = get_map(location = c(lon = eGRIDLoc[2], lat = eGRIDLoc[1]), zoom = 09, maptype = 'satellite')
+al1 = get_map(location = c(lon = eGRIDLoc[2], lat = eGRIDLoc[1]), zoom = 10, maptype = 'satellite')
 al1MAP = ggmap(al1)
 al1MAP + geom_tile(data = Magic2, aes(x = Lon, y = Lat, fill = Conc)) +
-          scale_colour_gradientn(colours = rev(rainbow(4)))
+          scale_fill_gradient(limits=c(min(min(Magic1$Conc), min(Magic2$Conc)), 
+                                       max(max(Magic1$Conc), max(Magic2$Conc))), low = "yellow", high = "red")
+
+
+
+
+
+
+
+
+
+
