@@ -64,6 +64,9 @@ MagnitudeDifference <- sqrt((Mod1$AvgLat-Mod2$AvgLat)^2+(Mod1$AvgLon-Mod2$AvgLon
 x <- ((Mod1$AvgLat*Mod2$AvgLat) + (Mod1$AvgLon*Mod2$AvgLon)) / (sqrt((Mod1$AvgLat)^2 + (Mod1$AvgLon)^2)*sqrt((Mod2$AvgLat)^2 + (Mod2$AvgLon)^2))
 AngleDifference <- (180/3.14159)*acos(x)
 
+plot(MagnitudeDifference)
+plot(AngleDifference)
+
 mean(MagnitudeDifference)
 mean(AngleDifference)
 
@@ -74,8 +77,8 @@ mean(AngleDifference)
 WMod1 =
   foreach(i=2:366, .combine = rbind) %dopar% {
     tempModel1 <- subset(Model1, Model1$Day == i)
-    AvgLat <- sum(tempModel1$Lat-eGRIDLoc[1])/sum(tempModel1$Conc)
-    AvgLon <- sum(tempModel1$Lon-eGRIDLoc[2])/sum(tempModel1$Conc)
+    AvgLat <- sum((tempModel1$Lat-eGRIDLoc[1])*tempModel1$Conc)/sum(tempModel1$Conc)
+    AvgLon <- sum((tempModel1$Lon-eGRIDLoc[2])*tempModel1$Conc)/sum(tempModel1$Conc)
     cbind(AvgLat, AvgLon)
   }
 WMod1 <- as.data.frame(WMod1)
@@ -84,15 +87,18 @@ WMod1 <- as.data.frame(WMod1)
 WMod2 =
   foreach(i=2:366, .combine = rbind) %dopar% {
     tempModel2 <- subset(Model2, Model2$Day == i)
-    AvgLat <- sum(tempModel2$Lat-eGRIDLoc[1])/sum(tempModel2$Conc)
-    AvgLon <- sum(tempModel2$Lon-eGRIDLoc[2])/sum(tempModel2$Conc)
+    AvgLat <- sum((tempModel2$Lat-eGRIDLoc[1])*tempModel2$Conc)/sum(tempModel2$Conc)
+    AvgLon <- sum((tempModel2$Lon-eGRIDLoc[2])*tempModel2$Conc)/sum(tempModel2$Conc)
     cbind(AvgLat, AvgLon)
   }
 WMod2 <- as.data.frame(WMod2)
 
 WMagnitudeDifference <- sqrt((WMod1$AvgLat-WMod2$AvgLat)^2+(WMod1$AvgLon-WMod2$AvgLon)^2)*111
 x <- ((WMod1$AvgLat*WMod2$AvgLat) + (WMod1$AvgLon*WMod2$AvgLon)) / (sqrt((WMod1$AvgLat)^2 + (WMod1$AvgLon)^2)*sqrt((WMod2$AvgLat)^2 + (WMod2$AvgLon)^2))
-AngleDifference <- (180/3.14159)*acos(x)
+WAngleDifference <- (180/3.14159)*acos(x)
+
+plot(WMagnitudeDifference)
+plot(WAngleDifference)
 
 mean(WMagnitudeDifference)
 mean(WAngleDifference)
