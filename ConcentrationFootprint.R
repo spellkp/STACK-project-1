@@ -78,19 +78,19 @@ MaxConcDist2 =
   }
 
 MaxConcDist1 <- as.data.frame(MaxConcDist1)
-
 Magic1 <- aggregate(. ~ Lat+Lon, data = MaxConcDist1, FUN = function(x) c(mn = mean(x)) )
+
+
+MaxConcDist2 <- as.data.frame(MaxConcDist2)
+Magic2 <- aggregate(. ~ Lat+Lon, data = MaxConcDist2, FUN = function(x) c(mn = mean(x)) )
+
+
 
 al1 = get_map(location = c(lon = eGRIDLoc[2], lat = eGRIDLoc[1]), zoom = 10, maptype = 'satellite')
 al1MAP = ggmap(al1)
 al1MAP + geom_tile(data = Magic2, aes(x = Lon, y = Lat, fill = Conc)) +
   scale_fill_gradient(limits=c(min(min(Magic1$Conc), min(Magic2$Conc)), 
                                 max(max(Magic1$Conc), max(Magic2$Conc))), low = "yellow", high = "red")
-
-
-MaxConcDist2 <- as.data.frame(MaxConcDist2)
-
-Magic2 <- aggregate(. ~ Lat+Lon, data = MaxConcDist2, FUN = function(x) c(mn = mean(x)) )
 
 al1 = get_map(location = c(lon = eGRIDLoc[2], lat = eGRIDLoc[1]), zoom = 10, maptype = 'satellite')
 al1MAP = ggmap(al1)
@@ -109,12 +109,12 @@ MaxConc = foreach(i=2:366, .combine = rbind) %dopar% {
   tempModel2 <- subset(Model2, Model2$Day == i)
   PercentDifference[i] <- ((max(tempModel2$Conc)-max(tempModel1$Conc))/mean(c(max(tempModel1$Conc), max(tempModel2$Conc))))*100
  
-  LatModel1 <- tempModel1$Lat[tempModel1$Conc == max(tempModel1$Conc)]
-  LonModel1 <- tempModel1$Lon[tempModel1$Conc == max(tempModel1$Conc)]
+  LatModel1 <- tempModel1$Lat[tempModel1$Conc == max(tempModel1$Conc)]-eGRIDLoc[1]
+  LonModel1 <- tempModel1$Lon[tempModel1$Conc == max(tempModel1$Conc)]-eGRIDLoc[2]
   RModel1[i] <- sqrt((Lat-Model1)^2+(Lon-Model1)^2)
   
-  LatModel2 <- tempModel2$Lat[tempModel2$Conc == max(tempModel2$Conc)]
-  LonModel2 <- tempModel2$Lon[tempModel2$Conc == max(tempModel2$Conc)]
+  LatModel2 <- tempModel2$Lat[tempModel2$Conc == max(tempModel2$Conc)]-mean(StackLoc[,1])
+  LonModel2 <- tempModel2$Lon[tempModel2$Conc == max(tempModel2$Conc)]-mean(StackLoc[,2])
   RModel2[i] <- sqrt((Lat-Model2)^2+(Lon-Model2)^2)
   
   cbind(RModel1[i], RModel2[i], PercentDifference[i])
