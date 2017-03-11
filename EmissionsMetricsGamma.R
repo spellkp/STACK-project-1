@@ -23,6 +23,7 @@ library(dplyr)
 library(geosphere)
 library(foreach)
 library(doParallel)
+library(ggmap)
 #####################################
 #####################################
 
@@ -47,26 +48,26 @@ Model1 <- read.csv(Model1)[2:6]
 
 MaxConcDist1 = 
   foreach(i=2:366, .combine = rbind) %dopar% {
-  
-      tempModel1 <- subset(Model1, Model1$Day == i)
-  
-      Index <- which(tempModel1$Conc == max(tempModel1$Conc))
-      Lat <- tempModel1$Lat[Index] - eGRIDLoc[1]
-      Lon <- tempModel1$Lon[Index] - eGRIDLoc[2]
-      Conc <- tempModel1$Conc[Index]
-      cbind(Lat, Lon, Conc)
-      
+    
+    tempModel1 <- subset(Model1, Model1$Day == i)
+    
+    Index <- which(tempModel1$Conc == max(tempModel1$Conc))
+    Lat <- tempModel1$Lat[Index]
+    Lon <- tempModel1$Lon[Index]
+    Conc <- tempModel1$Conc[Index]
+    cbind(Lat, Lon, Conc)
+    
   }
 
+MaxConcDist1 <- as.data.frame(MaxConcDist1)
 
-ggplot(data = as.data.frame(MaxConcDist1), aes(x = Lon, y = Lat)) +
-  geom_point(aes(color=Conc)) +
-  theme_bw()
+Magic1 <- aggregate(. ~ Lat+Lon, data = MaxConcDist1, FUN = function(x) c(mn = mean(x)) )
 
-ggplot(data = as.data.frame(MaxConcDist1), aes(x = c(2:366), y = Conc)) +
-  geom_point() +
-  geom_smooth(se = FALSE) +
-  theme_bw()
+al1 = get_map(location = c(lon = eGRIDLoc[2], lat = eGRIDLoc[1]), zoom = 09, maptype = 'satellite')
+al1MAP = ggmap(al1)
+al1MAP + geom_tile(data = Magic1, aes(x = Lon, y = Lat, fill = Conc)) +
+                scale_colour_gradientn(colours = rev(rainbow(4)))
+
 
 ##### Model 2 (Full Model) ##########
 
@@ -78,15 +79,19 @@ MaxConcDist2 =
     tempModel2 <- subset(Model2, Model2$Day == i)
     
     Index <- which(tempModel2$Conc == max(tempModel2$Conc))
-    Lat <- tempModel2$Lat[Index] - eGRIDLoc[1]
-    Lon <- tempModel2$Lon[Index] - eGRIDLoc[2]
+    Lat <- tempModel2$Lat[Index]
+    Lon <- tempModel2$Lon[Index]
     Conc <- tempModel2$Conc[Index]
     cbind(Lat, Lon, Conc)
     
   }
 
 
-ggplot(data = MaxConcDist2, aes(x = Lon, y = Lat)) +
-  geom_plot(aes(color=Conc)) +
-  theme_bw()
+MaxConcDist2 <- as.data.frame(MaxConcDist2)
 
+Magic2 <- aggregate(. ~ Lat+Lon, data = MaxConcDist2, FUN = function(x) c(mn = mean(x)) )
+
+al1 = get_map(location = c(lon = eGRIDLoc[2], lat = eGRIDLoc[1]), zoom = 09, maptype = 'satellite')
+al1MAP = ggmap(al1)
+al1MAP + geom_tile(data = Magic2, aes(x = Lon, y = Lat, fill = Conc)) +
+          scale_colour_gradientn(colours = rev(rainbow(4)))
