@@ -111,11 +111,11 @@ MaxConc = foreach(i=2:366, .combine = rbind) %dopar% {
  
   LatModel1 <- tempModel1$Lat[tempModel1$Conc == max(tempModel1$Conc)]-eGRIDLoc[1]
   LonModel1 <- tempModel1$Lon[tempModel1$Conc == max(tempModel1$Conc)]-eGRIDLoc[2]
-  RModel1[i] <- sqrt((Lat-Model1)^2+(Lon-Model1)^2)
+  RModel1[i] <- sqrt((LatModel1)^2+(LonModel1)^2)
   
   LatModel2 <- tempModel2$Lat[tempModel2$Conc == max(tempModel2$Conc)]-mean(StackLoc[,1])
   LonModel2 <- tempModel2$Lon[tempModel2$Conc == max(tempModel2$Conc)]-mean(StackLoc[,2])
-  RModel2[i] <- sqrt((Lat-Model2)^2+(Lon-Model2)^2)
+  RModel2[i] <- sqrt((LatModel2)^2+(LonModel2)^2)
   
   cbind(RModel1[i], RModel2[i], PercentDifference[i])
   }
@@ -124,6 +124,8 @@ MaxConc <- as.data.frame(MaxConc)
 colnames(MaxConc)[1] <- "Model1Radius"
 colnames(MaxConc)[2] <- "Model2Radius"
 colnames(MaxConc)[3] <- "MaxConcentration"
+
+
 
 ggplot(data = MaxConc, aes(x = 2:366, y = MaxConcentration)) +
   geom_point() +
@@ -134,12 +136,9 @@ ggplot(data = MaxConc, aes(x = 2:366, y = MaxConcentration)) +
   theme_bw()
 
 ggplot() +
-  geom_point(data = MaxConc, aes(x = 2:366, y = "Model1Radius")) +
-  geom_point(data = MaxConc, aes(x = 2:366, y = "Model2Radius")) +
-  xlab("Day of 2012") +
-  ylab("Expected Footprint Radius") +
-  ggtitle("Jeffrey Energy Center (2012): \n Expected Footprint from eGRID Data & Full Model \n Maximum Concentration by Day") +
+  geom_point(data = MaxConc, aes(x = 2:366, y = Model1Radius*111), color = "blue") +
+  geom_point(data = MaxConc, aes(x = 2:366, y = Model2Radius*111), color = "green") +
   theme_bw()
 
-mean(MaxConc$Model1Radius)
-mean(MaxConc$Model2Radius)
+mean(MaxConc$Model1Radius)*111
+mean(MaxConc$Model2Radius)*111
