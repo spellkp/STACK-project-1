@@ -1,7 +1,7 @@
 #####################################
 ##### Initialize Parameters #########
 #####################################
-IfPar <- 0            #1='Yes'; 0='No'#
+IfPar <- 0            #1='Yes'; 0='No'#Multicore Capabilities
 FreeCores <- 1        #Number of cores available during computation
 
 StackLoc <- rbind(                               #Insert c(LAT,LON); more can be added.
