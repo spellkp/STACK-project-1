@@ -121,26 +121,25 @@ MaxConc = foreach(i=2:366, .combine = rbind) %dopar% {
   }
 
 MaxConc <- as.data.frame(MaxConc)
+colnames(MaxConc)[1] <- "Model1Radius"
+colnames(MaxConc)[2] <- "Model2Radius"
+colnames(MaxConc)[3] <- "MaxConcentration"
 
-colnames(MaxConc)[1] <- "Day"
-colnames(MaxConc)[2] <- "PercentDifference"
-
-ggplot(data = MaxConc, aes(x = Day, y = PercentDifference)) +
+ggplot(data = MaxConc, aes(x = 2:366, y = MaxConcentration)) +
   geom_point() +
   geom_smooth(se = FALSE) +
   xlab("Day of 2012") +
   ylab("Percent Difference (%)") +
-  ggtitle("Jeffrey Energy Center (2012): \n Percent Difference in Simulated Maximum Concentration per Day") +
+  ggtitle("Jeffrey Energy Center (2012): \n Percent Difference in Simulated Maximum Concentration by Day") +
   theme_bw()
 
+ggplot() +
+  geom_point(data = MaxConc, aes(x = 2:366, y = "Model1Radius")) +
+  geom_point(data = MaxConc, aes(x = 2:366, y = "Model2Radius")) +
+  xlab("Day of 2012") +
+  ylab("Expected Footprint Radius") +
+  ggtitle("Jeffrey Energy Center (2012): \n Expected Footprint from eGRID Data & Full Model \n Maximum Concentration by Day") +
+  theme_bw()
 
-
-
-
-
-
-
-
-
-
-
+mean(MaxConc$Model1Radius)
+mean(MaxConc$Model2Radius)
