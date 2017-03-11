@@ -98,6 +98,41 @@ al1MAP + geom_tile(data = Magic2, aes(x = Lon, y = Lat, fill = Conc)) +
           scale_fill_gradient(limits=c(min(min(Magic1$Conc), min(Magic2$Conc)), 
                                        max(max(Magic1$Conc), max(Magic2$Conc))), low = "yellow", high = "red")
 
+##### Day-by-Day Comparison #####
+
+PercentDifference = NULL
+RModel1 = NULL
+RModel2 = NULL
+
+MaxConc = foreach(i=2:366, .combine = rbind) %dopar% {
+  tempModel1 <- subset(Model1, Model1$Day == i)
+  tempModel2 <- subset(Model2, Model2$Day == i)
+  PercentDifference[i] <- ((max(tempModel2$Conc)-max(tempModel1$Conc))/mean(c(max(tempModel1$Conc), max(tempModel2$Conc))))*100
+ 
+  LatModel1 <- tempModel1$Lat[tempModel1$Conc == max(tempModel1$Conc)]
+  LonModel1 <- tempModel1$Lon[tempModel1$Conc == max(tempModel1$Conc)]
+  RModel1[i] <- sqrt((Lat-Model1)^2+(Lon-Model1)^2)
+  
+  LatModel2 <- tempModel2$Lat[tempModel2$Conc == max(tempModel2$Conc)]
+  LonModel2 <- tempModel2$Lon[tempModel2$Conc == max(tempModel2$Conc)]
+  RModel2[i] <- sqrt((Lat-Model2)^2+(Lon-Model2)^2)
+  
+  cbind(RModel1[i], RModel2[i], PercentDifference[i])
+  }
+
+MaxConc <- as.data.frame(MaxConc)
+
+colnames(MaxConc)[1] <- "Day"
+colnames(MaxConc)[2] <- "PercentDifference"
+
+ggplot(data = MaxConc, aes(x = Day, y = PercentDifference)) +
+  geom_point() +
+  geom_smooth(se = FALSE) +
+  xlab("Day of 2012") +
+  ylab("Percent Difference (%)") +
+  ggtitle("Jeffrey Energy Center (2012): \n Percent Difference in Simulated Maximum Concentration per Day") +
+  theme_bw()
+
 
 
 
