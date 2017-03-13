@@ -60,20 +60,15 @@ Mod2 <- as.data.frame(Mod2)
 
 ##### Unweighted Magnitude and Angle Difference (vector) #####
 
-MagnitudeDifference <- data.frame(c(2:366), (sqrt((Mod1$AvgLat-Mod2$AvgLat)^2+(Mod1$AvgLon-Mod2$AvgLon)^2)))
+MagnitudeDifference <- sqrt((Mod1$AvgLat-Mod2$AvgLat)^2+(Mod1$AvgLon-Mod2$AvgLon)^2)
 
 x <- ((Mod1$AvgLat*Mod2$AvgLat) + (Mod1$AvgLon*Mod2$AvgLon)) / (sqrt((Mod1$AvgLat)^2 + (Mod1$AvgLon)^2)*sqrt((Mod2$AvgLat)^2 + (Mod2$AvgLon)^2))
-AngleDifference <- data.frame(c(2:366), (180/3.14159)*acos(x))
+AngleDifference <- (180/3.14159)*acos(x)
 
-ggplot(data = MagnitudeDifference, aes(x = c(2:366), y = MagnitudeDifference[,2])) +
-  geom_point() +
-  geom_smooth(se = FALSE) +
-  theme_bw()
-
-ggplot(data = AngleDifference, aes(x = c(2:366), y = AngleDifference[,2])) +
-  geom_point() +
-  geom_smooth(se = FALSE) +
-  theme_bw()
+UnweightedModel <- data.frame(c(2:366), MagnitudeDifference, AngleDifference)
+colnames(UnweightedModel)[1] <- "Day"
+colnames(UnweightedModel)[2] <- "MagnitudeDifference"
+colnames(UnweightedModel)[3] <- "AngleDifference"
 
 mean(MagnitudeDifference)
 mean(AngleDifference)
@@ -101,19 +96,38 @@ WMod2 =
   }
 WMod2 <- as.data.frame(WMod2)
 
-WMagnitudeDifference <- data.frame(c(2:366), sqrt((WMod1$AvgLat-WMod2$AvgLat)^2+(WMod1$AvgLon-WMod2$AvgLon)^2)*111)
+WMagnitudeDifference <- sqrt((WMod1$AvgLat-WMod2$AvgLat)^2+(WMod1$AvgLon-WMod2$AvgLon)^2)*111
 x <- ((WMod1$AvgLat*WMod2$AvgLat) + (WMod1$AvgLon*WMod2$AvgLon)) / (sqrt((WMod1$AvgLat)^2 + (WMod1$AvgLon)^2)*sqrt((WMod2$AvgLat)^2 + (WMod2$AvgLon)^2))
-WAngleDifference <- data.frame(c(2:366), (180/3.14159)*acos(x))
+WAngleDifference <- (180/3.14159)*acos(x)
 
-ggplot(data = WMagnitudeDifference, aes(x = c(2:366), y = WMagnitudeDifference[,2])) +
+WeightedModel <- data.frame(c(2:366), WMagnitudeDifference, WAngleDifference)
+colnames(WeightedModel)[1] <- "Day"
+colnames(WeightedModel)[2] <- "MagnitudeDifference"
+colnames(WeightedModel)[3] <- "AngleDifference"
+
+##### Unweighted Results (Plots) #####
+
+ggplot(data = UnweightedModel, aes(x = Day, y = MagnitudeDifference)) +
   geom_point() +
   geom_smooth(se = FALSE) +
   theme_bw()
 
-ggplot(data = WAngleDifference, aes(x = c(2:366), y = WAngleDifference[,2])) +
+ggplot(data = UnweightedModel, aes(x = Day, y = AngleDifference)) +
   geom_point() +
   geom_smooth(se = FALSE) +
   theme_bw()
 
-mean(WMagnitudeDifference)
-mean(WAngleDifference)
+##### Weighted Results (Plots) #####
+
+ggplot(data = WeightedModel, aes(x = Day, y = MagnitudeDifference)) +
+  geom_point() +
+  geom_smooth(se = FALSE) +
+  theme_bw()
+
+ggplot(data = WeightedModel, aes(x = Day, y = AngleDifference)) +
+  geom_point() +
+  geom_smooth(se = FALSE) +
+  theme_bw()
+
+mean(WMagnitudeDifference[,2])
+mean(WAngleDifference[,2])
