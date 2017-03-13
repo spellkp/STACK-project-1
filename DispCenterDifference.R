@@ -60,17 +60,20 @@ Mod2 <- as.data.frame(Mod2)
 
 ##### Unweighted Magnitude and Angle Difference (vector) #####
 
-MagnitudeDifference <- sqrt((Mod1$AvgLat-Mod2$AvgLat)^2+(Mod1$AvgLon-Mod2$AvgLon)^2)*111
+MagnitudeDifference <- data.frame(c(2:366), (sqrt((Mod1$AvgLat-Mod2$AvgLat)^2+(Mod1$AvgLon-Mod2$AvgLon)^2)))
 
 x <- ((Mod1$AvgLat*Mod2$AvgLat) + (Mod1$AvgLon*Mod2$AvgLon)) / (sqrt((Mod1$AvgLat)^2 + (Mod1$AvgLon)^2)*sqrt((Mod2$AvgLat)^2 + (Mod2$AvgLon)^2))
-AngleDifference <- (180/3.14159)*acos(x)
+AngleDifference <- data.frame(c(2:366), (180/3.14159)*acos(x))
 
-ggplot(data = MagnitudeDifference, aes(x = c(2:366), y = MagnitudeDifference)) +
+ggplot(data = MagnitudeDifference, aes(x = c(2:366), y = MagnitudeDifference[,2])) +
   geom_point() +
-  geom_smooth() +
+  geom_smooth(se = FALSE) +
   theme_bw()
 
-plot(AngleDifference)
+ggplot(data = AngleDifference, aes(x = c(2:366), y = AngleDifference[,2])) +
+  geom_point() +
+  geom_smooth(se = FALSE) +
+  theme_bw()
 
 mean(MagnitudeDifference)
 mean(AngleDifference)
@@ -98,12 +101,19 @@ WMod2 =
   }
 WMod2 <- as.data.frame(WMod2)
 
-WMagnitudeDifference <- sqrt((WMod1$AvgLat-WMod2$AvgLat)^2+(WMod1$AvgLon-WMod2$AvgLon)^2)*111
+WMagnitudeDifference <- data.frame(c(2:366), sqrt((WMod1$AvgLat-WMod2$AvgLat)^2+(WMod1$AvgLon-WMod2$AvgLon)^2)*111)
 x <- ((WMod1$AvgLat*WMod2$AvgLat) + (WMod1$AvgLon*WMod2$AvgLon)) / (sqrt((WMod1$AvgLat)^2 + (WMod1$AvgLon)^2)*sqrt((WMod2$AvgLat)^2 + (WMod2$AvgLon)^2))
-WAngleDifference <- (180/3.14159)*acos(x)
+WAngleDifference <- data.frame(c(2:366), (180/3.14159)*acos(x))
 
-plot(WMagnitudeDifference)
-plot(WAngleDifference)
+ggplot(data = WMagnitudeDifference, aes(x = c(2:366), y = WMagnitudeDifference[,2])) +
+  geom_point() +
+  geom_smooth(se = FALSE) +
+  theme_bw()
+
+ggplot(data = WAngleDifference, aes(x = c(2:366), y = WAngleDifference[,2])) +
+  geom_point() +
+  geom_smooth(se = FALSE) +
+  theme_bw()
 
 mean(WMagnitudeDifference)
 mean(WAngleDifference)
