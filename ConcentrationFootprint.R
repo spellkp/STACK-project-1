@@ -46,8 +46,8 @@ if (IfPar == 1)
 
 Model1 <- read.csv(Model1)[2:6]
 
-MaxConcDist1 = 
-  foreach(i=2:366, .combine = rbind) %dopar% {
+MaxConcDist1 =                                      # Combine data into MaxConcDist1 which contains all maximum
+  foreach(i=2:366, .combine = rbind) %dopar% {      # concentrations and their locations for 2012 (Model 1)
     
     tempModel1 <- subset(Model1, Model1$Day == i)
     
@@ -64,8 +64,8 @@ MaxConcDist1 =
 
 Model2 <- read.csv(Model2)[2:6]
 
-MaxConcDist2 = 
-  foreach(i=2:366, .combine = rbind) %dopar% {
+MaxConcDist2 =                                      # Combine data into MaxConcDist1 which contains all maximum
+  foreach(i=2:366, .combine = rbind) %dopar% {      # conentrations and their locations for 2012 (Model 2)
     
     tempModel2 <- subset(Model2, Model2$Day == i)
     
@@ -78,8 +78,8 @@ MaxConcDist2 =
   }
 
 MaxConcDist1 <- as.data.frame(MaxConcDist1)
-Magic1 <- aggregate(. ~ Lat+Lon, data = MaxConcDist1, FUN = function(x) c(mn = mean(x)) )
-
+Magic1 <- aggregate(. ~ Lat+Lon, data = MaxConcDist1, FUN = function(x) c(mn = mean(x)) )   # Aggregate by lat and lon
+                                                                                            # to remove duplicates
 
 MaxConcDist2 <- as.data.frame(MaxConcDist2)
 Magic2 <- aggregate(. ~ Lat+Lon, data = MaxConcDist2, FUN = function(x) c(mn = mean(x)) )
@@ -123,11 +123,11 @@ MaxConc = foreach(i=2:366, .combine = rbind) %dopar% {
 MaxConc <- as.data.frame(MaxConc)
 colnames(MaxConc)[1] <- "Model1Radius"
 colnames(MaxConc)[2] <- "Model2Radius"
-colnames(MaxConc)[3] <- "MaxConcentration"
+colnames(MaxConc)[3] <- "PercentDifference"
 
 
 
-ggplot(data = MaxConc, aes(x = 2:366, y = MaxConcentration)) +
+ggplot(data = MaxConc, aes(x = 2:366, y = PercentDifference)) +
   geom_point() +
   geom_smooth(se = FALSE) +
   xlab("Day of 2012") +
@@ -135,10 +135,23 @@ ggplot(data = MaxConc, aes(x = 2:366, y = MaxConcentration)) +
   ggtitle("Jeffrey Energy Center (2012): \n Percent Difference in Simulated Maximum Concentration by Day") +
   theme_bw()
 
-ggplot() +
-  geom_point(data = MaxConc, aes(x = 2:366, y = Model1Radius*111), color = "blue") +
-  geom_point(data = MaxConc, aes(x = 2:366, y = Model2Radius*111), color = "green") +
-  theme_bw()
+##### Plot day with greatest percent difference #####
+
+MaxDay <- which.max(abs(MaxConc$PercentDifference)) + 1
+MaxModel1Plot <- subset(Model1, Day == MaxDay)
+MaxModel2Plot <- subset(Model2, Day == MaxDay)
+
+al1 = get_map(location = c(lon = eGRIDLoc[2], lat = eGRIDLoc[1]), zoom = 07 , maptype = 'satellite')
+al1MAP = ggmap(al1)
+al1MAP + geom_tile(data = MaxModel1Plot, aes(x = Lon, y = Lat, fill = Conc)) +
+  scale_fill_gradient(limits=c(min(min(MaxModel1Plot$Conc), min(MaxModel2Plot$Conc)), 
+                               max(max(MaxModel1Plot$Conc), max(MaxModel2Plot$Conc))), low = "yellow", high = "red")
+
+al1 = get_map(location = c(lon = eGRIDLoc[2], lat = eGRIDLoc[1]), zoom = 07, maptype = 'satellite')
+al1MAP = ggmap(al1)
+al1MAP + geom_tile(data = MaxModel2Plot, aes(x = Lon, y = Lat, fill = Conc)) +
+  scale_fill_gradient(limits=c(min(min(MaxModel1Plot$Conc), min(MaxModel2Plot$Conc)), 
+                               max(max(MaxModel1Plot$Conc), max(MaxModel2Plot$Conc))), low = "yellow", high = "red")
 
 mean(MaxConc$Model1Radius)*111
 mean(MaxConc$Model2Radius)*111
