@@ -61,10 +61,15 @@ Mod2 <- as.data.frame(Mod2)
 ##### Unweighted Magnitude and Angle Difference (vector) #####
 
 MagnitudeDifference <- sqrt((Mod1$AvgLat-Mod2$AvgLat)^2+(Mod1$AvgLon-Mod2$AvgLon)^2)*111
+
 x <- ((Mod1$AvgLat*Mod2$AvgLat) + (Mod1$AvgLon*Mod2$AvgLon)) / (sqrt((Mod1$AvgLat)^2 + (Mod1$AvgLon)^2)*sqrt((Mod2$AvgLat)^2 + (Mod2$AvgLon)^2))
 AngleDifference <- (180/3.14159)*acos(x)
 
-plot(MagnitudeDifference)
+ggplot(data = MagnitudeDifference, aes(x = c(2:366), y = MagnitudeDifference)) +
+  geom_point() +
+  geom_smooth() +
+  theme_bw()
+
 plot(AngleDifference)
 
 mean(MagnitudeDifference)

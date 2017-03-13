@@ -90,13 +90,19 @@ al1 = get_map(location = c(lon = eGRIDLoc[2], lat = eGRIDLoc[1]), zoom = 10, map
 al1MAP = ggmap(al1)
 al1MAP + geom_tile(data = Magic2, aes(x = Lon, y = Lat, fill = Conc)) +
   scale_fill_gradient(limits=c(min(min(Magic1$Conc), min(Magic2$Conc)), 
-                                max(max(Magic1$Conc), max(Magic2$Conc))), low = "yellow", high = "red")
+                                max(max(Magic1$Conc), max(Magic2$Conc))), low = "yellow", high = "red") +
+  xlab("Longitude") +
+  ylab("Latitude") +
+  ggtitle("Jeffrey Energy Center (2012): \n eGRID Model Concentration Footprint")
 
 al1 = get_map(location = c(lon = eGRIDLoc[2], lat = eGRIDLoc[1]), zoom = 10, maptype = 'satellite')
 al1MAP = ggmap(al1)
 al1MAP + geom_tile(data = Magic2, aes(x = Lon, y = Lat, fill = Conc)) +
           scale_fill_gradient(limits=c(min(min(Magic1$Conc), min(Magic2$Conc)), 
-                                       max(max(Magic1$Conc), max(Magic2$Conc))), low = "yellow", high = "red")
+                                       max(max(Magic1$Conc), max(Magic2$Conc))), low = "yellow", high = "red") +
+  xlab("Longitude") +
+  ylab("Latitude") +
+  ggtitle("Jeffrey Energy Center (2012): \n Full Model Concentration Footprint")
 
 ##### Day-by-Day Comparison #####
 
@@ -145,13 +151,19 @@ al1 = get_map(location = c(lon = eGRIDLoc[2], lat = eGRIDLoc[1]), zoom = 07 , ma
 al1MAP = ggmap(al1)
 al1MAP + geom_tile(data = MaxModel1Plot, aes(x = Lon, y = Lat, fill = Conc)) +
   scale_fill_gradient(limits=c(min(min(MaxModel1Plot$Conc), min(MaxModel2Plot$Conc)), 
-                               max(max(MaxModel1Plot$Conc), max(MaxModel2Plot$Conc))), low = "yellow", high = "red")
+                               max(max(MaxModel1Plot$Conc), max(MaxModel2Plot$Conc))), low = "yellow", high = "red") +
+  xlab("Longitude") +
+  ylab("Latitude") +
+  ggtitle(paste("Day", MaxDay, "\n", "eGRID Model", sep = " "))
 
 al1 = get_map(location = c(lon = eGRIDLoc[2], lat = eGRIDLoc[1]), zoom = 07, maptype = 'satellite')
 al1MAP = ggmap(al1)
 al1MAP + geom_tile(data = MaxModel2Plot, aes(x = Lon, y = Lat, fill = Conc)) +
   scale_fill_gradient(limits=c(min(min(MaxModel1Plot$Conc), min(MaxModel2Plot$Conc)), 
-                               max(max(MaxModel1Plot$Conc), max(MaxModel2Plot$Conc))), low = "yellow", high = "red")
+                               max(max(MaxModel1Plot$Conc), max(MaxModel2Plot$Conc))), low = "yellow", high = "red") +
+  xlab("Longitude") +
+  ylab("Latitude") +
+  ggtitle(paste("Day", MaxDay, "\n", "Full Model", sep = " "))
 
 mean(MaxConc$Model1Radius)*111
 mean(MaxConc$Model2Radius)*111
