@@ -73,4 +73,44 @@ DispArea2 =
     sum(new_s, na.rm = TRUE)*12321
   }
 
-PercentDifference <- (DispArea2 - DispArea1)/mean(c(DispArea1, DispArea2))
+PercentDifference <- data.frame(c(2:366), 100*(DispArea2 - DispArea1)/mean(c(DispArea1, DispArea2)))
+colnames(PercentDifference)[1] <- "Day"
+colnames(PercentDifference)[2] <- "PercentDifference"
+
+ggplot(data = PercentDifference, aes(x = Day, y = PercentDifference)) +
+  geom_point() +
+  geom_smooth(se = FALSE) +
+  theme_bw()
+
+
+
+
+
+
+##### Plot Models for Max Day #####
+
+
+MaxDay <- PercentDifference$Day[PercentDifference$PercentDifference == max(PercentDifference$PercentDifference)]
+
+PlotModel1 <- subset(Model1, Day == MaxDay)
+PlotModel2 <- subset(Model2, Day == MaxDay)
+
+al1 = get_map(location = c(lon = eGRIDLoc[2], lat = eGRIDLoc[1]), zoom = 07, maptype = 'satellite')
+al1MAP = ggmap(al1)
+al1MAP + geom_tile(data = PlotModel1, aes(x = Lon, y = Lat, fill = Conc)) +
+  scale_fill_gradient(limits=c(min(min(PlotModel1$Conc), min(PlotModel2$Conc)), 
+                               max(max(PlotModel1$Conc), max(PlotModel2$Conc))), low = "yellow", high = "red") +
+  xlab("Longitude") +
+  ylab("Latitude") +
+  ggtitle("Jeffrey Energy Center (2012): \n eGRID Model Dispersion Area")
+
+
+
+al1 = get_map(location = c(lon = eGRIDLoc[2], lat = eGRIDLoc[1]), zoom = 07, maptype = 'satellite')
+al1MAP = ggmap(al1)
+al1MAP + geom_tile(data = PlotModel2, aes(x = Lon, y = Lat, fill = Conc)) +
+  scale_fill_gradient(limits=c(min(min(PlotModel1$Conc), min(PlotModel2$Conc)), 
+                               max(max(PlotModel1$Conc), max(PlotModel2$Conc))), low = "yellow", high = "red") +
+  xlab("Longitude") +
+  ylab("Latitude") +
+  ggtitle("Jeffrey Energy Center (2012): \n Full Model Dispersion Area")
