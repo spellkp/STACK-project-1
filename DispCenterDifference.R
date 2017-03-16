@@ -5,12 +5,12 @@ IfPar <- 0            #1='Yes'; 0='No'#Multicore Capabilities
 FreeCores <- 1        #Number of cores available during computation
 
 StackLoc <- rbind(                               #Insert c(LAT,LON); more can be added.
-  c(39.28684, -96.11821),
-  c(39.28681, -96.11721),
-  c(39.28681, -96.11618)
+  #c(39.28684, -96.11821),
+  #c(39.28681, -96.11721),
+  c(36.99781, -84.59239)
 )
 
-eGRIDLoc <- c(39.2865, -96.1172)
+eGRIDLoc <- c(36.9981, -84.5919)
 
 Model1 <- "A-2012"    #Name of dataset for Model 1; MUST BE CSV
 Model2 <- "E-2012"    #Name of dataset for Model 2; MUST BE CSV
@@ -102,8 +102,8 @@ WAngleDifference <- (180/3.14159)*acos(x)
 
 WeightedModel <- data.frame(c(2:366), WMagnitudeDifference, WAngleDifference)
 colnames(WeightedModel)[1] <- "Day"
-colnames(WeightedModel)[2] <- "MagnitudeDifference"
-colnames(WeightedModel)[3] <- "AngleDifference"
+colnames(WeightedModel)[2] <- "MagnitudeDifferenceWeighted"
+colnames(WeightedModel)[3] <- "AngleDifferenceWeighted"
 
 ##### Unweighted Results (Plots) #####
 
@@ -119,15 +119,15 @@ ggplot(data = UnweightedModel, aes(x = Day, y = AngleDifference)) +
 
 ##### Weighted Results (Plots) #####
 
-ggplot(data = WeightedModel, aes(x = Day, y = MagnitudeDifference)) +
+ggplot(data = WeightedModel, aes(x = Day, y = MagnitudeDifferenceWeighted)) +
   geom_point() +
   geom_smooth(se = FALSE) +
   theme_bw()
 
-ggplot(data = WeightedModel, aes(x = Day, y = AngleDifference)) +
+ggplot(data = WeightedModel, aes(x = Day, y = AngleDifferenceWeighted)) +
   geom_point() +
   geom_smooth(se = FALSE) +
   theme_bw()
 
-mean(WMagnitudeDifference[,2])
-mean(WAngleDifference[,2])
+mean(WMagnitudeDifference)
+mean(WAngleDifference)
