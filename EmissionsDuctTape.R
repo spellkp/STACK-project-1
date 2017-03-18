@@ -1,4 +1,4 @@
-ModelType <- "A"
+ModelType <- "B"
 MonthName <- c("January",
                "February",
                "March",
@@ -14,7 +14,8 @@ MonthName <- c("January",
 
 for (i in 1:12) {
   
-  filepath <- paste("JSC-2012/", ModelType, "-", MonthName[i], sep = "")
+  #filepath <- paste("JSC-2012/", ModelType, "-", MonthName[i], sep = "")             #Temporary because I'm an idiot
+  filepath <- paste(ModelType, "-", MonthName[i], sep = "")
   files <- dir(path = filepath, pattern = "", full.names = TRUE, recursive = TRUE)
   
 for (j in 1:length(files)) {
