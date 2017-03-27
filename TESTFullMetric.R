@@ -1,5 +1,3 @@
-setwd('~/ResearchScripts/STACK-project')
-
 #####################################
 ##### Initialize Parameters #########
 #####################################
@@ -7,14 +5,14 @@ IfPar <- 0            #1='Yes'; 0='No'#Multicore Capabilities
 FreeCores <- 1        #Number of cores available during computation
 
 StackLoc <- rbind(                               #Insert c(LAT,LON); more can be added.
-  #c(39.28684, -96.11821),
-  #c(39.28681, -96.11721),
-  c(36.99781, -84.59239))
+  c(39.28684, -96.11821),
+  c(39.28681, -96.11721),
+  c(39.28681, -96.11618))
 
-eGRIDLoc <- c(36.99781, -84.59239)
+eGRIDLoc <- c(mean(StackLoc[,1]), mean(StackLoc[,2]))
 
-Model1 <- "JSC-A-2012"    #Name of dataset for Model 1; MUST BE CSV
-Model2 <- "JSC-E-2012"    #Name of dataset for Model 2; MUST BE CSV
+Model1 <- "JEC-A-2012"    #Name of dataset for Model 1; MUST BE CSV
+Model2 <- "JEC-E-2012"    #Name of dataset for Model 2; MUST BE CSV
 
 #####################################
 ##### Initialize All Libraries ######
@@ -51,6 +49,8 @@ Comp2PercentDifference = NULL
 Comp3PercentDifference = NULL
 Area1 = NULL
 Area2 = NULL
+
+SS <- 0.05
 
 for (i in 2:366) {
   #Max Concentration Comparison
@@ -117,15 +117,15 @@ for (i in 2:366) {
   
 }
 
-Comp3PercentDifference <- round(200*(Area2 - Area1)/(Area2 + Area1), 2)
+Comp3PercentDifference <- round(2*(Area2 - Area1)/(Area2 + Area1), 2)
 
 ##############################################
 ##### Form the Data Frame ####################
 ##############################################
 PercentDifferenceData <- 100*data.frame(Comp1PercentDifference, Comp2PercentDifference, Comp3PercentDifference,
-                                    sqrt(Comp1PercentDifference^2 + Comp2PercentDifference^2 + Comp3PercentDifference^2))
+                                        sqrt(Comp1PercentDifference^2 + Comp2PercentDifference^2 + Comp3PercentDifference^2))
 PercentDifferenceData <- PercentDifferenceData[2:366,]
-names(PercentDifferenceData) <- c("Metric 1", "Metric 2", "Overall")
+names(PercentDifferenceData) <- c("Metric 1", "Metric 2", "Metric 3", "Overall")
 
 MaxDay <- which(PercentDifferenceData$Overall == max(PercentDifferenceData$Overall))
 
