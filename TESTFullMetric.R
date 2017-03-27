@@ -64,7 +64,7 @@ for (i in 2:366)
   Comp1PercentDifference[i] <- (max(tempModel2$Conc) - max(tempModel1$Conc))/mean(c(max(tempModel1$Conc), max(tempModel2$Conc)))
   
   ############################################
-  ##### Weighted Center of Concentration #####
+  ##### Unweighted Center of Concentration #####
   ############################################
   AvgLat1 <- mean(tempModel1$Lat-mean(StackLoc[,1]))
   AvgLon1 <- mean(tempModel1$Lon-mean(StackLoc[,2]))
