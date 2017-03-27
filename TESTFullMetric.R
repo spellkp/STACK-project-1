@@ -52,8 +52,7 @@ Comp3PercentDifference = NULL
 Area1 = NULL
 Area2 = NULL
 
-for (i in 2:366)
-{
+for (i in 2:366) {
   #Max Concentration Comparison
   tempModel1 <- subset(Model1, Model1$Day == i)
   tempModel2 <- subset(Model2, Model2$Day == i)
@@ -80,7 +79,7 @@ for (i in 2:366)
   ##### Comparison of Dispersion Area ########
   ############################################
   Mod1 <- matrix(ncol = ((max(tempModel1$Lon)-min(tempModel1$Lon))/SS) + 1, nrow = ((max(tempModel1$Lat)-min(tempModel1$Lat))/SS) + 1)
-  Mod2 <- matrix(ncol = ((max(tempModel2$Lon)-min(tempModel2$Lon))/R) + 1, nrow = ((max(tempModel2$Lat)-min(tempModel2$Lat))/R) + 1)
+  Mod2 <- matrix(ncol = ((max(tempModel2$Lon)-min(tempModel2$Lon))/SS) + 1, nrow = ((max(tempModel2$Lat)-min(tempModel2$Lat))/SS) + 1)
   
   tempModel1$Lon <- (tempModel1$Lon - min(tempModel1$Lon))/SS
   tempModel1$Lat <- (tempModel1$Lat - min(tempModel1$Lat))/SS
