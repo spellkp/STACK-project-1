@@ -12,8 +12,8 @@ StackLoc <- rbind(                               #Insert c(LAT,LON); more can be
 
 eGRIDLoc <- c(39.2865, -96.1172)
 
-Model1 <- "A-2012"    #Name of dataset for Model 1; MUST BE CSV
-Model2 <- "E-2012"    #Name of dataset for Model 2; MUST BE CSV
+Model1 <- "JEC-A-2012"    #Name of dataset for Model 1; MUST BE CSV
+Model2 <- "JEC-E-2012"    #Name of dataset for Model 2; MUST BE CSV
 
 #####################################
 ##### Initialize All Libraries ######
@@ -92,8 +92,8 @@ ggplot(data = PercentDifference, aes(x = Day, y = PercentDifference)) +
 
 MaxDay <- PercentDifference$Day[PercentDifference$PercentDifference == max(PercentDifference$PercentDifference)]
 
-PlotModel1 <- subset(Model1, Day == MaxDay)
-PlotModel2 <- subset(Model2, Day == MaxDay)
+PlotModel1 <- subset(Model1, Day == MaxDay-1)
+PlotModel2 <- subset(Model2, Day == MaxDay-1)
 
 al1 = get_map(location = c(lon = eGRIDLoc[2], lat = eGRIDLoc[1]), zoom = 07, maptype = 'satellite')
 al1MAP = ggmap(al1)
@@ -114,3 +114,5 @@ al1MAP + geom_tile(data = PlotModel2, aes(x = Lon, y = Lat, fill = Conc)) +
   xlab("Longitude") +
   ylab("Latitude") +
   ggtitle("Jeffrey Energy Center (2012): \n Full Model Dispersion Area")
+
+PercentDifference[MaxDay-1,]
