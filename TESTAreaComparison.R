@@ -104,8 +104,7 @@ PlotModel2 <- subset(Model2, Day == MaxDay)
 al1 = get_map(location = c(lon = eGRIDLoc[2], lat = eGRIDLoc[1]), zoom = 05, maptype = 'satellite')
 al1MAP = ggmap(al1)
 al1MAP + geom_tile(data = PlotModel1, aes(x = Lon, y = Lat, fill = Conc)) +
-  scale_fill_gradient(limits=c(min(min(PlotModel1$Conc), min(PlotModel2$Conc)), 
-                               max(max(PlotModel1$Conc), max(PlotModel2$Conc))), low = "yellow", high = "red") +
+  scale_fill_gradient(low = "yellow", high = "red") +
   xlab("Longitude") +
   ylab("Latitude") 
 
@@ -114,8 +113,7 @@ al1MAP + geom_tile(data = PlotModel1, aes(x = Lon, y = Lat, fill = Conc)) +
 al1 = get_map(location = c(lon = eGRIDLoc[2], lat = eGRIDLoc[1]), zoom = 05, maptype = 'satellite')
 al1MAP = ggmap(al1)
 al1MAP + geom_tile(data = PlotModel2, aes(x = Lon, y = Lat, fill = Conc)) +
-  scale_fill_gradient(limits=c(min(min(PlotModel1$Conc), min(PlotModel2$Conc)), 
-                               max(max(PlotModel1$Conc), max(PlotModel2$Conc))), low = "yellow", high = "red") +
+  scale_fill_gradient(low = "yellow", high = "red") +
   xlab("Longitude") +
   ylab("Latitude") 
 

@@ -12,8 +12,8 @@ StackLoc <- rbind(                               #Insert c(LAT,LON); more can be
 
 eGRIDLoc <- c(36.9981, -84.5919)
 
-Model1 <- "JEC-A-2012"    #Name of dataset for Model 1; MUST BE CSV
-Model2 <- "JEC-E-2012"    #Name of dataset for Model 2; MUST BE CSV
+Model1 <- "JSC-A-2012"    #Name of dataset for Model 1; MUST BE CSV
+Model2 <- "JSC-E-2012"    #Name of dataset for Model 2; MUST BE CSV
 
 #####################################
 ##### Initialize All Libraries ######
