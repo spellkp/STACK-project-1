@@ -5,15 +5,15 @@ IfPar <- 1            #1='Yes'; 0='No'#Multicore Capabilities
 FreeCores <- 1        #Number of cores available during computation
 
 StackLoc <- rbind(                               #Insert c(LAT,LON); more can be added.
-  c(39.28684, -96.11821),
-  c(39.28681, -96.11721),
-  c(39.28681, -96.11618)
+  #c(39.28684, -96.11821),
+  #c(39.28681, -96.11721),
+  c(36.99781, -84.59239)
 )
 
-eGRIDLoc <- c(39.2865, -96.1172)
+eGRIDLoc <- c(36.9981, -84.5919)
 
-Model1 <- "JEC-A-2012"    #Name of dataset for Model 1; MUST BE CSV
-Model2 <- "JEC-E-2012"    #Name of dataset for Model 2; MUST BE CSV
+Model1 <- "JSC-A-2012"    #Name of dataset for Model 1; MUST BE CSV
+Model2 <- "JSC-E-2012"    #Name of dataset for Model 2; MUST BE CSV
 
 #####################################
 ##### Initialize All Libraries ######
@@ -101,7 +101,7 @@ MaxDay <- which.max(test$PercentDifference) + 1
 PlotModel1 <- subset(Model1, Day == MaxDay)
 PlotModel2 <- subset(Model2, Day == MaxDay)
 
-al1 = get_map(location = c(lon = eGRIDLoc[2], lat = eGRIDLoc[1]), zoom = 06, maptype = 'satellite')
+al1 = get_map(location = c(lon = eGRIDLoc[2], lat = eGRIDLoc[1]), zoom = 05, maptype = 'satellite')
 al1MAP = ggmap(al1)
 al1MAP + geom_tile(data = PlotModel1, aes(x = Lon, y = Lat, fill = Conc)) +
   scale_fill_gradient(limits=c(min(min(PlotModel1$Conc), min(PlotModel2$Conc)), 
@@ -111,7 +111,7 @@ al1MAP + geom_tile(data = PlotModel1, aes(x = Lon, y = Lat, fill = Conc)) +
 
 ##########
 
-al1 = get_map(location = c(lon = eGRIDLoc[2], lat = eGRIDLoc[1]), zoom = 06, maptype = 'satellite')
+al1 = get_map(location = c(lon = eGRIDLoc[2], lat = eGRIDLoc[1]), zoom = 05, maptype = 'satellite')
 al1MAP = ggmap(al1)
 al1MAP + geom_tile(data = PlotModel2, aes(x = Lon, y = Lat, fill = Conc)) +
   scale_fill_gradient(limits=c(min(min(PlotModel1$Conc), min(PlotModel2$Conc)), 
