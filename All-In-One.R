@@ -89,7 +89,7 @@ MetricConstruct =
         ConcProf2[j] <- mean(RadModel2$Conc[RadModel2$Radius > j*binwidth & RadModel2$Radius <= (j+1)*binwidth])
       }
       
-      ConcDiff <- mean(na.omit(200*(ConcProf2 - ConcProf1)/(ConcProf2 + ConcProf1)))   
+      ConcDiff <-as.numeric(mean(na.omit(200*(ConcProf2 - ConcProf1)/(ConcProf2 + ConcProf1))))
       
       
       #Determine the areas of each emission. THIS MUST BE THE LAST METRIC!
@@ -127,7 +127,7 @@ MetricConstruct =
         
       }
       
-    cbind(Distx1, Disty1, MaxConc1, Distx2, Disty2, MaxConc2, ConcDiff, sum(Mod1), sum(Mod2))
+    cbind(i, Distx1, Disty1, MaxConc1, Distx2, Disty2, MaxConc2, ConcDiff, sum(Mod1), sum(Mod2))
     
   }
 
