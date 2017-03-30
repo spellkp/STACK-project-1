@@ -21,7 +21,7 @@ binwidth <- 100                #Set the binwidth for the concentration profile
 
 #Do you with to use multiple cores? 1 = "Yes", 0 = "No"
 #How many cores do you wish to remain "free"?
-IfPar <- 0
+IfPar <- 1
 FreeCores <- 1
 
 
@@ -52,7 +52,7 @@ SS <- 0.05
 if(is.null(eGRIDLoc)) {eGRIDLoc <- c(mean(StackLoc[,1]), mean(StackLoc[,2]))} else {eGRIDLoc <- eGRIDLoc}
 
 MetricConstruct =
-  foreach (i in A:B, .combine = rbind) %dopar% {
+  foreach (i = A:B, .combine = rbind) %dopar% {
    
     #Read the models day-by-day in this loop.
     tempModel1 <- subset(Model1, Model1$Day == i)
