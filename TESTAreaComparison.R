@@ -53,14 +53,17 @@ Areas = foreach(i = 2:366, .combine = rbind) %dopar% {
   tempModel1 <- subset(Model1, Model1$Day == i)
   tempModel2 <- subset(Model2, Model2$Day == i)
   
-  Mod1 <- matrix(ncol = ((max(tempModel1$Lon)-min(tempModel1$Lon))/SS) + 1, nrow = ((max(tempModel1$Lat)-min(tempModel1$Lat))/SS) + 1)
-  Mod2 <- matrix(ncol = ((max(tempModel2$Lon)-min(tempModel2$Lon))/SS) + 1, nrow = ((max(tempModel2$Lat)-min(tempModel2$Lat))/SS) + 1)
+  maxcol = max((max(tempModel1$Lon)-min(tempModel1$Lon))/SS, (max(tempModel1$Lat)-min(tempModel1$Lat))/SS) + 1
+  maxrow = max((max(tempModel2$Lon)-min(tempModel2$Lon))/SS, (max(tempModel2$Lat)-min(tempModel2$Lat))/SS) + 1
   
-  tempModel1$Lon <- (tempModel1$Lon - min(tempModel1$Lon))/SS
-  tempModel1$Lat <- (tempModel1$Lat - min(tempModel1$Lat))/SS
+  Mod1 <- matrix(ncol = maxcol, nrow = maxrow)
+  Mod2 <- matrix(ncol = maxcol, nrow = maxrow)
+  
+  tempModel1$Lon <- (tempModel1$Lon - min(min(tempModel1$Lon), min(tempModel2$Lon)))/SS
+  tempModel1$Lat <- (tempModel1$Lat - min(min(tempModel1$Lat), min(tempModel2$Lat)))/SS
 
-  tempModel2$Lon <- (tempModel2$Lon - min(tempModel2$Lon))/SS
-  tempModel2$Lat <- (tempModel2$Lat - min(tempModel2$Lat))/SS
+  tempModel2$Lon <- (tempModel2$Lon - min(min(tempModel1$Lon), min(tempModel2$Lon)))/SS
+  tempModel2$Lat <- (tempModel2$Lat - min(min(tempModel1$Lat), min(tempModel2$Lat)))/SS
 
 
 for (j in 1:nrow(Mod1)) {
