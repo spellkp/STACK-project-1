@@ -81,7 +81,7 @@ MetricConstruct =
                      
       
       #Concentration Profile
-      RadModel1 <- data.frame(sqrt(tempModel1$Lat - eGRIDLoc[1])^2 + (tempModel1$Lon - eGRIDLoc[2]^2), tempModel1$Conc)
+      RadModel1 <- data.frame(sqrt((tempModel1$Lat - eGRIDLoc[1])^2 + (tempModel1$Lon - eGRIDLoc[2])^2), tempModel1$Conc)
       RadModel2 <- data.frame(sqrt((tempModel2$Lat - mean(StackLoc[,1]))^2 + (tempModel2$Lon - mean(StackLoc[,2]))^2), tempModel2$Conc)
       names(RadModel1) <- c('Radius', 'Concentration')
       names(RadModel2) <- c('Radius', 'Concentration')
