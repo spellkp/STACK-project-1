@@ -1,4 +1,4 @@
-#Full Run Metrics
+#Full Run of Metrics
 #Select the files you wish to compare. Note that both must come from the same point source and the input files must be in *.CSV format.
 #You must specify the location(s) of stacks using Latitude and Longitude coordinates as well as the reported eGRID location.
 
@@ -37,6 +37,14 @@ if (!'doParallel' %in% installed.packages()) install.packages("doParallel")
 if (!'ggmap' %in% installed.packages()) install.packages("ggmap")
 if (!'akima' %in% installed.packages()) install.packages("akima")
 
+library(ggplot2)
+library(dplyr)
+library(geosphere)
+library(foreach)
+library(doParallel)
+library(ggmap)
+library(akima)
+
 if (IfPar == 1)
 {cl <- detectCores()-FreeCores
 registerDoParallel(cl)
@@ -52,7 +60,7 @@ SS <- 0.05
 if(is.null(eGRIDLoc)) {eGRIDLoc <- c(mean(StackLoc[,1]), mean(StackLoc[,2]))} else {eGRIDLoc <- eGRIDLoc}
 
 MetricConstruct =
-  foreach (i = A:B, .combine = rbind) %dopar% {
+  foreach (i = 2:366, .combine = rbind) %dopar% {
    
     #Read the models day-by-day in this loop.
     tempModel1 <- subset(Model1, Model1$Day == i)
@@ -83,10 +91,10 @@ MetricConstruct =
       ConcProf1 = NULL
       ConcProf2 = NULL
       
-      for (j in 0:99) {
+      for (j in 1:100) {
         
-        ConcProf1[j] <- mean(RadModel1$Conc[RadModel1$Radius > j*binwidth & RadModel1$Radius <= (j+1)*binwidth])
-        ConcProf2[j] <- mean(RadModel2$Conc[RadModel2$Radius > j*binwidth & RadModel2$Radius <= (j+1)*binwidth])
+        ConcProf1[j] <- mean(RadModel1$Conc[RadModel1$Radius > (j-1)*binwidth & RadModel1$Radius <= j*binwidth])
+        ConcProf2[j] <- mean(RadModel2$Conc[RadModel2$Radius > (j-1)*binwidth & RadModel2$Radius <= j*binwidth])
       }
       
       ConcDiff <-as.numeric(mean(na.omit(200*(ConcProf2 - ConcProf1)/(ConcProf2 + ConcProf1))))
@@ -130,6 +138,8 @@ MetricConstruct =
     cbind(i, Distx1, Disty1, MaxConc1, Distx2, Disty2, MaxConc2, ConcDiff, sum(Mod1), sum(Mod2))
     
   }
+
+stopCluster(cl)
 
 MetricConstruct <- as.data.frame(MetricConstruct)
     
