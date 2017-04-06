@@ -147,20 +147,20 @@ MaxDay <- which.max(abs(MaxConc$PercentDifference)) + 1
 MaxModel1Plot <- subset(Model1, Day == MaxDay)
 MaxModel2Plot <- subset(Model2, Day == MaxDay)
 
-al1 = get_map(location = c(lon = eGRIDLoc[2], lat = eGRIDLoc[1]), zoom = 08 , maptype = 'satellite')
+al1 = get_map(location = c(lon = eGRIDLoc[2], lat = eGRIDLoc[1]), zoom = 04 , maptype = 'satellite')
 al1MAP = ggmap(al1)
 al1MAP + geom_tile(data = MaxModel1Plot, aes(x = Lon, y = Lat, fill = Conc)) +
-  scale_fill_gradient(limits=c(min(min(MaxModel1Plot$Conc), min(MaxModel2Plot$Conc)), 
-                               max(max(MaxModel1Plot$Conc), max(MaxModel2Plot$Conc))), low = "yellow", high = "red") +
+  geom_smooth(data = MaxModel1Plot, aes(x = Lon, y = Lat, fill = Conc), method = "lm", se = FALSE) +
+  scale_fill_gradient(low = "yellow", high = "red") +
   xlab("Longitude") +
   ylab("Latitude") +
   ggtitle(paste("Day", MaxDay, "\n", "eGRID Model", sep = " "))
 
-al1 = get_map(location = c(lon = eGRIDLoc[2], lat = eGRIDLoc[1]), zoom = 08, maptype = 'satellite')
+al1 = get_map(location = c(lon = eGRIDLoc[2], lat = eGRIDLoc[1]), zoom = 04, maptype = 'satellite')
 al1MAP = ggmap(al1)
-al1MAP + geom_tile(data = MaxModel2Plot, aes(x = Lon, y = Lat, fill = Conc)) +
-  scale_fill_gradient(limits=c(min(min(MaxModel1Plot$Conc), min(MaxModel2Plot$Conc)), 
-                               max(max(MaxModel1Plot$Conc), max(MaxModel2Plot$Conc))), low = "yellow", high = "red") +
+al1MAP + geom_tile(data = MaxModel1Plot, aes(x = Lon, y = Lat, fill = Conc)) +
+  geom_smooth(data = MaxModel2Plot, aes(x = Lon, y = Lat, fill = Conc), method = "lm", se = FALSE) +
+  scale_fill_gradient(low = "yellow", high = "red") +
   xlab("Longitude") +
   ylab("Latitude") +
   ggtitle(paste("Day", MaxDay, "\n", "Full Model", sep = " "))
