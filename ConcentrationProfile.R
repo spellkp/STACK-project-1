@@ -54,7 +54,7 @@ for (i in 2:366) {
   tempModel1 <- subset(Model1, Day == i)
   tempModel2 <- subset(Model2, Day == i)
   
-  RadModel1 <- data.frame(sqrt(tempModel1$Lat - eGRIDLoc[1])^2 + (tempModel1$Lon - eGRIDLoc[2]^2), tempModel1$Conc)
+  RadModel1 <- data.frame(sqrt((tempModel1$Lat - eGRIDLoc[1])^2 + (tempModel1$Lon - eGRIDLoc[2])^2), tempModel1$Conc)
   RadModel2 <- data.frame(sqrt((tempModel2$Lat - mean(StackLoc[,1]))^2 + (tempModel2$Lon - mean(StackLoc[,2]))^2), tempModel2$Conc)
   names(RadModel1) <- c('Radius', 'Concentration')
   names(RadModel2) <- c('Radius', 'Concentration')
@@ -74,7 +74,13 @@ PercentDifference[i] <- mean(na.omit(200*(ConcProf2-ConcProf1)/(ConcProf2+ConcPr
 
 }
 
-MaxDay <- which.max(PercentDifference)
+
+
+
+
+
+
+MaxDay <- which.max(abs(PercentDifference))
 
 tempModel1 <- subset(Model1, Day == MaxDay)
 tempModel2 <- subset(Model2, Day == MaxDay)
