@@ -235,7 +235,7 @@ ggplot(data = Metric3, aes(x = Day, y = Metric3)) +
 
 ##### Max Day for JEC #####
 
-MaxDay1 <- which.max(Metric1$Metric1)
+MaxDay1 <- which.max(abs(Metric1$Metric1))
 
 PlotModel1 <- subset(JECModel1, Day == MaxDay1)
 PlotModel2 <- subset(JECModel2, Day == MaxDay1)
@@ -266,7 +266,7 @@ al1MAP + geom_tile(data = PlotModel2, aes(x = Lon, y = Lat, fill = Conc)) +
 
 
 
-MaxDay2 <- which.max(Metric2$Metric2)
+MaxDay2 <- which.max(abs(Metric2$Metric2))
 
 PlotModel1 <- subset(JSCModel1, Day == MaxDay2)
 PlotModel2 <- subset(JSCModel2, Day == MaxDay2)
@@ -297,12 +297,12 @@ al1MAP + geom_tile(data = PlotModel2, aes(x = Lon, y = Lat, fill = Conc)) +
 
 
 
-MaxDay3 <- which.max(Metric3$Metric3)
+MaxDay3 <- which.max(abs(Metric3$Metric3))
 
 PlotModel1 <- subset(TCGModel1, Day == MaxDay3)
 PlotModel2 <- subset(TCGModel2, Day == MaxDay3)
 
-al1 = get_map(location = c(lon = TCGeGRIDLoc[2], lat = TCGeGRIDLoc[1]), zoom = 07, maptype = 'satellite')
+al1 = get_map(location = c(lon = TCGeGRIDLoc[2], lat = TCGeGRIDLoc[1]), zoom = 06, maptype = 'satellite')
 al1MAP = ggmap(al1)
 al1MAP + geom_tile(data = PlotModel1, aes(x = Lon, y = Lat, fill = Conc)) +
   scale_fill_gradient(limits=c(min(min(PlotModel1$Conc), min(PlotModel2$Conc)), 
@@ -313,7 +313,7 @@ al1MAP + geom_tile(data = PlotModel1, aes(x = Lon, y = Lat, fill = Conc)) +
 
 
 
-al1 = get_map(location = c(lon = TCGeGRIDLoc[2], lat = TCGeGRIDLoc[1]), zoom = 07, maptype = 'satellite')
+al1 = get_map(location = c(lon = TCGeGRIDLoc[2], lat = TCGeGRIDLoc[1]), zoom = 06, maptype = 'satellite')
 al1MAP = ggmap(al1)
 al1MAP + geom_tile(data = PlotModel2, aes(x = Lon, y = Lat, fill = Conc)) +
   scale_fill_gradient(limits=c(min(min(PlotModel1$Conc), min(PlotModel2$Conc)), 
