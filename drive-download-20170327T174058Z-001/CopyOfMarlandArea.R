@@ -87,7 +87,7 @@ for (i in StartDay:EndDay) {
     
   }
   
-  Metric1[i] <- 0.5*(1.2321e+12/1.2592e+10)*sum(JECmatrix2 - JECmatrix1)
+  Metric1[i] <- 0.5*(1.2321e+12/1.2592e+10)*sum(abs(JECmatrix2 - JECmatrix1))
   
 }
 
@@ -139,7 +139,7 @@ for (i in StartDay:EndDay) {
     
   }
   
-  Metric2[i] <- 0.5*(1.2321e+12/1.2592e+10)*sum(JSCmatrix2 - JSCmatrix1)
+  Metric2[i] <- 0.5*(1.2321e+12/1.2592e+10)*sum(abs(JSCmatrix2 - JSCmatrix1))
   
 }
 
@@ -190,7 +190,7 @@ for (i in StartDay:EndDay) {
     
   }
   
-  Metric3[i] <- 0.5*(1.2321e+12/1.2592e+10)*sum(TCGmatrix2 - TCGmatrix1)
+  Metric3[i] <- 0.5*(1.2321e+12/1.2592e+10)*sum(abs(TCGmatrix2 - TCGmatrix1))
   
 }
 
