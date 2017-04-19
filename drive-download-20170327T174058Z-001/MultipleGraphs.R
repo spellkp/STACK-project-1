@@ -3,32 +3,39 @@ library(reshape2)
 library(ggmap)
 
 MRSmeasure <- as.data.frame(read.csv("MRSmeasure"))
+MRSmeasure2 <- as.data.frame(read.csv("MRSmeasure"))
+
 names(MRSmeasure) <- c("Day", "Jeffrey Energy Center", "J. S. Cooper Plant", "TransAlta Centralia Generating")
+names(MRSmeasure2) <- c("Day", "Jeffrey Energy Center", "J. S. Cooper Plant", "TransAlta \n Centralia Generating")
 
 MRSmeasure[2] <- 100*MRSmeasure[2]
 MRSmeasure[3] <- 100*MRSmeasure[3]
 MRSmeasure[4] <- 100*MRSmeasure[4]
 
-MRSmeasure2 <- melt(MRSmeasure ,  id.vars = 'Day', variable.name = 'series')
+MRSmeasure2[2] <- 100*MRSmeasure2[2]
+MRSmeasure2[3] <- 100*MRSmeasure2[3]
+MRSmeasure2[4] <- 100*MRSmeasure2[4]
+
+MRSmeasure2 <- melt(MRSmeasure2 ,  id.vars = 'Day', variable.name = 'series')
 
   ggplot(MRSmeasure2, aes(Day, value)) + 
     geom_point() + 
     geom_smooth(se = FALSE) +
-    ylim(0, 0.25) +
+    ylim(0, 1.1*max(na.omit(MRSmeasure[,-1]))) +
     ylab("Metric Value (%)") +
     facet_grid(series ~ .) +
     theme_bw()
 
   
   
-  Metric1 <- data.frame(c(1:366), Metric1)
+  Metric1 <- data.frame(c(1:366), MRSmeasure[2])
   colnames(Metric1)[1] <- "Day"
   
-  ggplot(data = Metric1, aes(x = Day, y = Metric1)) +
+  ggplot(data = Metric1, aes(x = Day, y = Jeffrey.Energy.Center)) +
     geom_point() +
     geom_smooth(se = FALSE) +
     labs(title = "JEC") +
-    ylim(-0.00025, 0.00025) +
+    ylim(0, 1.1*max(na.omit(MRSmeasure[,-1]))) +
     theme_bw()
   
   
@@ -40,7 +47,7 @@ MRSmeasure2 <- melt(MRSmeasure ,  id.vars = 'Day', variable.name = 'series')
     geom_point() +
     geom_smooth(se = FALSE) +
     labs(title = "JSC") +
-    ylim(-0.00025, 0.00025) +
+    ylim(0, 1.1*max(na.omit(MRSmeasure[,-1]))) +
     theme_bw()
   
   
@@ -52,7 +59,7 @@ MRSmeasure2 <- melt(MRSmeasure ,  id.vars = 'Day', variable.name = 'series')
     geom_point() +
     geom_smooth(se = FALSE) +
     labs(title = "TCG") +
-    ylim(-0.00025, 0.00025) +
+    ylim(0, 1.1*max(na.omit(MRSmeasure[,-1]))) +
     theme_bw()
   
   
@@ -136,7 +143,7 @@ MRSmeasure2 <- melt(MRSmeasure ,  id.vars = 'Day', variable.name = 'series')
   
   TCGeGRIDLoc <- c(46.7559, -122.8598)
   
-  MaxDay3 <- which.max(MRSmeasure[3])
+  MaxDay3 <- which.max(MRSmeasure$`TransAlta Centralia Generating`)
   
   PlotModel1 <- subset(TCGModel1, Day == MaxDay3)
   PlotModel2 <- subset(TCGModel2, Day == MaxDay3)
