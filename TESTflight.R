@@ -26,7 +26,7 @@ StartLocInfo1 <- c(36.99781, -84.59239, 0, 147264.5, 23.64, 2396931.6) #Starting
 
 TotRunTime <- 24  #Total run time (hr)
 VertMot <- 0      #Method of vertical motion
-TopLvl <- 10000.0 #Upper level of the model
+TopLvl <- 20000.0 #Upper level of the model
 
 PolNum <- 1                       #Number of pollutant species
 NameTemp <- "CO2"                 #Name of pollutant species
@@ -90,7 +90,7 @@ cat(paste(StartTime, collapse = " "), "\n",
     TotRunTime, "\n",
     VertMot, "\n",
     TopLvl, "\n",
-    "2", "\n",                                #The 2 is hardcoded for now
+    "2", "\n",                                #By default, 2 EDAS files are loaded for the entire month
     EDASpath, "\n",
     paste(MonthMatrix[q,4], collapse = "\n"), "\n",
     EDASpath, "\n",
