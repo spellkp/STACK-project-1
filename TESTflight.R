@@ -20,7 +20,7 @@ StartYear <- 2012
 StartTime <- c(12, q, j, 00)     #Input model's start date and time (YY MM DD HH)
 
 NumOfStartLocs <- 1           #Number of starting locations
-StartLocInfo1 <- c(36.99781, -84.59239, 243.84, 147264.5, 23.64, 2396931.6) #Starting Location #1 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
+StartLocInfo1 <- c(36.99781, -84.59239, 243.84, 146459.75, 23.64, 2396931.6) #Starting Location #1 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
 #StartLocInfo2 <- c(46.75513, -122.85810, 143.3, 234563, 64.52, 3192486.16) #Starting Location #2 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
 #StartLocInfo3 <- c(39.28681, -96.11618, 174.96, 568829.78, 47.17, 16591050.0) #Starting Location #3 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
 
