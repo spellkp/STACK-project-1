@@ -20,7 +20,7 @@ StartYear <- 2012
 StartTime <- c(12, q, j, 00)     #Input model's start date and time (YY MM DD HH)
 
 NumOfStartLocs <- 1           #Number of starting locations
-StartLocInfo1 <- c(36.9981, -84.5919, 0, 146459.75) #Starting Location #1 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
+StartLocInfo1 <- c(46.7559, -122.8598, 0, 469126.81) #Starting Location #1 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
 # StartLocInfo2 <- c(39.28681, -96.11721, 174.96, 557748.97, 47.17, 16788214.8) #Starting Location #2 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
 # StartLocInfo3 <- c(39.28681, -96.11618, 174.96, 568829.78, 47.17, 16591050.0) #Starting Location #3 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
 
@@ -30,11 +30,11 @@ TopLvl <- 20000.0 #Upper level of the model
 
 PolNum <- 1                       #Number of pollutant species
 NameTemp <- "CO2"                 #Name of pollutant species
-PolRat <- 146459.75                #Emission rate (mass/hr)
+PolRat <- 469126.81                #Emission rate (mass/hr)
 PolDur <- 24                      #Pollutant duration (hr)
 RelStart <- c(12, q, j, 00, 00)   #Pollutant start (YY, MM, DD, HH, MM)
 
-CenterLatLon <- c(36.9981, -84.5919)        #Center the display grid (lat, lon)
+CenterLatLon <- c(46.7559, -122.8598)        #Center the display grid (lat, lon)
 Spacing <- c(0.05, 0.05)                      #Resolution of the display grid (lat, lon)
 Span <- c(80.0, 80.0)                         #size of the display grid (lat, lon)
 OutputDir <- "./"                             #Output directory
