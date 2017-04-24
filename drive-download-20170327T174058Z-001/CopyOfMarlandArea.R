@@ -2,14 +2,14 @@ library(reshape2)
 library(ggplot2)
 library(ggmap)
 
-JECModel1 <- read.csv("JEC-A-2012")[2:6]
-JECModel2 <- read.csv("JEC-E-2012")[2:6]
+JECModel1 <- read.csv("JEC-A-2012-20km")[2:6]
+JECModel2 <- read.csv("JEC-E-2012-20km")[2:6]
 
-JSCModel1 <- read.csv("JSC-A-2012")[2:6]
-JSCModel2 <- read.csv("JSC-E-2012")[2:6]
+JSCModel1 <- read.csv("JSC-A-2012-20km")[2:6]
+JSCModel2 <- read.csv("JSC-E-2012-20km")[2:6]
 
-TCGModel1 <- read.csv("TCG-A-2012")[2:6]
-TCGModel2 <- read.csv("TCG-E-2012")[2:6]
+TCGModel1 <- read.csv("TCG-A-2012-20km")[2:6]
+TCGModel2 <- read.csv("TCG-E-2012-20km")[2:6]
 
 
 JECStackLoc <- rbind(                               #Insert c(LAT,LON); more can be added.
