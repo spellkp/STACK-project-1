@@ -52,8 +52,8 @@ for (i in StartDay:EndDay) {
   x_range <- max(max(JECDayModel1$Lon), max(JECDayModel2$Lon)) - min(min(JECDayModel1$Lon), min(JECDayModel2$Lon)) + 1
   y_range <- max(max(JECDayModel1$Lat), max(JECDayModel2$Lat)) - min(min(JECDayModel1$Lat), min(JECDayModel2$Lat)) + 1
   
-  x_steps <- round(x_range/R)
-  y_steps <- round(y_range/R)
+  x_steps <- round(x_range/R, 0)
+  y_steps <- round(y_range/R, 0)
   
   JECmatrix1 <- matrix(0, nrow = y_steps, ncol = x_steps)
   JECmatrix2 <- matrix(0, nrow = y_steps, ncol = x_steps)
@@ -104,8 +104,8 @@ for (i in StartDay:EndDay) {
   x_range <- max(max(JSCDayModel1$Lon), max(JSCDayModel2$Lon)) - min(min(JSCDayModel1$Lon), min(JSCDayModel2$Lon)) + 1
   y_range <- max(max(JSCDayModel1$Lat), max(JSCDayModel2$Lat)) - min(min(JSCDayModel1$Lat), min(JSCDayModel2$Lat)) + 1
   
-  x_steps <- round(x_range/R)
-  y_steps <- round(y_range/R)
+  x_steps <- round(x_range/R, 0)
+  y_steps <- round(y_range/R, 0)
   
   JSCmatrix1 <- matrix(0, nrow = y_steps, ncol = x_steps)
   JSCmatrix2 <- matrix(0, nrow = y_steps, ncol = x_steps)
@@ -155,8 +155,8 @@ for (i in StartDay:EndDay) {
   x_range <- max(max(TCGDayModel1$Lon), max(TCGDayModel2$Lon)) - min(min(TCGDayModel1$Lon), min(TCGDayModel2$Lon)) + 1
   y_range <- max(max(TCGDayModel1$Lat), max(TCGDayModel2$Lat)) - min(min(TCGDayModel1$Lat), min(TCGDayModel2$Lat)) + 1
   
-  x_steps <- round(x_range/R)
-  y_steps <- round(y_range/R)
+  x_steps <- round(x_range/R, 0)
+  y_steps <- round(y_range/R, 0)
   
   TCGmatrix1 <- matrix(0, nrow = y_steps, ncol = x_steps)
   TCGmatrix2 <- matrix(0, nrow = y_steps, ncol = x_steps)
