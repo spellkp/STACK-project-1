@@ -60,18 +60,18 @@ for(j in 1:nrow(NEWeGRID)) {
   
 }
   
-names(NewDataSet) <- c("Plant Number", "State", "Plant Name", "FIPS State Code", "FIPS County Code", "Latitude", "Longitude", "Centroid", "Generators", "Combustion Status",
-                       "Capacity Factor", "Nameplate Capacity", "Annual Heat Input", "Annual Net Generation", "Annual NOx Emissions",  "Annual SO2 Emissions", "Annual CO2 Emissions",
-                       "Annual CH4 Emissions", "Annual N20 Emissions", "Annual Hg Emissions", "Annual NOx Output Emission Rate", "Ozone Season NOx Output Emission Rate",
-                       "Annual SO2 Output Emission Rate", "Annual CO2 Output Emission Rate", "Annual CH4 Output Emission Rate", "Annual N2O Output Emission Rate",
-                       "Annual CO2 Equivalent Emission Rate", "Annual Hg Output Emission Rate", "Annual NOx Output Emission Rate", "Ozone Season NOx Input Emission Rate",
-                       "Annual SO2 Input Emission Rate", "Annual CO2 Input Emission Rate", "Annual NOx Combustion Output Emission Rate", "Ozone Season NOx Combustion Output Emission Rate",
-                       "Annual SO2 Combustion Output Emission Rate", "Annual CO2 Combustion Output Emission Rate", "Annual CH4 Combustion Output Emission Rate",
-                       "Annual N2O Combustion Output Emission Rate", "Unadjusted Annual NOx Emissions", "Unadjusted Ozone Season NOx Emissions", "Unadjusted Annual SO2 Emissions",
-                       "Unadjusted Annual CO2 Emissions", "Unadjusted Annual CH4 Emissions", "Unadjusted Annual N2O Emissions", "Unadjusted Annual Heat Input", "Nomial Heat Rate",
-                       "Annual Coal Net Generation", "Annual Oil Net Generation", "Annual Gas Net Generation", "Annual Nuclear Net Generation", "Annual Hydro Net Generation",
-                       "Annual Biomass Net Generation", "Annual Wind Net Generation", "Annual Solar Net Generation", "Annual Geothermal Net Generation", "Annual Other Fossil Net Generation",
-                       "Annual Unknown Net Generation", "Plant Annual Nonrenewable Net Generation", "NewFIPS", "Height", "Diameter", "Velocity")
+names(NewDataSet) <- c("PlantNumber", "State", "PlantName", "FIPS-StateCode", "FIPS-CountyCode", "Latitude", "Longitude", "Centroid", "Generators", "CombustionStatus",
+                       "CapacityFactor", "NameplateCapacity", "AnnualHeatInput", "AnnualNetGeneration", "AnnualNOxEmissions",  "AnnualSO2Emissions", "AnnualCO2Emissions",
+                       "AnnualCH4Emissions", "AnnualN20Emissions", "AnnualHgEmissions", "AnnualNOxOutputEmissionRate", "OzoneSeasonNOxOutputEmissionRate",
+                       "AnnualSO2OutputEmissionRate", "AnnualCO2OutputEmissionRate", "AnnualCH4OutputEmissionRate", "AnnualN2OOutputEmissionRate",
+                       "AnnualCO2EquivalentEmissionRate", "AnnualHgOutputEmissionRate", "AnnualNOxOutputEmissionRate", "OzoneSeasonNOxInputEmissionRate",
+                       "AnnualSO2InputEmissionRate", "AnnualCO2InputEmissionRate", "AnnualNOxCombustionOutputEmissionRate", "OzoneSeasonNOxCombustionOutputEmissionRate",
+                       "AnnualSO2CombustionOutputEmissionRate", "AnnualCO2CombustionOutputEmissionRate", "AnnualCH4CombustionOutputEmissionRate",
+                       "AnnualN2OCombustionOutputEmissionRate", "UnadjustedAnnualNOxEmissions", "UnadjustedOzoneSeasonNOxEmissions", "UnadjustedAnnualSO2Emissions",
+                       "UnadjustedAnnualCO2Emissions", "UnadjustedAnnualCH4Emissions", "UnadjustedAnnualN2OEmissions", "UnadjustedAnnualHeatInput", "NomialHeatRate",
+                       "AnnualCoalNetGeneration", "AnnualOilNetGeneration", "AnnualGasNetGeneration", "AnnualNuclearNetGeneration", "AnnualHydroNetGeneration",
+                       "AnnualBiomassNetGeneration", "AnnualWindNetGeneration", "AnnualSolarNetGeneration", "AnnualGeothermalNetGeneration", "AnnualOtherFossilNetGeneration",
+                       "AnnualUnknownNetGeneration", "PlantAnnualNonrenewableNetGeneration", "NewFIPS", "Height", "Diameter", "Velocity")
   
 if(WriteCSV == 1) {
   
@@ -80,8 +80,18 @@ if(WriteCSV == 1) {
 }  else {}
   
 
+mod <- lm(data = NewDataSet, Diameter ~ as.numeric(Generators) + as.numeric(CapacityFactor) + as.numeric(NameplateCapacity) + as.numeric(AnnualHeatInput) +
+          as.numeric(AnnualNetGeneration) + 
+            I(as.numeric(AnnualNOxEmissions) +
+                as.numeric(AnnualSO2Emissions) +
+                as.numeric(AnnualCO2Emissions) +
+                as.numeric(AnnualCH4Emissions) +
+                as.numeric(AnnualHgEmissions))
+            )
 
+summary(mod)
 
+plot(NewDataSet$Height ~ as.numeric(NewDataSet$NameplateCapacity))
 
 
 
