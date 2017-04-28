@@ -69,6 +69,13 @@ ggplot(data = NewDataSet, aes(x = Plant.annual.SO2.combustion.output.emission.ra
   geom_smooth() +
   theme_bw()
   
+mod <- lm(data = NewDataSet, Height ~ I(as.numeric(Plant.unadjusted.annual.NOx.emissions..tons.) +
+                                          as.numeric(Plant.unadjusted.annual.SO2.emissions..tons.) +
+                                          as.numeric(Plant.unadjusted.annual.CO2.emissions..tons.) + 
+                                          as.numeric(Plant.unadjusted.annual.CH4.emissions..lbs.) + 
+                                          as.numeric(Plant.unadjusted.annual.N2O.emissions..lbs.) +
+                                          as.numeric(Plant.unadjusted.annual.Hg.emissions..lbs.)))
+summary(mod)
 
 
 ### use this for the Plants vs R graph ##3
