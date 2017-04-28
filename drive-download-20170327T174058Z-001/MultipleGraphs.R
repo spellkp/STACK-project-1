@@ -8,13 +8,13 @@ MRSmeasure2 <- as.data.frame(read.csv("MRSmeasure"))
 names(MRSmeasure) <- c("Day", "Jeffrey Energy Center", "J. S. Cooper Plant", "TransAlta Centralia Generating")
 names(MRSmeasure2) <- c("Day", "Jeffrey Energy Center", "J. S. Cooper Plant", "TransAlta \n Centralia Generating")
 
-MRSmeasure[2] <- 100*MRSmeasure[2]
-MRSmeasure[3] <- 100*MRSmeasure[3]
-MRSmeasure[4] <- 100*MRSmeasure[4]
+MRSmeasure[2] <- 10000*MRSmeasure[2]
+MRSmeasure[3] <- 10000*MRSmeasure[3]
+MRSmeasure[4] <- 20000*MRSmeasure[4]
 
-MRSmeasure2[2] <- 100*MRSmeasure2[2]
-MRSmeasure2[3] <- 100*MRSmeasure2[3]
-MRSmeasure2[4] <- 100*MRSmeasure2[4]
+MRSmeasure2[2] <- 10000*MRSmeasure2[2]
+MRSmeasure2[3] <- 10000*MRSmeasure2[3]
+MRSmeasure2[4] <- 10000*MRSmeasure2[4]
 
 MRSmeasure2 <- melt(MRSmeasure2 ,  id.vars = 'Day', variable.name = 'series')
 
