@@ -3,8 +3,14 @@ library(ggplot2)
 
 WriteCSV <- 1   # 1 = yes, 0 = no
 
-eGRID <- read.csv("eGRID2012_Data.csv", header = TRUE)
+eGRID <- read.csv("eGRID2012_Data.csv", header = TRUE)[,c(1, 2, 3, 18, 19, 21, 22, 23, 25, 26, 32, 33, 40, 42, 44, 46, 47, 48, 49,
+                                                          51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 65, 66, 67, 68, 69,
+                                                          70, 72, 73, 74, 75, 76, 77, 79, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90,
+                                                          91, 92, 93)]
+
 eGRID$NewFIPS <- 1000*eGRID$Plant.FIPS.state.code + eGRID$Plant.FIPS.county.code
+
+
 
 RSEI <- read.csv("FacilityData2017.csv", header = TRUE)
 
@@ -54,28 +60,29 @@ for(j in 1:nrow(NEWeGRID)) {
   
 }
   
-names(NewDataSet)[169] <- "Height"
-names(NewDataSet)[170] <- "Diameter"
-names(NewDataSet)[171] <- "Velocity"
+names(NewDataSet) <- c("Plant Number", "State", "Plant Name", "FIPS State Code", "FIPS County Code", "Latitude", "Longitude", "Centroid", "Generators", "Combustion Status",
+                       "Capacity Factor", "Nameplate Capacity", "Annual Heat Input", "Annual Net Generation", "Annual NOx Emissions",  "Annual SO2 Emissions", "Annual CO2 Emissions",
+                       "Annual CH4 Emissions", "Annual N20 Emissions", "Annual Hg Emissions", "Annual NOx Output Emission Rate", "Ozone Season NOx Output Emission Rate",
+                       "Annual SO2 Output Emission Rate", "Annual CO2 Output Emission Rate", "Annual CH4 Output Emission Rate", "Annual N2O Output Emission Rate",
+                       "Annual CO2 Equivalent Emission Rate", "Annual Hg Output Emission Rate", "Annual NOx Output Emission Rate", "Ozone Season NOx Input Emission Rate",
+                       "Annual SO2 Input Emission Rate", "Annual CO2 Input Emission Rate", "Annual NOx Combustion Output Emission Rate", "Ozone Season NOx Combustion Output Emission Rate",
+                       "Annual SO2 Combustion Output Emission Rate", "Annual CO2 Combustion Output Emission Rate", "Annual CH4 Combustion Output Emission Rate",
+                       "Annual N2O Combustion Output Emission Rate", "Unadjusted Annual NOx Emissions", "Unadjusted Ozone Season NOx Emissions", "Unadjusted Annual SO2 Emissions",
+                       "Unadjusted Annual CO2 Emissions", "Unadjusted Annual CH4 Emissions", "Unadjusted Annual N2O Emissions", "Unadjusted Annual Heat Input", "Nomial Heat Rate",
+                       "Annual Coal Net Generation", "Annual Oil Net Generation", "Annual Gas Net Generation", "Annual Nuclear Net Generation", "Annual Hydro Net Generation",
+                       "Annual Biomass Net Generation", "Annual Wind Net Generation", "Annual Solar Net Generation", "Annual Geothermal Net Generation", "Annual Other Fossil Net Generation",
+                       "Annual Unknown Net Generation", "Plant Annual Nonrenewable Net Generation", "NewFIPS", "Height", "Diameter", "Velocity")
   
-if(WriteCSV = 1) {
+if(WriteCSV == 1) {
   
   write.csv(NewDataSet, "NewDataSet.csv")
   
 }  else {}
   
-ggplot(data = NewDataSet, aes(x = Plant.annual.SO2.combustion.output.emission.rate..lb.MWh., y = Height)) +
-  geom_point() +
-  geom_smooth() +
-  theme_bw()
-  
-mod <- lm(data = NewDataSet, Height ~ I(as.numeric(Plant.unadjusted.annual.NOx.emissions..tons.) +
-                                          as.numeric(Plant.unadjusted.annual.SO2.emissions..tons.) +
-                                          as.numeric(Plant.unadjusted.annual.CO2.emissions..tons.) + 
-                                          as.numeric(Plant.unadjusted.annual.CH4.emissions..lbs.) + 
-                                          as.numeric(Plant.unadjusted.annual.N2O.emissions..lbs.) +
-                                          as.numeric(Plant.unadjusted.annual.Hg.emissions..lbs.)))
-summary(mod)
+
+
+
+
 
 
 ### use this for the Plants vs R graph ##3
