@@ -1,4 +1,4 @@
-ModelType <- "E"
+ModelType <- "A"
 MonthName <- c("January",
                "February",
                "March",
@@ -52,8 +52,6 @@ Model <- Model[2:6]
 Model <- Model[order(Model$Day),]
 
 write.csv(Model, paste(ModelType,"-",2012,sep = ""))
-
-
 
 
 ModelType <- "E"
