@@ -25,9 +25,21 @@ Three of the databases that contain relevant information on large point sources 
 As an argumentative means for the facilitation of more detailed emissions databases, this work presents a methodology for the characterization and comparison of two simulated $\mathrm{CO}_2$ emissions scenarios: one generated strictly from the information contained in the eGRID database and another generated from the inclusion of the point source parameters listed above to demonstrate the sensitivity of the atmospheric model and the role that these parameters have in the characteristics of the dispersion. We consider three power plants from the eGRID database: The Jeffrey Energy Center located in the Emmett Township of Kansas, the John S. Cooper Power Station located near Sumerset, Kentucky, and the TransAlta Centralia power plant located in Washington. Additional analyses are presented using the same methodology to understand the magnitude of impact that each of these parameters have on the model.
 
 # Methodology {-}
-To reflect diverse regional climates, three coal-fired power plants were selected based on their geographic locations within the United States: 1) the J.S. Cooper Plant located in Kentucky which is situated near the central region of the Appalchian Mountain range. 2) the Jeffrey Energy Center, located in central Kansas, which is one of the largest in the nation, and 3) the TransAlta Centralia Power Plant located in Washington just west of Mt. Rainier National Park, which is also a mountainous region. Gathered through various documentation, values of stack height, stack diameter, and net heat output are summarized in **figure 1** below. [@noauthor_bart_2008; @noauthor_air_2015;INSERT_CITATION]
+To reflect diverse regional climates, three coal-fired power plants were selected based on their geographic locations within the United States: 1) the J.S. Cooper Plant located in Kentucky which is situated near the central region of the Appalchian Mountain range. 2) the Jeffrey Energy Center, located in central Kansas, which is one of the largest in the nation, and 3) the TransAlta Centralia Power Plant located in Washington just west of Mt. Rainier National Park, which is also a mountainous region. Gathered through various documentation, values of stack height, stack diameter, and net heat output are summarized in **Table 1** below. [@noauthor_bart_2008; @noauthor_air_2015] INSERT_CITATION The locations of each stack was determined using Google Earth. (INSERT_CITATION)
 
-![The three power plants chosen (J.S. Cooper Plant, Jeffrey Energy Center, and TransAlta Centralia) are summarized with their locations visually demonstrated as well as their respective parameters listed.](PlantLocs.PNG) 
+| Exhaust Units | Height (m) | Diameter (m) | Heat (MW) | Emissions (Metric Tons $\mathrm{CO}_2$/Yr)|
+|---------------|------------|--------------|-----------|-------------------------------------------|
+| TransAlta Centralia Generating                                                                    |
+| 1             | 143        | 9.1          | 3.2       | 2,060,404.97                              |
+| 2             | 143        | 9.1          | 3.2       | 2,060,404.97                              |
+| Jeffrey Energy Center                                                                             |
+| 1             | 175        | 7.8          | 16.8       | 4,885,882.91                              |
+| 2             | 175        | 7.8          | 16.8       | 4,885,882.91                              |
+| 3             | 175        | 7.8          | 16.6       | 4,982,950.77                              |
+| J.S. Cooper Power Generation                                                                       |
+|1              | 244        | 5.5          | 2.4        | 1,286,502.44                              |
+
+Table: Through various documentation publicly available, the parameters of interest for this work were recorded for each power plant. The number of stacks present as well as each of their locations was determined using Google Earth.
 
 $\pagebreak$
 
