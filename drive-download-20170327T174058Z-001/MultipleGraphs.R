@@ -28,44 +28,6 @@ MRSmeasure2 <- melt(MRSmeasure2 ,  id.vars = 'Day', variable.name = 'series')
 
   
   
-  Metric1 <- data.frame(c(1:366), MRSmeasure[2])
-  colnames(Metric1)[1] <- "Day"
-  
-  ggplot(data = Metric1, aes(x = Day, y = Jeffrey.Energy.Center)) +
-    geom_point() +
-    geom_smooth(se = FALSE) +
-    labs(title = "JEC") +
-    ylim(0, 1.1*max(na.omit(MRSmeasure[,-1]))) +
-    theme_bw()
-  
-  
-  
-  Metric2 <- data.frame(c(1:366), Metric2)
-  colnames(Metric2)[1] <- "Day"
-  
-  ggplot(data = Metric2, aes(x = Day, y = Metric2)) +
-    geom_point() +
-    geom_smooth(se = FALSE) +
-    labs(title = "JSC") +
-    ylim(0, 1.1*max(na.omit(MRSmeasure[,-1]))) +
-    theme_bw()
-  
-  
-  
-  Metric3 <- data.frame(c(1:366), Metric3)
-  colnames(Metric3)[1] <- "Day"
-  
-  ggplot(data = Metric3, aes(x = Day, y = Metric3)) +
-    geom_point() +
-    geom_smooth(se = FALSE) +
-    labs(title = "TCG") +
-    ylim(0, 1.1*max(na.omit(MRSmeasure[,-1]))) +
-    theme_bw()
-  
-  
-  
-  
-  
   
   
   ##### Max Day for JEC #####
@@ -80,7 +42,7 @@ MRSmeasure2 <- melt(MRSmeasure2 ,  id.vars = 'Day', variable.name = 'series')
   PlotModel1 <- subset(JECModel1, Day == MaxDay1)
   PlotModel2 <- subset(JECModel2, Day == MaxDay1)
   
-  al1 = get_map(location = c(lon = JECeGRIDLoc[2], lat = JECeGRIDLoc[1]), zoom = 07, maptype = 'satellite')
+  al1 = get_map(location = c(lon = JECeGRIDLoc[2], lat = JECeGRIDLoc[1]), zoom = 06, maptype = 'satellite')
   al1MAP = ggmap(al1)
   al1MAP + geom_tile(data = PlotModel1, aes(x = Lon, y = Lat, fill = Conc)) +
     scale_fill_gradient(limits=c(min(min(PlotModel1$Conc), min(PlotModel2$Conc)), 
@@ -91,7 +53,7 @@ MRSmeasure2 <- melt(MRSmeasure2 ,  id.vars = 'Day', variable.name = 'series')
   
   
   
-  al1 = get_map(location = c(lon = JECeGRIDLoc[2], lat = JECeGRIDLoc[1]), zoom = 07, maptype = 'satellite')
+  al1 = get_map(location = c(lon = JECeGRIDLoc[2], lat = JECeGRIDLoc[1]), zoom = 06, maptype = 'satellite')
   al1MAP = ggmap(al1)
   al1MAP + geom_tile(data = PlotModel2, aes(x = Lon, y = Lat, fill = Conc)) +
     scale_fill_gradient(limits=c(min(min(PlotModel1$Conc), min(PlotModel2$Conc)), 
