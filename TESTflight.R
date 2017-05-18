@@ -20,8 +20,8 @@ StartYear <- 2012
 StartTime <- c(12, q, j, 00)     #Input model's start date and time (YY MM DD HH)
 
 NumOfStartLocs <- 1           #Number of starting locations
-StartLocInfo1 <- c(36.99781, -84.59239, 0, 146459.75, 23.64, 2396931.6) #Starting Location #1 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
-#StartLocInfo2 <- c(46.75513, -122.85810, 143.3, 234563, 64.52, 3192486.16) #Starting Location #2 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
+StartLocInfo1 <- c(46.75575, -122.85820, 0, 234563, 64.52, 3192486.16) #Starting Location #1 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
+StartLocInfo2 <- c(46.75513, -122.85810, 0, 234563, 64.52, 3192486.16) #Starting Location #2 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
 #StartLocInfo3 <- c(39.28681, -96.11618, 174.96, 568829.78, 47.17, 16591050.0) #Starting Location #3 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
 
 TotRunTime <- 24  #Total run time (hr)
@@ -30,11 +30,11 @@ TopLvl <- 20000.0 #Upper level of the model
 
 PolNum <- 1                       #Number of pollutant species
 NameTemp <- "CO2"                 #Name of pollutant species
-PolRat <- 147264.5                #Emission rate (mass/hr)
+PolRat <- 469126                  #Emission rate (mass/hr)
 PolDur <- 24                      #Pollutant duration (hr)
 RelStart <- c(12, q, j, 00, 00)   #Pollutant start (YY, MM, DD, HH, MM)
 
-CenterLatLon <- c(36.99781, -84.59239)        #Center the display grid (lat, lon)
+CenterLatLon <- c(46.75544, -122.85815)       #Center the display grid (lat, lon)
 Spacing <- c(0.05, 0.05)                      #Resolution of the display grid (lat, lon)
 Span <- c(80.0, 80.0)                         #size of the display grid (lat, lon)
 OutputDir <- "./"                             #Output directory
@@ -70,10 +70,10 @@ cat(paste("YYYY MM DD HH   DURATION(hhhh) #RECORDS","\n",
     paste(PolDur,"00", sep = ""),
     paste(StartLocInfo1, sep = " ", collapse = " "), "\n",
     
-    #paste(StartYear),
-    #paste(SampleStart[2:5], sep = " "),
-    #paste(PolDur,"00", sep = ""),
-    #paste(StartLocInfo2, sep = " ", collapse = " "), "\n",
+    paste(StartYear),
+    paste(SampleStart[2:5], sep = " "),
+    paste(PolDur,"00", sep = ""),
+    paste(StartLocInfo2, sep = " ", collapse = " "), "\n",
     
     #paste(StartYear),
     #paste(SampleStart[2:5], sep = " "),
@@ -85,7 +85,7 @@ cat(paste("YYYY MM DD HH   DURATION(hhhh) #RECORDS","\n",
 cat(paste(StartTime, collapse = " "), "\n",
     NumOfStartLocs, "\n",
     paste(StartLocInfo1, collapse = " "), "\n",
-    #paste(StartLocInfo2, collapse = " "), "\n",
+    paste(StartLocInfo2, collapse = " "), "\n",
     #paste(StartLocInfo3, collapse = " "), "\n",
     TotRunTime, "\n",
     VertMot, "\n",
@@ -171,8 +171,8 @@ for(q in 1:12) {
     StartTime <- c(12, q, j, 00)     #Input model's start date and time (YY MM DD HH)
     
     NumOfStartLocs <- 1           #Number of starting locations
-    StartLocInfo1 <- c(36.99781, -84.59239, 243.84, 146459.75, 0, 2396931.6) #Starting Location #1 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
-    #StartLocInfo2 <- c(46.75513, -122.85810, 143.3, 234563, 64.52, 3192486.16) #Starting Location #2 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
+    StartLocInfo1 <- c(46.75575, -122.85820, 143.3, 234563, 0, 3192486.16) #Starting Location #1 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
+    StartLocInfo2 <- c(46.75513, -122.85810, 143.3, 234563, 0, 3192486.16) #Starting Location #2 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
     #StartLocInfo3 <- c(39.28681, -96.11618, 174.96, 568829.78, 47.17, 16591050.0) #Starting Location #3 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
     
     TotRunTime <- 24  #Total run time (hr)
@@ -181,11 +181,11 @@ for(q in 1:12) {
     
     PolNum <- 1                       #Number of pollutant species
     NameTemp <- "CO2"                 #Name of pollutant species
-    PolRat <- 147264.5                #Emission rate (mass/hr)
+    PolRat <- 469126                  #Emission rate (mass/hr)
     PolDur <- 24                      #Pollutant duration (hr)
     RelStart <- c(12, q, j, 00, 00)   #Pollutant start (YY, MM, DD, HH, MM)
     
-    CenterLatLon <- c(36.99781, -84.59239)        #Center the display grid (lat, lon)
+    CenterLatLon <- c(46.75544, -122.85815)        #Center the display grid (lat, lon)
     Spacing <- c(0.05, 0.05)                      #Resolution of the display grid (lat, lon)
     Span <- c(80.0, 80.0)                         #size of the display grid (lat, lon)
     OutputDir <- "./"                             #Output directory
@@ -221,10 +221,10 @@ for(q in 1:12) {
         paste(PolDur,"00", sep = ""),
         paste(StartLocInfo1, sep = " ", collapse = " "), "\n",
         
-        #paste(StartYear),
-        #paste(SampleStart[2:5], sep = " "),
-        #paste(PolDur,"00", sep = ""),
-        #paste(StartLocInfo2, sep = " ", collapse = " "), "\n",
+        paste(StartYear),
+        paste(SampleStart[2:5], sep = " "),
+        paste(PolDur,"00", sep = ""),
+        paste(StartLocInfo2, sep = " ", collapse = " "), "\n",
         
         #paste(StartYear),
         #paste(SampleStart[2:5], sep = " "),
@@ -236,7 +236,7 @@ for(q in 1:12) {
     cat(paste(StartTime, collapse = " "), "\n",
         NumOfStartLocs, "\n",
         paste(StartLocInfo1, collapse = " "), "\n",
-        #paste(StartLocInfo2, collapse = " "), "\n",
+        paste(StartLocInfo2, collapse = " "), "\n",
         #paste(StartLocInfo3, collapse = " "), "\n",
         TotRunTime, "\n",
         VertMot, "\n",
@@ -324,8 +324,8 @@ for(q in 1:12) {
     StartTime <- c(12, q, j, 00)     #Input model's start date and time (YY MM DD HH)
     
     NumOfStartLocs <- 1           #Number of starting locations
-    StartLocInfo1 <- c(36.99781, -84.59239, 243.84, 146459.75, 23.64, 0) #Starting Location #1 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
-    #StartLocInfo2 <- c(46.75513, -122.85810, 143.3, 234563, 64.52, 3192486.16) #Starting Location #2 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
+    StartLocInfo1 <- c(46.75575, -122.85820, 0, 234563, 64.52, 3192486.16) #Starting Location #1 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
+    StartLocInfo2 <- c(46.75513, -122.85810, 0, 234563, 64.52, 3192486.16) #Starting Location #2 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
     #StartLocInfo3 <- c(39.28681, -96.11618, 174.96, 568829.78, 47.17, 16591050.0) #Starting Location #3 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
     
     TotRunTime <- 24  #Total run time (hr)
@@ -334,11 +334,11 @@ for(q in 1:12) {
     
     PolNum <- 1                       #Number of pollutant species
     NameTemp <- "CO2"                 #Name of pollutant species
-    PolRat <- 147264.5                #Emission rate (mass/hr)
+    PolRat <- 469126                  #Emission rate (mass/hr)
     PolDur <- 24                      #Pollutant duration (hr)
     RelStart <- c(12, q, j, 00, 00)   #Pollutant start (YY, MM, DD, HH, MM)
     
-    CenterLatLon <- c(36.99781, -84.59239)        #Center the display grid (lat, lon)
+    CenterLatLon <- c(46.75544, -122.85815)        #Center the display grid (lat, lon)
     Spacing <- c(0.05, 0.05)                      #Resolution of the display grid (lat, lon)
     Span <- c(80.0, 80.0)                         #size of the display grid (lat, lon)
     OutputDir <- "./"                             #Output directory
@@ -374,10 +374,10 @@ for(q in 1:12) {
         paste(PolDur,"00", sep = ""),
         paste(StartLocInfo1, sep = " ", collapse = " "), "\n",
         
-        #paste(StartYear),
-        #paste(SampleStart[2:5], sep = " "),
-        #paste(PolDur,"00", sep = ""),
-        #paste(StartLocInfo2, sep = " ", collapse = " "), "\n",
+        paste(StartYear),
+        paste(SampleStart[2:5], sep = " "),
+        paste(PolDur,"00", sep = ""),
+        paste(StartLocInfo2, sep = " ", collapse = " "), "\n",
         
         #paste(StartYear),
         #paste(SampleStart[2:5], sep = " "),
@@ -389,7 +389,7 @@ for(q in 1:12) {
     cat(paste(StartTime, collapse = " "), "\n",
         NumOfStartLocs, "\n",
         paste(StartLocInfo1, collapse = " "), "\n",
-        #paste(StartLocInfo2, collapse = " "), "\n",
+        paste(StartLocInfo2, collapse = " "), "\n",
         #paste(StartLocInfo3, collapse = " "), "\n",
         TotRunTime, "\n",
         VertMot, "\n",
