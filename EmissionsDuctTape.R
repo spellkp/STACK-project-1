@@ -54,23 +54,18 @@ Model <- Model[order(Model$Day),]
 write.csv(Model, paste(ModelType,"-",2012,sep = ""))
 
 
+
+
+
+
+
+
 ModelType <- "E"
-MonthName <- c("January",
-               "February",
-               "March",
-               "April",
-               "May",
-               "June",
-               "July",
-               "August",
-               "September",
-               "October",
-               "November",
-               "December")
 
 for (i in 1:12) {
   
-  #filepath <- paste("JSC-2012/", ModelType, "-", MonthName[i], sep = "")
+  #filepath <- paste("JSC-2012/", ModelType, "-", MonthName[i], sep = "")             #Temporary because I'm an idiot
+  filepath <- paste(ModelType, "-", MonthName[i], sep = "")
   files <- dir(path = filepath, pattern = "", full.names = TRUE, recursive = TRUE)
   
   for (j in 1:length(files)) {
