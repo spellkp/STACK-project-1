@@ -19,7 +19,7 @@ for (j in 1:MonthMatrix[q,3]) {
 StartYear <- 2012
 StartTime <- c(12, q, j, 00)     #Input model's start date and time (YY MM DD HH)
 
-NumOfStartLocs <- 1           #Number of starting locations
+NumOfStartLocs <- 2           #Number of starting locations
 StartLocInfo1 <- c(46.75575, -122.85820, 0, 234563, 64.52, 3192486.16) #Starting Location #1 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
 StartLocInfo2 <- c(46.75513, -122.85810, 0, 234563, 64.52, 3192486.16) #Starting Location #2 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
 #StartLocInfo3 <- c(39.28681, -96.11618, 174.96, 568829.78, 47.17, 16591050.0) #Starting Location #3 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
@@ -170,7 +170,7 @@ for(q in 1:12) {
     StartYear <- 2012
     StartTime <- c(12, q, j, 00)     #Input model's start date and time (YY MM DD HH)
     
-    NumOfStartLocs <- 1           #Number of starting locations
+    NumOfStartLocs <- 2           #Number of starting locations
     StartLocInfo1 <- c(46.75575, -122.85820, 143.3, 234563, 0, 3192486.16) #Starting Location #1 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
     StartLocInfo2 <- c(46.75513, -122.85810, 143.3, 234563, 0, 3192486.16) #Starting Location #2 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
     #StartLocInfo3 <- c(39.28681, -96.11618, 174.96, 568829.78, 47.17, 16591050.0) #Starting Location #3 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
@@ -323,9 +323,9 @@ for(q in 1:12) {
     StartYear <- 2012
     StartTime <- c(12, q, j, 00)     #Input model's start date and time (YY MM DD HH)
     
-    NumOfStartLocs <- 1           #Number of starting locations
-    StartLocInfo1 <- c(46.75575, -122.85820, 0, 234563, 64.52, 3192486.16) #Starting Location #1 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
-    StartLocInfo2 <- c(46.75513, -122.85810, 0, 234563, 64.52, 3192486.16) #Starting Location #2 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
+    NumOfStartLocs <- 2           #Number of starting locations
+    StartLocInfo1 <- c(46.75575, -122.85820, 143.3, 234563, 64.52, 0) #Starting Location #1 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
+    StartLocInfo2 <- c(46.75513, -122.85810, 143.3, 234563, 64.52, 0) #Starting Location #2 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
     #StartLocInfo3 <- c(39.28681, -96.11618, 174.96, 568829.78, 47.17, 16591050.0) #Starting Location #3 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
     
     TotRunTime <- 24  #Total run time (hr)
