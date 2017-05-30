@@ -1,6 +1,16 @@
 library(ggplot2)
 library(reshape2)
 library(ggmap)
+library(RColorBrewer)
+
+R <- 0.05
+
+colormap <- c("green", #"green1", "green2", "green3",
+              "yellow", #"yellow1", "yellow2", "yellow3",
+              "orange", #"orange1", "orange2", "orange3",
+              "red", #"red1", "red2", "red3",
+              "purple"#, "purple1", "purple2", "purple3"
+              )
 
 MRSmeasure <- as.data.frame(read.csv("MRSmeasure"))
 MRSmeasure2 <- as.data.frame(read.csv("MRSmeasure"))
@@ -42,25 +52,32 @@ MRSmeasure2 <- melt(MRSmeasure2 ,  id.vars = 'Day', variable.name = 'series')
   PlotModel1 <- subset(JECModel1, Day == MaxDay1)
   PlotModel2 <- subset(JECModel2, Day == MaxDay1)
   
-  al1 = get_map(location = c(lon = JECeGRIDLoc[2], lat = JECeGRIDLoc[1]), zoom = 06, maptype = 'satellite')
-  al1MAP = ggmap(al1)
-  al1MAP + geom_tile(data = PlotModel1, aes(x = Lon, y = Lat, fill = Conc)) +
-    scale_fill_gradient(limits=c(min(min(PlotModel1$Conc), min(PlotModel2$Conc)), 
-                                 max(max(PlotModel1$Conc), max(PlotModel2$Conc))), low = "yellow", high = "red") +
+  map.in1 <- get_map(location = c(lon = JECeGRIDLoc[2], lat = JECeGRIDLoc[1]), zoom = 6, maptype = "satellite")
+  map.in2 = map.in1
+  
+  plot1 <- ggmap(map.in1) %+% PlotModel1 +
+    aes(x = Lon, y = Lat, z = Conc) +
+    stat_summary_2d(fun = mean, binwidth = c(R, R)) +
+    scale_fill_gradientn(name = "Mean Concentration", colors = colormap, space = "Lab") +
+    coord_map() +
     xlab("Longitude") +
     ylab("Latitude") +
     ggtitle("Jeffrey Energy Center (2012): \n eGRID Model Dispersion Area")
   
+  plot1
   
   
-  al1 = get_map(location = c(lon = JECeGRIDLoc[2], lat = JECeGRIDLoc[1]), zoom = 06, maptype = 'satellite')
-  al1MAP = ggmap(al1)
-  al1MAP + geom_tile(data = PlotModel2, aes(x = Lon, y = Lat, fill = Conc)) +
-    scale_fill_gradient(limits=c(min(min(PlotModel1$Conc), min(PlotModel2$Conc)), 
-                                 max(max(PlotModel1$Conc), max(PlotModel2$Conc))), low = "yellow", high = "red") +
+  
+  plot2 <- ggmap(map.in2) %+% PlotModel2 +
+    aes(x = Lon, y = Lat, z = Conc) +
+    stat_summary_2d(fun = mean, binwidth = c(R, R)) +
+    scale_fill_gradientn(name = "Mean Concentration", colors = colormap, space = "Lab") +
+    coord_map() +
     xlab("Longitude") +
     ylab("Latitude") +
     ggtitle("Jeffrey Energy Center (2012): \n Full Model Dispersion Area")
+  
+  plot2
   
   
   
@@ -78,9 +95,10 @@ MRSmeasure2 <- melt(MRSmeasure2 ,  id.vars = 'Day', variable.name = 'series')
   
   al1 = get_map(location = c(lon = JSCeGRIDLoc[2], lat = JSCeGRIDLoc[1]), zoom = 06, maptype = 'satellite')
   al1MAP = ggmap(al1)
-  al1MAP + geom_tile(data = PlotModel1, aes(x = Lon, y = Lat, fill = Conc)) +
+  al1MAP + geom_tile(data = PlotModel1, aes(x = Lon, y = Lat, color = Conc)) +
     scale_fill_gradient(limits=c(min(min(PlotModel1$Conc), min(PlotModel2$Conc)), 
                                  max(max(PlotModel1$Conc), max(PlotModel2$Conc))), low = "yellow", high = "red") +
+    scale_color_gradientn(colors = c("green", "yellow", "orange", "red", "purple")) +
     xlab("Longitude") +
     ylab("Latitude") +
     ggtitle("J. S. Cooper (2012): \n eGRID Model Dispersion Area")
@@ -89,9 +107,10 @@ MRSmeasure2 <- melt(MRSmeasure2 ,  id.vars = 'Day', variable.name = 'series')
   
   al1 = get_map(location = c(lon = JSCeGRIDLoc[2], lat = JSCeGRIDLoc[1]), zoom = 06, maptype = 'satellite')
   al1MAP = ggmap(al1)
-  al1MAP + geom_tile(data = PlotModel2, aes(x = Lon, y = Lat, fill = Conc)) +
+  al1MAP + geom_tile(data = PlotModel2, aes(x = Lon, y = Lat, color = Conc)) +
     scale_fill_gradient(limits=c(min(min(PlotModel1$Conc), min(PlotModel2$Conc)), 
                                  max(max(PlotModel1$Conc), max(PlotModel2$Conc))), low = "yellow", high = "red") +
+    scale_color_gradientn(colors = c("green", "yellow", "orange", "red", "purple")) +
     xlab("Longitude") +
     ylab("Latitude") +
     ggtitle("J. S. Cooper (2012): \n Full Model Dispersion Area")
@@ -112,9 +131,10 @@ MRSmeasure2 <- melt(MRSmeasure2 ,  id.vars = 'Day', variable.name = 'series')
   
   al1 = get_map(location = c(lon = TCGeGRIDLoc[2], lat = TCGeGRIDLoc[1]), zoom = 05, maptype = 'satellite')
   al1MAP = ggmap(al1)
-  al1MAP + geom_tile(data = PlotModel1, aes(x = Lon, y = Lat, fill = Conc)) +
+  al1MAP + geom_tile(data = PlotModel1, aes(x = Lon, y = Lat, color = Conc)) +
     scale_fill_gradient(limits=c(min(min(PlotModel1$Conc), min(PlotModel2$Conc)), 
                                  max(max(PlotModel1$Conc), max(PlotModel2$Conc))), low = "yellow", high = "red") +
+    scale_color_gradientn(colors = c("green", "yellow", "orange", "red", "purple")) +
     xlab("Longitude") +
     ylab("Latitude") +
     ggtitle("TransAlta Centralia Generation (2012): \n eGRID Model Dispersion Area")
@@ -123,19 +143,11 @@ MRSmeasure2 <- melt(MRSmeasure2 ,  id.vars = 'Day', variable.name = 'series')
   
   al1 = get_map(location = c(lon = TCGeGRIDLoc[2], lat = TCGeGRIDLoc[1]), zoom = 05, maptype = 'satellite')
   al1MAP = ggmap(al1)
-  al1MAP + geom_tile(data = PlotModel2, aes(x = Lon, y = Lat, fill = Conc)) +
+  al1MAP + geom_tile(data = PlotModel2, aes(x = Lon, y = Lat, color = Conc)) +
     scale_fill_gradient(limits=c(min(min(PlotModel1$Conc), min(PlotModel2$Conc)), 
                                  max(max(PlotModel1$Conc), max(PlotModel2$Conc))), low = "yellow", high = "red") +
+    scale_color_gradientn(colors = c("green", "yellow", "orange", "red", "purple")) +
     xlab("Longitude") +
     ylab("Latitude") +
     ggtitle("TransAlta Centralia Generation (2012): \n Full Model Dispersion Area")
     
-    
-    
-    
-    
-    
-
-  
-  
-  
