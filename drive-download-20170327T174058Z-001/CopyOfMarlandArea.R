@@ -2,13 +2,13 @@ library(reshape2)
 library(ggplot2)
 library(ggmap)
 
-JECModel1 <- read.csv("JEC-A-2012-20km")[2:6]
+JECModel1 <- read.csv("JEC-B-2012-20km")[2:6]
 JECModel2 <- read.csv("JEC-E-2012-20km")[2:6]
 
-JSCModel1 <- read.csv("JSC-A-2012-20km")[2:6]
+JSCModel1 <- read.csv("JSC-B-2012-20km")[2:6]
 JSCModel2 <- read.csv("JSC-E-2012-20km")[2:6]
 
-TCGModel1 <- read.csv("TCG-A-2012-20km")[2:6]
+TCGModel1 <- read.csv("TCG-B-2012-20km")[2:6]
 TCGModel2 <- read.csv("TCG-E-2012-20km")[2:6]
 
 
@@ -194,134 +194,8 @@ for (i in StartDay:EndDay) {
   
 }
 
-
-##### Metric Plots #####
-
-Metric1 <- data.frame(c(1:366), Metric1)
-colnames(Metric1)[1] <- "Day"
-
-ggplot(data = Metric1, aes(x = Day, y = Metric1)) +
-  geom_point() +
-  geom_smooth(se = FALSE) +
-  labs(title = "JEC") +
-  ylim(-0.00025, 0.00025) +
-  theme_bw()
-
-
-
-Metric2 <- data.frame(c(1:366), Metric2)
-colnames(Metric2)[1] <- "Day"
-
-ggplot(data = Metric2, aes(x = Day, y = Metric2)) +
-  geom_point() +
-  geom_smooth(se = FALSE) +
-  labs(title = "JSC") +
-  ylim(-0.00025, 0.00025) +
-  theme_bw()
-
-
-
-Metric3 <- data.frame(c(1:366), Metric3)
-colnames(Metric3)[1] <- "Day"
-
-ggplot(data = Metric3, aes(x = Day, y = Metric3)) +
-  geom_point() +
-  geom_smooth(se = FALSE) +
-  labs(title = "TCG") +
-  ylim(-0.00025, 0.00025) +
-  theme_bw()
-
 ###########
-
-##### Max Day for JEC #####
-
-MaxDay1 <- which.max(abs(Metric1$Metric1))
-
-PlotModel1 <- subset(JECModel1, Day == MaxDay1)
-PlotModel2 <- subset(JECModel2, Day == MaxDay1)
-
-al1 = get_map(location = c(lon = JECeGRIDLoc[2], lat = JECeGRIDLoc[1]), zoom = 05, maptype = 'satellite')
-al1MAP = ggmap(al1)
-al1MAP + geom_tile(data = PlotModel1, aes(x = Lon, y = Lat, fill = Conc)) +
-  scale_fill_gradient(limits=c(min(min(PlotModel1$Conc), min(PlotModel2$Conc)), 
-                               max(max(PlotModel1$Conc), max(PlotModel2$Conc))), low = "yellow", high = "red") +
-  xlab("Longitude") +
-  ylab("Latitude") +
-  ggtitle("Jeffrey Energy Center (2012): \n eGRID Model Dispersion Area")
-
-
-
-al1 = get_map(location = c(lon = JECeGRIDLoc[2], lat = JECeGRIDLoc[1]), zoom = 05, maptype = 'satellite')
-al1MAP = ggmap(al1)
-al1MAP + geom_tile(data = PlotModel2, aes(x = Lon, y = Lat, fill = Conc)) +
-  scale_fill_gradient(limits=c(min(min(PlotModel1$Conc), min(PlotModel2$Conc)), 
-                               max(max(PlotModel1$Conc), max(PlotModel2$Conc))), low = "yellow", high = "red") +
-  xlab("Longitude") +
-  ylab("Latitude") +
-  ggtitle("Jeffrey Energy Center (2012): \n Full Model Dispersion Area")
-
-
-
-##### Max Day JSC #####
-
-
-
-MaxDay2 <- which.max(abs(Metric2$Metric2))
-
-PlotModel1 <- subset(JSCModel1, Day == MaxDay2)
-PlotModel2 <- subset(JSCModel2, Day == MaxDay2)
-
-al1 = get_map(location = c(lon = JSCeGRIDLoc[2], lat = JSCeGRIDLoc[1]), zoom = 07, maptype = 'satellite')
-al1MAP = ggmap(al1)
-al1MAP + geom_tile(data = PlotModel1, aes(x = Lon, y = Lat, fill = Conc)) +
-  scale_fill_gradient(limits=c(min(min(PlotModel1$Conc), min(PlotModel2$Conc)), 
-                               max(max(PlotModel1$Conc), max(PlotModel2$Conc))), low = "yellow", high = "red") +
-  xlab("Longitude") +
-  ylab("Latitude") +
-  ggtitle("J. S. Cooper (2012): \n eGRID Model Dispersion Area")
-
-
-
-al1 = get_map(location = c(lon = JSCeGRIDLoc[2], lat = JSCeGRIDLoc[1]), zoom = 07, maptype = 'satellite')
-al1MAP = ggmap(al1)
-al1MAP + geom_tile(data = PlotModel2, aes(x = Lon, y = Lat, fill = Conc)) +
-  scale_fill_gradient(limits=c(min(min(PlotModel1$Conc), min(PlotModel2$Conc)), 
-                               max(max(PlotModel1$Conc), max(PlotModel2$Conc))), low = "yellow", high = "red") +
-  xlab("Longitude") +
-  ylab("Latitude") +
-  ggtitle("J. S. Cooper (2012): \n Full Model Dispersion Area")
-
-
-
-##### Max Day for TCG #####
-
-
-
-MaxDay3 <- which.max(abs(Metric3$Metric3))
-
-PlotModel1 <- subset(TCGModel1, Day == MaxDay3)
-PlotModel2 <- subset(TCGModel2, Day == MaxDay3)
-
-al1 = get_map(location = c(lon = TCGeGRIDLoc[2], lat = TCGeGRIDLoc[1]), zoom = 06, maptype = 'satellite')
-al1MAP = ggmap(al1)
-al1MAP + geom_tile(data = PlotModel1, aes(x = Lon, y = Lat, fill = Conc)) +
-  scale_fill_gradient(limits=c(min(min(PlotModel1$Conc), min(PlotModel2$Conc)), 
-                               max(max(PlotModel1$Conc), max(PlotModel2$Conc))), low = "yellow", high = "red") +
-  xlab("Longitude") +
-  ylab("Latitude") +
-  ggtitle("TransAlta Centralia Generation (2012): \n eGRID Model Dispersion Area")
-
-
-
-al1 = get_map(location = c(lon = TCGeGRIDLoc[2], lat = TCGeGRIDLoc[1]), zoom = 06, maptype = 'satellite')
-al1MAP = ggmap(al1)
-al1MAP + geom_tile(data = PlotModel2, aes(x = Lon, y = Lat, fill = Conc)) +
-  scale_fill_gradient(limits=c(min(min(PlotModel1$Conc), min(PlotModel2$Conc)), 
-                               max(max(PlotModel1$Conc), max(PlotModel2$Conc))), low = "yellow", high = "red") +
-  xlab("Longitude") +
-  ylab("Latitude") +
-  ggtitle("TransAlta Centralia Generation (2012): \n Full Model Dispersion Area")
 
 ##### Save Data Frame #####
 Output <- data.frame(Metric1$Metric1, Metric2$Metric2, Metric3$Metric3)
-write.csv(Output, "MRSmeasure")
+write.csv(Output, "MRSmeasureB")
