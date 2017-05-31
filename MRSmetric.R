@@ -199,7 +199,7 @@ for (i in StartDay:EndDay) {
 ###########
 
 ##### Save Data Frame #####
-Output <- data.frame(Metric1$Metric1, Metric2$Metric2, Metric3$Metric3)
+Output <- data.frame(Metric1, Metric2, Metric3)
 write.csv(Output, "MRSmeasureB")
 
 
@@ -403,7 +403,7 @@ for (i in StartDay:EndDay) {
 ###########
 
 ##### Save Data Frame #####
-Output <- data.frame(Metric1$Metric1, Metric2$Metric2, Metric3$Metric3)
+Output <- data.frame(Metric1, Metric2, Metric3)
 write.csv(Output, "MRSmeasureC")
 
 
@@ -609,5 +609,5 @@ for (i in StartDay:EndDay) {
 ###########
 
 ##### Save Data Frame #####
-Output <- data.frame(Metric1$Metric1, Metric2$Metric2, Metric3$Metric3)
+Output <- data.frame(Metric1, Metric2, Metric3)
 write.csv(Output, "MRSmeasureD")
