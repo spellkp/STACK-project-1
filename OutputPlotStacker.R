@@ -45,7 +45,7 @@ plot(MRSmeasureB$`J. S. Cooper Plant` ~ MRSmeasureD$`J. S. Cooper Plant`)
 plot(MRSmeasureC$`J. S. Cooper Plant` ~ MRSmeasureD$`J. S. Cooper Plant`)
 
 
-plot(MRSmeasureB$`TransAlta Centralia Generating` ~ MRSmeasureC`TransAlta Centralia Generating`)
+plot(MRSmeasureB$`TransAlta Centralia Generating` ~ MRSmeasureC$`TransAlta Centralia Generating`)
 plot(MRSmeasureB$`TransAlta Centralia Generating` ~ MRSmeasureD$`TransAlta Centralia Generating`)
 plot(MRSmeasureC$`TransAlta Centralia Generating` ~ MRSmeasureD$`TransAlta Centralia Generating`)
 
