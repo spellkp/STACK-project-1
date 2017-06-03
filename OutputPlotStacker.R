@@ -35,21 +35,6 @@ MRSmeasure4 <- melt(MRSmeasureD ,  id.vars = 'Day', variable.name = 'series')
 
 ################## Additional Analyses #####################
 
-plot(MRSmeasureB$`Jeffrey Energy Center` ~ MRSmeasureC$`Jeffrey Energy Center`)
-plot(MRSmeasureB$`Jeffrey Energy Center` ~ MRSmeasureD$`Jeffrey Energy Center`)
-plot(MRSmeasureC$`Jeffrey Energy Center` ~ MRSmeasureD$`Jeffrey Energy Center`)
-
-
-plot(MRSmeasureB$`J. S. Cooper Plant` ~ MRSmeasureC$`J. S. Cooper Plant`)
-plot(MRSmeasureB$`J. S. Cooper Plant` ~ MRSmeasureD$`J. S. Cooper Plant`)
-plot(MRSmeasureC$`J. S. Cooper Plant` ~ MRSmeasureD$`J. S. Cooper Plant`)
-
-
-plot(MRSmeasureB$`TransAlta Centralia Generating` ~ MRSmeasureC$`TransAlta Centralia Generating`)
-plot(MRSmeasureB$`TransAlta Centralia Generating` ~ MRSmeasureD$`TransAlta Centralia Generating`)
-plot(MRSmeasureC$`TransAlta Centralia Generating` ~ MRSmeasureD$`TransAlta Centralia Generating`)
-
-
 ScaledMax <- 1.05*max(na.omit(MRSmeasureA[,-1]), na.omit(MRSmeasureB[,-1]), na.omit(MRSmeasureC[,-1]), na.omit(MRSmeasureD[,-1]))
 
 ggplot(MRSmeasure1, aes(Day, value)) + 
