@@ -54,7 +54,6 @@ ScaledMax <- 1.05*max(na.omit(MRSmeasureA[,-1]), na.omit(MRSmeasureB[,-1]), na.o
 
 ggplot(MRSmeasure1, aes(Day, value)) + 
   geom_line() + 
-  geom_smooth(se = FALSE) +
   ylim(0, ScaledMax) +
   ylab("Metric Value (%)") +
   facet_grid(series ~ .) +
@@ -62,8 +61,7 @@ ggplot(MRSmeasure1, aes(Day, value)) +
   theme_bw()
 
 ggplot(MRSmeasure2, aes(Day, value)) + 
-  geom_point() + 
-  geom_smooth(se = FALSE) +
+  geom_line() + 
   ylim(0, ScaledMax) +
   ylab("Metric Value (%)") +
   facet_grid(series ~ .) +
@@ -71,8 +69,7 @@ ggplot(MRSmeasure2, aes(Day, value)) +
   theme_bw()
 
 ggplot(MRSmeasure3, aes(Day, value)) + 
-  geom_point() + 
-  geom_smooth(se = FALSE) +
+  geom_line() + 
   ylim(0, ScaledMax) +
   ylab("Metric Value (%)") +
   facet_grid(series ~ .) +
@@ -80,8 +77,7 @@ ggplot(MRSmeasure3, aes(Day, value)) +
   theme_bw()
 
 ggplot(MRSmeasure4, aes(Day, value)) + 
-  geom_point() + 
-  geom_smooth(se = FALSE) +
+  geom_line() + 
   ylim(0, ScaledMax) +
   ylab("Metric Value (%)") +
   facet_grid(series ~ .) +
