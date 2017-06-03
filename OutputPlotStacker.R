@@ -53,7 +53,7 @@ plot(MRSmeasureC$`TransAlta Centralia Generating` ~ MRSmeasureD$`TransAlta Centr
 ScaledMax <- 1.05*max(na.omit(MRSmeasureA[,-1]), na.omit(MRSmeasureB[,-1]), na.omit(MRSmeasureC[,-1]), na.omit(MRSmeasureD[,-1]))
 
 ggplot(MRSmeasure1, aes(Day, value)) + 
-  geom_point() + 
+  geom_line() + 
   geom_smooth(se = FALSE) +
   ylim(0, ScaledMax) +
   ylab("Metric Value (%)") +
