@@ -22,7 +22,7 @@ for(q in 1:12) {
     StartTime <- c(12, q, j, 00)     #Input model's start date and time (YY MM DD HH)
     
     NumOfStartLocs <- 1           #Number of starting locations
-    StartLocInfo1 <- c(36.99781, -84.59239, 200, 340000) #Starting Location #1 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
+    StartLocInfo1 <- c(46.75544, -122.85815, 200, 340000) #Starting Location #1 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
     
     TotRunTime <- 24  #Total run time (hr)
     VertMot <- 0      #Method of vertical motion
@@ -167,7 +167,7 @@ for(q in 1:12) {
     StartTime <- c(12, q, j, 00)     #Input model's start date and time (YY MM DD HH)
     
     NumOfStartLocs <- 1           #Number of starting locations
-    StartLocInfo1 <- c(36.99781, -84.59239, 0, 340000, 75, 10000000) #Starting Location #1 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
+    StartLocInfo1 <- c(46.75544, -122.85815, 0, 340000, 75, 10000000) #Starting Location #1 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
     
     TotRunTime <- 24  #Total run time (hr)
     VertMot <- 0      #Method of vertical motion
@@ -179,7 +179,7 @@ for(q in 1:12) {
     PolDur <- 24                      #Pollutant duration (hr)
     RelStart <- c(12, q, j, 00, 00)   #Pollutant start (YY, MM, DD, HH, MM)
     
-    CenterLatLon <- c(36.99781, -84.59239)       #Center the display grid (lat, lon)
+    CenterLatLon <- c(46.75544, -122.85815)         #Center the display grid (lat, lon)
     Spacing <- c(0.05, 0.05)                      #Resolution of the display grid (lat, lon)
     Span <- c(80.0, 80.0)                         #size of the display grid (lat, lon)
     OutputDir <- "./"                             #Output directory
@@ -304,7 +304,7 @@ StartYear <- 2012
 StartTime <- c(12, q, j, 00)     #Input model's start date and time (YY MM DD HH)
 
 NumOfStartLocs <- 1           #Number of starting locations
-StartLocInfo1 <- c(36.99781, -84.59239, 200, 340000, 0, 10000000) #Starting Location #1 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
+StartLocInfo1 <- c(46.75544, -122.85815, 200, 340000, 0, 10000000) #Starting Location #1 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
 
 TotRunTime <- 24  #Total run time (hr)
 VertMot <- 0      #Method of vertical motion
@@ -316,7 +316,7 @@ PolRat <- 340000                  #Emission rate (mass/hr)
 PolDur <- 24                      #Pollutant duration (hr)
 RelStart <- c(12, q, j, 00, 00)   #Pollutant start (YY, MM, DD, HH, MM)
 
-CenterLatLon <- c(36.99781, -84.59239)       #Center the display grid (lat, lon)
+CenterLatLon <- c(46.75544, -122.85815)       #Center the display grid (lat, lon)
 Spacing <- c(0.05, 0.05)                      #Resolution of the display grid (lat, lon)
 Span <- c(80.0, 80.0)                         #size of the display grid (lat, lon)
 OutputDir <- "./"                             #Output directory
@@ -441,7 +441,7 @@ for(q in 1:12) {
     StartTime <- c(12, q, j, 00)     #Input model's start date and time (YY MM DD HH)
     
     NumOfStartLocs <- 1           #Number of starting locations
-    StartLocInfo1 <- c(36.99781, -84.59239, 200, 340000, 75, 0) #Starting Location #1 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
+    StartLocInfo1 <- c(46.75544, -122.85815, 200, 340000, 75, 0) #Starting Location #1 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
     
     TotRunTime <- 24  #Total run time (hr)
     VertMot <- 0      #Method of vertical motion
@@ -453,7 +453,7 @@ for(q in 1:12) {
     PolDur <- 24                      #Pollutant duration (hr)
     RelStart <- c(12, q, j, 00, 00)   #Pollutant start (YY, MM, DD, HH, MM)
     
-    CenterLatLon <- c(36.99781, -84.59239)       #Center the display grid (lat, lon)
+    CenterLatLon <- c(46.75544, -122.85815)         #Center the display grid (lat, lon)
     Spacing <- c(0.05, 0.05)                      #Resolution of the display grid (lat, lon)
     Span <- c(80.0, 80.0)                         #size of the display grid (lat, lon)
     OutputDir <- "./"                             #Output directory
@@ -577,7 +577,7 @@ for(q in 1:12) {
     StartTime <- c(12, q, j, 00)     #Input model's start date and time (YY MM DD HH)
     
     NumOfStartLocs <- 1           #Number of starting locations
-    StartLocInfo1 <- c(36.99781, -84.59239, 200, 340000, 75, 10000000) #Starting Location #1 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
+    StartLocInfo1 <- c(46.75544, -122.85815, 200, 340000, 75, 10000000) #Starting Location #1 Parameters (lat, lon, height(AGL), emission rate(mass/h), area(m^2), heat(W))
     
     TotRunTime <- 24  #Total run time (hr)
     VertMot <- 0      #Method of vertical motion
@@ -589,7 +589,7 @@ for(q in 1:12) {
     PolDur <- 24                      #Pollutant duration (hr)
     RelStart <- c(12, q, j, 00, 00)   #Pollutant start (YY, MM, DD, HH, MM)
     
-    CenterLatLon <- c(36.99781, -84.59239)       #Center the display grid (lat, lon)
+    CenterLatLon <- c(46.75544, -122.85815)       #Center the display grid (lat, lon)
     Spacing <- c(0.05, 0.05)                      #Resolution of the display grid (lat, lon)
     Span <- c(80.0, 80.0)                         #size of the display grid (lat, lon)
     OutputDir <- "./"                             #Output directory
