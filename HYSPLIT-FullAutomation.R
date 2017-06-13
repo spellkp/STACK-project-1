@@ -10,21 +10,26 @@
 
 
 
-# Ask user for the year of interest, number of locations to be considered and the information at each location
+# Ask user for the year of interest, number of locations to be considered and the information at each location.
 if( interactive() ) {
+
+    EDASpath <- readline(prompt = "This script uses EDAS - 40km data. Include the EDAS directory here - ")  
   
     StartYear <- readline(prompt = "Input Year (YYYY >= 2000) - ")
-    
-    if(StartYear < 2000) {readline(prompt = "Not a valid year... Try again... -_- ")} else {}
+        
+        # For incorrect years
+        if(StartYear < 2000) {readline(prompt = "Not a valid year... Try again... -_- ")} else {}
     
     NumberOfLocations <- as.numeric(readline(prompt = "Enter the number of emissions sources - "))
   
+    # initialize an empty dataframe
     LocationInformation <- data.frame()
   
     for(i in 1:NumberOfLocations) {
     
       LocationInformation[i, 1] <- readline(paste(prompt = "Provide a three letter title for location", i, "-", " ", sep = " "))
-      LocationInformation[i, 2] <- readline(paste(prompt = "How many exhaust points are there at location", i, "-", " ", sep = " "))
+      LocationInformation[i, 2] <- readline(paste(prompt = "What is the eGRID emission value for", LocationInformation[i,1],"?", sep = " "))
+      LocationInformation[i, 3] <- readline(paste(prompt = "How many exhaust points are there at location", i, "-", " ", sep = " "))
 
     }
     
@@ -32,7 +37,7 @@ if( interactive() ) {
       
       StackParams <- data.frame()
       
-        for(j in 1:LocationInformation[i, 2]) {
+        for(j in 1:LocationInformation[i, 3]) {
         
             Latitude <- c(readline(paste(prompt = "Information is needed for stack", " ", j, " ", "at plant", " ", LocationInformation[i, 1], ".", "\n",
                            "Please provide the stack latitude (deg) - ", sep = "")))
@@ -52,13 +57,14 @@ if( interactive() ) {
             Heat <- c(readline(paste(prompt = "Information is needed for stack", " ", j, " ", "at plant", " ", LocationInformation[i, 1], ".", "\n",
                                          "Please provide the net stack heat (W) - ", sep = "")))
       
+            temp <- c(Latitude, Longitude, Height, EmisRate, Area, Heat)
+            
+            StackParams <- rbind(StackParams, temp)
         }
       
-        temp <- c(Latitude, Longitude, Height, EmisRate, Area, Heat)
+        names(StackParams) <- c("Latitude", "Longitude", "Height", "EmisRate", "Area", "Heat")
         
-        StackParams <- rbind(StackParams, temp)
-        
-        names(StackParams) <- c("Lat", "Lon", "Hgt", "Rate", "Area", "Heat")
+        assign(paste(LocationInformation[i, 1],"-",StackParams, sep = ""))
           
      }
   
