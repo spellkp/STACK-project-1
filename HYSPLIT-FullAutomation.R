@@ -19,9 +19,6 @@ while(Input == FALSE) {
        EDASpath <- readline(prompt = "This script uses EDAS - 40km data. Include the EDAS directory here - ")  
   
        StartYear <- as.numeric(readline(prompt = "Input Year (YYYY > 2000) - "))
-        
-           # For incorrect years
-           if(StartYear < 2000) {readline(prompt = "Not a valid year... Try again... -_- ")} else {}
     
        NumberOfLocations <- as.numeric(readline(prompt = "Enter the number of emissions sources - "))
   
@@ -129,31 +126,39 @@ ChemicalParameters4 <- as.numeric(c(ParticleRadioactive, ParticleResuspensionFac
 
 
 # Non-user inputs
-
 StartTime <- c(StartYear - 2000, q, j, 00, 00)
 CenterLatitudeLongitude <- c( mean(), mean() )
+
+
+
+### Constructing the CONTROL file for HYSPLIT ###
+
+# The *_StackParams file will be needed for each point source.
+for(i in 1:NumberOfLocations) {
+  
+    assign("name", cat(LocationInformation[i,1], "_StackParams", sep = ""))
 
 cat(
   
     paste(StartTime[1:4], collapse = " "),"\n",
-    NumberOfLocations,"\n",
+    NumberOfLocations, "\n",
     
     sep = "", file = "deleteme"
     
 )
 
-##################################### Area Under Construction #######################################
 
+# This break in the CONTROL file is where multiple stacks (if applicaple) get added.
+# This is achieved by appending the portion of the CONTROL file generated from the above code.
 for(i in 1:nrow(testing)) {
   
-  line <- paste(testing[i,])
-  
+  line <- paste(testing[i,1], testing[i,2], sep = " ")
   write(line, file = "deleteme", append = TRUE)
   
 }
 
-#####################################################################################################
 
+# The remaining parameters of the CONTROL file are added here by appending the portion of the CONTROL file generated above.
 cat(
     
     24, "\n",     # Total run time (hrs)
@@ -192,14 +197,14 @@ cat(
     paste(ChemicalParameters3, collapse = " "), "\n",
     paste(ChemicalParameters4, collapse = " "), "\n",
     
-    sep = "", file = "deleteme"
+    sep = "", file = "deleteme", append = TRUE
     
 )
 
 
 
 
-
+}
 
 
 
