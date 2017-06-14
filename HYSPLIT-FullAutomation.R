@@ -138,7 +138,23 @@ cat(
     paste(StartTime[1:4], collapse = " "),"\n",
     NumberOfLocations,"\n",
     
-    # STACK INFORMATION GOES HERE
+    sep = "", file = "deleteme"
+    
+)
+
+##################################### Area Under Construction #######################################
+
+for(i in 1:nrow(testing)) {
+  
+  line <- paste(testing[i,])
+  
+  write(line, file = "deleteme", append = TRUE)
+  
+}
+
+#####################################################################################################
+
+cat(
     
     24, "\n",     # Total run time (hrs)
     0, "\n",      # Method of vertical motion
