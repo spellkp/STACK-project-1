@@ -11,7 +11,7 @@
 
 
 # Ask user for the year of interest, number of locations to be considered and the information at each location.
-Input <- FALSE
+Input <- TRUE
 while(Input == FALSE) {
 
     if( interactive() ) {
@@ -126,7 +126,18 @@ ChemicalParameters4 <- as.numeric(c(ParticleRadioactive, ParticleResuspensionFac
 
 
 # Non-user inputs
-StartTime <- c(StartYear - 2000, q, j, 00, 00)
+
+# LOOP MODEL TYPE (A-F)
+ModelType <- c("A", "B", "C", "D", "E", "F")
+
+# A- eGRID Model
+# B- 0m Stack Height
+# C- 0m Stack Diameter
+# D- 0W Net Heat (Om/s Exit Velocity)
+# E- "Full" Model
+# F- Modified eGRID Model (EMITIMES file)
+
+StartTime <- c(StartYear - 2000, q, m, 00, 00)
 CenterLatitudeLongitude <- c( mean(), mean() )
 
 
@@ -136,73 +147,96 @@ CenterLatitudeLongitude <- c( mean(), mean() )
 # The *_StackParams file will be needed for each point source.
 for(i in 1:NumberOfLocations) {
   
-    assign("name", cat(LocationInformation[i,1], "_StackParams", sep = ""))
+    eval(parse(text = paste("StackInfo", "<- ", LocationInformation[i,1], "_StackParams", sep = "")))
 
-cat(
+    CenterLatitudeLongitude <- c( mean(StackInfo[,1]), mean(StackInfo[,2]) )
   
-    paste(StartTime[1:4], collapse = " "),"\n",
-    NumberOfLocations, "\n",
+    cat(
+  
+        paste(StartTime[1:4], collapse = " "),"\n",
+        NumberOfLocations, "\n",
     
-    sep = "", file = "deleteme"
+        sep = "", file = "deleteme"
     
-)
+    )
 
 
-# This break in the CONTROL file is where multiple stacks (if applicaple) get added.
-# This is achieved by appending the portion of the CONTROL file generated from the above code.
-for(i in 1:nrow(testing)) {
+    # This break in the CONTROL file is where multiple stacks (if applicaple) get added.
+    # This is achieved by appending the portion of the CONTROL file generated from the above code.
+    for(j in 1:nrow(StackInfo)) {
+        
+        if(ModelType = "E") {
+      
+            line <- paste(StackInfo[j,1], StackInfo[j,2], StackInfo[j,3], StackInfo[j,4], StackInfo[j,5], StackInfo[j,6], sep = " ")
+            write(line, file = "deleteme", append = TRUE)
+        
+        } else if(ModelType = "B") {
+          
+              line <- paste(StackInfo[j,1], StackInfo[j,2], 0, StackInfo[j,4], StackInfo[j,5], StackInfo[j,6], sep = " ")
+              write(line, file = "deleteme", append = TRUE)
+          
+        } else if(ModelType = "C") {
+          
+              line <- paste(StackInfo[j,1], StackInfo[j,2], StackInfo[j,3], StackInfo[j,4], 0, StackInfo[j,6], sep = " ")
+              write(line, file = "deleteme", append = TRUE)
+          
+        } else if(ModelType = "D") {
+          
+              line <- paste(StackInfo[j,1], StackInfo[j,2], StackInfo[j,3], StackInfo[j,4], StackInfo[j,5], 0, sep = " ")
+              write(line, file = "deleteme", append = TRUE)
+          
+        } else if(ModelType = "F") {
+          
+              line <- paste(StackInfo[j,1], StackInfo[j,2], 0, StackInfo[j,4], 0, 0, sep = " ")
+              write(line, file = "deleteme", append = TRUE)
+          
+        }
   
-  line <- paste(testing[i,1], testing[i,2], sep = " ")
-  write(line, file = "deleteme", append = TRUE)
-  
-}
+    }
 
 
 # The remaining parameters of the CONTROL file are added here by appending the portion of the CONTROL file generated above.
-cat(
+    cat(
     
-    24, "\n",     # Total run time (hrs)
-    0, "\n",      # Method of vertical motion
-    20000, "\n",  # Top of the model (m)
-    2, "\n",      # Number of EDAS files loaded in
-    #EDAS path 1
-    #EDAS path 2
-    1, "\n",      # Number of pollutants
-    Pollutant, "\n",
+        24, "\n",     # Total run time (hrs)
+        0, "\n",      # Method of vertical motion
+        20000, "\n",  # Top of the model (m)
+        2, "\n",      # Number of EDAS files loaded in
+        #EDAS path 1
+        #EDAS path 2
+        1, "\n",      # Number of pollutants
+        Pollutant, "\n",
     
-    #eGRID EMISSION VALUE
+        #eGRID EMISSION VALUE
     
-    24, "\n",
-    paste(StartTime, collapse = " "), "\n",
-    1, "\n",      # Number of grids = number of pollutants
+        24, "\n",
+        paste(StartTime, collapse = " "), "\n",
+        1, "\n",      # Number of grids = number of pollutants
     
-    #CENTER LATITUDE AND LONGITUDE
+        #CENTER LATITUDE AND LONGITUDE
     
-    paste( c(0.05, 0.05), collapse = " "), "\n",     # Resolution of the grid (lat, lon)
-    paste( c(80.0, 80.0), collapse = " "), "\n",     # Size of the display grid (lat, lon)
+        paste( c(0.05, 0.05), collapse = " "), "\n",     # Resolution of the grid (lat, lon)
+        paste( c(80.0, 80.0), collapse = " "), "\n",     # Size of the display grid (lat, lon)
     
-    #OUTPUT DIRECTORY
+        #OUTPUT DIRECTORY
     
-    #OUTPUT NAME
+        #OUTPUT NAME
     
-    paste( c(1, 20000), collapse = " "), "\n",       # Vertical levels, top of model
-    paste(StartTime, collapse = " "), "\n",
+        paste( c(1, 20000), collapse = " "), "\n",       # Vertical levels, top of model
+        paste(StartTime, collapse = " "), "\n",
     
-    #SAMPLE STOP
+        #SAMPLE STOP
     
-    paste( c(00, 24, 00), collapse = " "), "\n",     # Analysis method - averaging
-    1, "\n",      # Number of particles for deposition
-    paste(ChemicalParameters1, collapse = " "), "\n",
-    paste(ChemicalParameters2, collapse = " "), "\n",
-    paste(ChemicalParameters3, collapse = " "), "\n",
-    paste(ChemicalParameters4, collapse = " "), "\n",
+        paste( c(00, 24, 00), collapse = " "), "\n",     # Analysis method - averaging
+        1, "\n",      # Number of particles for deposition
+        paste(ChemicalParameters1, collapse = " "), "\n",
+        paste(ChemicalParameters2, collapse = " "), "\n",
+        paste(ChemicalParameters3, collapse = " "), "\n",
+        paste(ChemicalParameters4, collapse = " "), "\n",
     
-    sep = "", file = "deleteme", append = TRUE
+        sep = "", file = "deleteme", append = TRUE
     
-)
-
-
-
+    )
 
 }
 
