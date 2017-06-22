@@ -230,7 +230,7 @@ for(z in 1:6) {     # Begins the "Model Type" loop
               paste( c(0.05, 0.05), collapse = " "), "\n",     # Resolution of the grid (lat, lon)
               paste( c(80.0, 80.0), collapse = " "), "\n",     # Size of the display grid (lat, lon)
     
-              #OUTPUT DIRECTORY
+              #OUTPUT DIRECTORY - update to save files to respective directory names.
     
               paste(LocationInformation[i,1], "-", ModType, StartTime[1], StartTime[2], StartTime[3], sep = ""),     # This is the individual file name
     
