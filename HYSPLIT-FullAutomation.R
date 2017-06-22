@@ -125,7 +125,13 @@ ChemicalParameters3 <- as.numeric(c(ParticleHenryConstant, ParticleInCloud, Part
 ChemicalParameters4 <- as.numeric(c(ParticleRadioactive, ParticleResuspensionFactor))
 
 
-# Non-user inputs
+# User information completed
+
+# Constructing the time management dataframe
+
+MonthNames <- c("jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec")
+DaysInMonth <- c(31, if (StartYear %% 4 == 0) {29} else{28}, 31, 30, 31, 30, 31, 31, 30, 31, 30, 30)     # One less day in December to avoid needing an additional met file
+MonthData <- data.frame(MonthNames, DaysInMonth)
 
 # LOOP MODEL TYPE (A-F)
 ModelType <- c("A", "B", "C", "D", "E", "F")
@@ -137,114 +143,122 @@ ModelType <- c("A", "B", "C", "D", "E", "F")
 # E- "Full" Model
 # F- Modified eGRID Model (EMITIMES file)
 
-StartTime <- c(StartYear - 2000, q, m, 00, 00)
 CenterLatitudeLongitude <- c( mean(), mean() )
-
 
 
 ### Constructing the CONTROL file for HYSPLIT ###
 
 # Model type to be used
-for(z in 1:6) {
+for(z in 1:6) {     # Begins the "Model Type" loop
   
     ModType <- ModelType[z]
 
     # The *_StackParams file will be needed for each point source.
-    for(i in 1:NumberOfLocations) {
+    for(i in 1:NumberOfLocations) {     # Starts specific "Stack Information" for each location
   
         eval(parse(text = paste("StackInfo", "<- ", LocationInformation[i,1], "_StackParams", sep = "")))
 
-        c( mean(StackInfo[,1]), mean(StackInfo[,2]) )
-  
-        cat(
-  
-            paste(StartTime[1:4], collapse = " "),"\n",
-            NumberOfLocations, "\n",
-    
-            sep = "", file = "deleteme"
-    
-        )
+        MeanLocation <- c( mean(StackInfo[,1]), mean(StackInfo[,2]) )
 
-
-        # This break in the CONTROL file is where multiple stacks (if applicaple) get added.
-        # This is achieved by appending the portion of the CONTROL file generated from the above code.
-        for(j in 1:nrow(StackInfo)) {
+        StartTime <- c(StartYear - 2000, q, m, 00, 00)
         
-            if(ModType = "E") {
+        for(q in 1:12) {     # Starts the loop for each month
+          
+              for(m in 1:MonthData[q,2]) {     # Starts the loop for each day of the month
+    
+                cat(
+  
+                paste(StartTime[1:4], collapse = " "),"\n",
+                NumberOfLocations, "\n",
+    
+                sep = "", file = "deleteme"
+    
+                )
+
+
+              # This break in the CONTROL file is where multiple stacks (if applicaple) get added.
+              # This is achieved by appending the portion of the CONTROL file generated from the above code.
+              for(j in 1:nrow(StackInfo)) {
+        
+                if(ModType == "E") {
       
-                line <- paste(StackInfo[j,1], StackInfo[j,2], StackInfo[j,3], StackInfo[j,4], StackInfo[j,5], StackInfo[j,6], sep = " ")
-                write(line, file = "deleteme", append = TRUE)
+                    line <- paste(StackInfo[j,1], StackInfo[j,2], StackInfo[j,3], StackInfo[j,4], StackInfo[j,5], StackInfo[j,6], sep = " ")
+                    write(line, file = "deleteme", append = TRUE)
         
-            } else if(ModType = "B") {
+                } else if(ModType == "B") {
           
-                line <- paste(StackInfo[j,1], StackInfo[j,2], 0, StackInfo[j,4], StackInfo[j,5], StackInfo[j,6], sep = " ")
-                write(line, file = "deleteme", append = TRUE)
+                    line <- paste(StackInfo[j,1], StackInfo[j,2], 0, StackInfo[j,4], StackInfo[j,5], StackInfo[j,6], sep = " ")
+                    write(line, file = "deleteme", append = TRUE)
           
-            } else if(ModType = "C") {
+                } else if(ModType == "C") {
           
-                line <- paste(StackInfo[j,1], StackInfo[j,2], StackInfo[j,3], StackInfo[j,4], 0, StackInfo[j,6], sep = " ")
-                write(line, file = "deleteme", append = TRUE)
+                    line <- paste(StackInfo[j,1], StackInfo[j,2], StackInfo[j,3], StackInfo[j,4], 0, StackInfo[j,6], sep = " ")
+                    write(line, file = "deleteme", append = TRUE)
           
-            } else if(ModType = "D") {
+                } else if(ModType == "D") {
           
-                line <- paste(StackInfo[j,1], StackInfo[j,2], StackInfo[j,3], StackInfo[j,4], StackInfo[j,5], 0, sep = " ")
-                write(line, file = "deleteme", append = TRUE)
+                    line <- paste(StackInfo[j,1], StackInfo[j,2], StackInfo[j,3], StackInfo[j,4], StackInfo[j,5], 0, sep = " ")
+                    write(line, file = "deleteme", append = TRUE)
           
-            } else if(ModType = "F") {
+                } else if(ModType == "F") {
           
-                line <- paste(StackInfo[j,1], StackInfo[j,2], 0, StackInfo[j,4], 0, 0, sep = " ")
-                write(line, file = "deleteme", append = TRUE)
+                    line <- paste(StackInfo[j,1], StackInfo[j,2], 0, StackInfo[j,4], 0, 0, sep = " ")
+                    write(line, file = "deleteme", append = TRUE)
           
-            }
+                }
   
-        }     # This closes StackInfo
+            }     # This closes StackInfo
 
 
-# The remaining parameters of the CONTROL file are added here by appending the portion of the CONTROL file generated above.
-      cat(
+    # The remaining parameters of the CONTROL file are added here by appending the portion of the CONTROL file generated above.
+          cat(
     
-          24, "\n",     # Total run time (hrs)
-          0, "\n",      # Method of vertical motion
-          20000, "\n",  # Top of the model (m)
-          2, "\n",      # Number of EDAS files loaded in
-          #EDAS path 1
-          #EDAS path 2
-          1, "\n",      # Number of pollutants
-          Pollutant, "\n",
-          LocationInformation[i, 2], "\n",
-          24, "\n",
-          paste(StartTime, collapse = " "), "\n",
-          1, "\n",      # Number of grids = number of pollutants
-          c( mean(StackInfo[,1]), mean(StackInfo[,2]) ), "\n",
-          paste( c(0.05, 0.05), collapse = " "), "\n",     # Resolution of the grid (lat, lon)
-          paste( c(80.0, 80.0), collapse = " "), "\n",     # Size of the display grid (lat, lon)
+              24, "\n",     # Total run time (hrs)
+              0, "\n",      # Method of vertical motion
+              20000, "\n",  # Top of the model (m)
+              2, "\n",      # Number of EDAS files loaded in
+              
+              #NAM12 path 1
+              
+              1, "\n",      # Number of pollutants
+              Pollutant, "\n",
+              LocationInformation[i, 2], "\n",
+              24, "\n",
+              paste(StartTime, collapse = " "), "\n",
+              1, "\n",      # Number of grids = number of pollutants
+              c( mean(StackInfo[,1]), mean(StackInfo[,2]) ), "\n",
+              paste( c(0.05, 0.05), collapse = " "), "\n",     # Resolution of the grid (lat, lon)
+              paste( c(80.0, 80.0), collapse = " "), "\n",     # Size of the display grid (lat, lon)
     
-          #OUTPUT DIRECTORY
+              #OUTPUT DIRECTORY
     
-          #OUTPUT NAME
+              paste(LocationInformation[i,1], "-", ModType, StartTime[1], StartTime[2], StartTime[3], sep = ""),     # This is the individual file name
     
-          paste( c(1, 20000), collapse = " "), "\n",       # Vertical levels, top of model
-          paste(StartTime, collapse = " "), "\n",
+              paste( c(1, 20000), collapse = " "), "\n",       # Vertical levels, top of model
+              paste(StartTime, collapse = " "), "\n",
     
-          #SAMPLE STOP
+              #SAMPLE STOP
     
-          paste( c(00, 24, 00), collapse = " "), "\n",     # Analysis method - averaging
-          1, "\n",      # Number of particles for deposition
-          paste(ChemicalParameters1, collapse = " "), "\n",
-          paste(ChemicalParameters2, collapse = " "), "\n",
-          paste(ChemicalParameters3, collapse = " "), "\n",
-          paste(ChemicalParameters4, collapse = " "), "\n",
+              paste( c(00, 24, 00), collapse = " "), "\n",     # Analysis method - averaging
+              1, "\n",      # Number of particles for deposition
+              paste(ChemicalParameters1, collapse = " "), "\n",
+              paste(ChemicalParameters2, collapse = " "), "\n",
+              paste(ChemicalParameters3, collapse = " "), "\n",
+              paste(ChemicalParameters4, collapse = " "), "\n",
     
-          sep = "", file = "deleteme", append = TRUE
+              sep = "", file = "deleteme", append = TRUE
     
-      )
+          )
+          
+      # EMITIMES GOES HERE
+      
+      # HYSPLIT MODEL GOES HERE
+          
+      # CONVERSION GOES HERE (binary to ascii)
 
-    }     #Closes NumberOfLocations - CONTROL file generation
-    
-    
-    
-
-
+}     # Closes the day
+}     # Closes the Month      
+}     # Closes LocationInformation
 }     # Closes ModelType
 
 
