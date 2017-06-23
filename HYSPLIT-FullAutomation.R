@@ -141,9 +141,7 @@ ModelType <- c("A", "B", "C", "D", "E", "F")
 # C- 0m Stack Diameter
 # D- 0W Net Heat (Om/s Exit Velocity)
 # E- "Full" Model
-# F- Modified eGRID Model (EMITIMES file)
-
-CenterLatitudeLongitude <- c( mean(), mean() )
+# F- Modified eGRID Model (with EMITIMES file)
 
 
 ### Constructing the CONTROL file for HYSPLIT ###
@@ -179,28 +177,60 @@ for(z in 1:6) {     # Begins the "Model Type" loop
               # This break in the CONTROL file is where multiple stacks (if applicaple) get added.
               # This is achieved by appending the portion of the CONTROL file generated from the above code.
               for(j in 1:nrow(StackInfo)) {
-        
-                if(ModType == "E") {
-      
+                
+                if(ModType == "A") {
+                  
+                    line <- paste(LocationInformation[i,4], LocationInformation[i,5])
+                    write(line, file = "deleteme", append = TRUE)
+                    
+                    SetupFileStatus <- file.rename("SETUP.CFG", "NO_SETUP.CFG")
+                    
+                } else if(ModType == "E") {
+                    
+                    if(SetupFileStatus == TRUE) {
+                        file.rename("NO_SETUP.CFG", "SETUP.CFG")
+                        SetupFileStatus <- FALSE
+                    } else {}  
+                  
                     line <- paste(StackInfo[j,1], StackInfo[j,2], StackInfo[j,3], StackInfo[j,4], StackInfo[j,5], StackInfo[j,6], sep = " ")
                     write(line, file = "deleteme", append = TRUE)
         
                 } else if(ModType == "B") {
+                  
+                    if(SetupFileStatus == TRUE) {
+                        file.rename("NO_SETUP.CFG", "SETUP.CFG")
+                        SetupFileStatus <- FALSE
+                    } else {}
           
                     line <- paste(StackInfo[j,1], StackInfo[j,2], 0, StackInfo[j,4], StackInfo[j,5], StackInfo[j,6], sep = " ")
                     write(line, file = "deleteme", append = TRUE)
           
                 } else if(ModType == "C") {
+                  
+                    if(SetupFileStatus == TRUE) {
+                        file.rename("NO_SETUP.CFG", "SETUP.CFG")
+                        SetupFileStatus <- FALSE
+                    } else {}
           
                     line <- paste(StackInfo[j,1], StackInfo[j,2], StackInfo[j,3], StackInfo[j,4], 0, StackInfo[j,6], sep = " ")
                     write(line, file = "deleteme", append = TRUE)
           
                 } else if(ModType == "D") {
           
+                    if(SetupFileStatus == TRUE) {
+                        file.rename("NO_SETUP.CFG", "SETUP.CFG")
+                        SetupFileStatus <- FALSE
+                    } else {}
+                  
                     line <- paste(StackInfo[j,1], StackInfo[j,2], StackInfo[j,3], StackInfo[j,4], StackInfo[j,5], 0, sep = " ")
                     write(line, file = "deleteme", append = TRUE)
           
                 } else if(ModType == "F") {
+                  
+                  if(SetupFileStatus == TRUE) {
+                      file.rename("NO_SETUP.CFG", "SETUP.CFG")
+                      SetupFileStatus <- FALSE
+                  } else {}
           
                     line <- paste(StackInfo[j,1], StackInfo[j,2], 0, StackInfo[j,4], 0, 0, sep = " ")
                     write(line, file = "deleteme", append = TRUE)
