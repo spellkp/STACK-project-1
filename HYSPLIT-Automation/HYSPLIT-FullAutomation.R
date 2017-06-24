@@ -118,6 +118,8 @@ while(Input == FALSE) {
     }
 }
 
+TemporaryDirectory <- paste("I WILL REMOVE MYSELF - ", date(), sep = "")
+dir.create(TemporaryDirectory)
 
 ChemicalParameters1 <- as.numeric(c(ParticleDiameter, ParticleDensity, 1))
 ChemicalParameters2 <- as.numeric(c(ParticleDepoVelocity, ParticleMolecularWeight, ParticleARatio, ParticleDRatio, ParticleHenry))
@@ -163,7 +165,9 @@ for(z in 1:6) {     # Begins the "Model Type" loop
         for(q in 1:12) {     # Starts the loop for each month
           
               for(m in 1:MonthData[q,2]) {     # Starts the loop for each day of the month
-    
+                
+                if(q == 1 & m == 1) {m <- 2} else {m <- m}
+                
                 cat(
   
                 paste(StartTime[1:4], collapse = " "),"\n",
@@ -259,16 +263,25 @@ for(z in 1:6) {     # Begins the "Model Type" loop
               c( mean(StackInfo[,1]), mean(StackInfo[,2]) ), "\n",
               paste( c(0.05, 0.05), collapse = " "), "\n",     # Resolution of the grid (lat, lon)
               paste( c(80.0, 80.0), collapse = " "), "\n",     # Size of the display grid (lat, lon)
-    
-              #OUTPUT DIRECTORY - update to save files to respective directory names.
-    
-              paste(LocationInformation[i,1], "-", ModType, StartTime[1], StartTime[2], StartTime[3], sep = ""),     # This is the individual file name
+              paste("./", TemporaryDirectory, sep = "", collapse = " "), "\n",    # Save the files here
+              paste(LocationInformation[i,1], "-", ModType, StartTime[1], StartTime[2], StartTime[3], sep = ""), "\n",    # This is the individual file name
     
               paste( c(1, 20000), collapse = " "), "\n",       # Vertical levels, top of model
               paste(StartTime, collapse = " "), "\n",
     
-              #SAMPLE STOP
-    
+              # This conditionals adjusts the model stop date at the end of each month
+              paste(c(        
+                
+                (if(q == 12 & j == MonthData[12,2]) {temp <- as.numeric(StartTime[1]) + 1} else {StartTime[1]}),
+                
+                (if(j <= (MonthData[q,2]-1)) {q}
+                 else if(j == MonthData[q,2] & q != 12) {q+1}
+                 else if(q == 12 & j == MonthData[12,2]) {1}),
+                
+                (if (j <= (MonthData[q,2]-1)) {j+1} else {1}),
+                00, 00)), "\n",
+              # END stop date management
+              
               paste( c(00, 24, 00), collapse = " "), "\n",     # Analysis method - averaging
               1, "\n",      # Number of particles for deposition
               paste(ChemicalParameters1, collapse = " "), "\n",
@@ -291,7 +304,7 @@ for(z in 1:6) {     # Begins the "Model Type" loop
 }     # Closes LocationInformation
 }     # Closes ModelType
 
-
+# Delete TemporaryDirectory here
 
 
 
