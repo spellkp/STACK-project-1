@@ -132,7 +132,7 @@ ChemicalParameters4 <- as.numeric(c(ParticleRadioactive, ParticleResuspensionFac
 # Constructing the time management dataframe
 
 MonthNames <- c("jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec")
-DaysInMonth <- c(31, if (StartYear %% 4 == 0) {29} else{28}, 31, 30, 31, 30, 31, 31, 30, 31, 30, 30)     # One less day in December to avoid needing an additional met file
+DaysInMonth <- c(31, if (StartYear %% 4 == 0) {29} else{28}, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
 MonthData <- data.frame(MonthNames, DaysInMonth)
 
 # LOOP MODEL TYPE (A-F)
@@ -250,8 +250,9 @@ for(z in 1:6) {     # Begins the "Model Type" loop
               24, "\n",     # Total run time (hrs)
               0, "\n",      # Method of vertical motion
               20000, "\n",  # Top of the model (m)
-              2, "\n",      # Number of EDAS files loaded in
+              3, "\n",      # Number of NAM12km files loaded in
               
+              # INCLUDE WORKING DIRECTORY x3
               #NAM12 path 1
               
               1, "\n",      # Number of pollutants
@@ -304,7 +305,13 @@ for(z in 1:6) {     # Begins the "Model Type" loop
 }     # Closes LocationInformation
 }     # Closes ModelType
 
-# Delete TemporaryDirectory here
+# APPEND EACH SET OF OUTPUTS HERE
+
+# DELETE TEMPORARY DIRECTORY HERE
+
+# RUN MRS MEASURE
+
+# GENERATE PLOTS
 
 
 
