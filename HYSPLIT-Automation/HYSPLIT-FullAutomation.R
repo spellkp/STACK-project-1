@@ -11,12 +11,9 @@
 
 
 # Ask user for the year of interest, number of locations to be considered and the information at each location.
-Input <- TRUE
-while(Input == FALSE) {
+if( interactive() ) {
 
-    if( interactive() ) {
-
-       EDASpath <- readline(prompt = "This script uses EDAS - 40km data. Include the EDAS directory here - ")  
+       NAMpath <- readline(prompt = "This script uses NAM - 12km data. Include the NAM directory here - ")  
   
        StartYear <- as.numeric(readline(prompt = "Input Year (YYYY > 2000) - "))
     
@@ -115,8 +112,8 @@ while(Input == FALSE) {
     
        # Insert a parameter checking method here!
     
-    }
 }
+
 
 TemporaryDirectory <- paste("I WILL REMOVE MYSELF - ", date(), sep = "")
 dir.create(TemporaryDirectory)
@@ -134,6 +131,20 @@ ChemicalParameters4 <- as.numeric(c(ParticleRadioactive, ParticleResuspensionFac
 MonthNames <- c("jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec")
 DaysInMonth <- c(31, if (StartYear %% 4 == 0) {29} else{28}, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
 MonthData <- data.frame(MonthNames, DaysInMonth)
+
+# Prepare a vector of meteorology file names
+y = 1
+MeteorologyFileNames <- NULL
+for(q in 1:12) {
+  
+  for(j in 1:MonthData[q,2]) {
+    
+    MeteorologyFileNames[y] <- paste(StartYear, if(q <= 9) {"0"} else {}, q, if(j <= 9) {"0"} else {}, j, "_nam12", sep = "")
+    y <- y + 1
+  }
+
+}
+y = 1
 
 # LOOP MODEL TYPE (A-F)
 ModelType <- c("A", "B", "C", "D", "E", "F")
@@ -173,7 +184,7 @@ for(z in 1:6) {     # Begins the "Model Type" loop
                 paste(StartTime[1:4], collapse = " "),"\n",
                 NumberOfLocations, "\n",
     
-                sep = "", file = "deleteme"
+                sep = "", file = paste(LocationInformation[i, 1], "-", ModType, "-", q, "-", j, sep = "")
     
                 )
 
@@ -185,7 +196,7 @@ for(z in 1:6) {     # Begins the "Model Type" loop
                 if(ModType == "A") {
                   
                     line <- paste(LocationInformation[i,4], LocationInformation[i,5])
-                    write(line, file = "deleteme", append = TRUE)
+                    write(line, file = paste(LocationInformation[i, 1], "-", ModType, "-", q, "-", j, sep = ""), append = TRUE)
                     
                     SetupFileStatus <- file.rename("SETUP.CFG", "NO_SETUP.CFG")
                     
@@ -197,7 +208,7 @@ for(z in 1:6) {     # Begins the "Model Type" loop
                     } else {}  
                   
                     line <- paste(StackInfo[j,1], StackInfo[j,2], StackInfo[j,3], StackInfo[j,4], StackInfo[j,5], StackInfo[j,6], sep = " ")
-                    write(line, file = "deleteme", append = TRUE)
+                    write(line, file = paste(LocationInformation[i, 1], "-", ModType, "-", q, "-", j, sep = ""), append = TRUE)
         
                 } else if(ModType == "B") {
                   
@@ -207,7 +218,7 @@ for(z in 1:6) {     # Begins the "Model Type" loop
                     } else {}
           
                     line <- paste(StackInfo[j,1], StackInfo[j,2], 0, StackInfo[j,4], StackInfo[j,5], StackInfo[j,6], sep = " ")
-                    write(line, file = "deleteme", append = TRUE)
+                    write(line, file = paste(LocationInformation[i, 1], "-", ModType, "-", q, "-", j, sep = ""), append = TRUE)
           
                 } else if(ModType == "C") {
                   
@@ -217,7 +228,7 @@ for(z in 1:6) {     # Begins the "Model Type" loop
                     } else {}
           
                     line <- paste(StackInfo[j,1], StackInfo[j,2], StackInfo[j,3], StackInfo[j,4], 0, StackInfo[j,6], sep = " ")
-                    write(line, file = "deleteme", append = TRUE)
+                    write(line, file = paste(LocationInformation[i, 1], "-", ModType, "-", q, "-", j, sep = ""), append = TRUE)
           
                 } else if(ModType == "D") {
           
@@ -227,7 +238,7 @@ for(z in 1:6) {     # Begins the "Model Type" loop
                     } else {}
                   
                     line <- paste(StackInfo[j,1], StackInfo[j,2], StackInfo[j,3], StackInfo[j,4], StackInfo[j,5], 0, sep = " ")
-                    write(line, file = "deleteme", append = TRUE)
+                    write(line, file = paste(LocationInformation[i, 1], "-", ModType, "-", q, "-", j, sep = ""), append = TRUE)
           
                 } else if(ModType == "F") {
                   
@@ -237,7 +248,7 @@ for(z in 1:6) {     # Begins the "Model Type" loop
                   } else {}
           
                     line <- paste(StackInfo[j,1], StackInfo[j,2], 0, StackInfo[j,4], 0, 0, sep = " ")
-                    write(line, file = "deleteme", append = TRUE)
+                    write(line, file = paste(LocationInformation[i, 1], "-", ModType, "-", q, "-", j, sep = ""), append = TRUE)
           
                 }
   
@@ -245,6 +256,8 @@ for(z in 1:6) {     # Begins the "Model Type" loop
 
 
     # The remaining parameters of the CONTROL file are added here by appending the portion of the CONTROL file generated above.
+          y = 1
+                
           cat(
     
               24, "\n",     # Total run time (hrs)
@@ -252,8 +265,15 @@ for(z in 1:6) {     # Begins the "Model Type" loop
               20000, "\n",  # Top of the model (m)
               3, "\n",      # Number of NAM12km files loaded in
               
-              # INCLUDE WORKING DIRECTORY x3
-              #NAM12 path 1
+              paste(NAMpath), "\n",
+              paste(if(q == 1 & j == 1) {paste(StartYear-1, "1231_nam12", sep = "")} else {MeteorologyFileNames[y-1]}), "\n",
+              
+              paste(NAMpath), "\n",
+              MeteorologyFileNames[y], "\n",
+              
+              paste(NAMpath), "\n",
+              paste(if(q == 12 & j == 31) {paste(StartYear+1, "0101_nam12", sep = "")} else {MeteorologyFileNames[y+1]}), "\n",
+              
               
               1, "\n",      # Number of pollutants
               Pollutant, "\n",
@@ -290,7 +310,7 @@ for(z in 1:6) {     # Begins the "Model Type" loop
               paste(ChemicalParameters3, collapse = " "), "\n",
               paste(ChemicalParameters4, collapse = " "), "\n",
     
-              sep = "", file = "deleteme", append = TRUE
+              sep = "", file = paste(LocationInformation[i, 1], "-", ModType, "-", q, "-", j, sep = ""), append = TRUE
     
           )
           
@@ -301,9 +321,13 @@ for(z in 1:6) {     # Begins the "Model Type" loop
       # CONVERSION GOES HERE (binary to ascii)
 
 }     # Closes the day
-}     # Closes the Month      
+}     # Closes the Month
+        
+y <- 1  
+        
 }     # Closes LocationInformation
 }     # Closes ModelType
+
 
 # APPEND EACH SET OF OUTPUTS HERE
 
