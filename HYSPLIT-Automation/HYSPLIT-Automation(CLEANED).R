@@ -25,7 +25,7 @@ if( interactive() ) {
   for(i in 1:NumberOfLocations) {
     
     LocationInformation[i, 1] <- readline(paste(prompt = "Provide a three letter title for location", i, "-", " ", sep = " "))
-    LocationInformation[i, 2] <- as.numeric(readline(paste(prompt = "What is the eGRID emission value for", LocationInformation[i,1],"?", " ", sep = " ")))
+    LocationInformation[i, 2] <- as.numeric(readline(paste(prompt = "What is the total eGRID emission value for", LocationInformation[i,1], "in kilograms ?", " ", sep = " ")))
     LocationInformation[i, 3] <- as.numeric(readline(paste(prompt = "How many exhaust points are there at location", LocationInformation[i,1], "?", " ", sep = " ")))
     LocationInformation[i, 4] <- as.numeric(readline(paste(prompt = "What is the eGRID latitude value for", LocationInformation[i,1],"?", " ", sep = " ")))
     LocationInformation[i, 5] <- as.numeric(readline(paste(prompt = "What is the eGRID longitude value for", LocationInformation[i,1],"?", " ", sep = " ")))
@@ -120,7 +120,8 @@ if( interactive() ) {
 ChemicalParameters1 <- as.numeric(c(ParticleDiameter, ParticleDensity, 1))
 ChemicalParameters2 <- as.numeric(c(ParticleDepoVelocity, ParticleMolecularWeight, ParticleARatio, ParticleDRatio, ParticleHenry))
 ChemicalParameters3 <- as.numeric(c(ParticleHenryConstant, ParticleInCloud, ParticleBelowCloud))
-ChemicalParameters4 <- as.numeric(c(ParticleRadioactive, ParticleResuspensionFactor))
+ChemicalParameters4 <- as.numeric(ParticleRadioactive)
+ChemicalParameters5 <- as.numeric(ParticleResuspensionFactor)
 
 
 # Constructing the time management dataframe
@@ -141,6 +142,8 @@ for(a in 1:12) {
         
     }
 }
+
+##### Run from here if parameters are already entered #####
 
 # Check that all 3 required files are present
 if(file.exists("SETUP.CFG") & file.exists("EMITIMES") & file.exists("CONTROL") != TRUE) {
@@ -287,29 +290,29 @@ for(z in 1:6) {     # Begins the "Model Type" loop
             
               1, "\n",      # Number of pollutants
               Pollutant, "\n",
-              LocationInformation[i, 2], "\n",
+              LocationInformation[i,2]/sum(MonthData[,2]), "\n",
               24, "\n",
               paste(StartYear - 2000, q, m, 0, 0, collapse = " "), "\n",
               1, "\n",      # Number of grids = number of pollutants
-              c( mean(StackInfo[,1]), mean(StackInfo[,2]) ), "\n",
+              paste(round(mean(StackInfo[,1]), 5), round(mean(StackInfo[,2]), 5), collapse = " "), "\n",
               paste( c(0.05, 0.05), collapse = " "), "\n",     # Resolution of the grid (lat, lon)
               paste( c(80.0, 80.0), collapse = " "), "\n",     # Size of the display grid (lat, lon)
               paste("./", TemporaryDirectory, sep = "", collapse = " "), "\n",    # Save the files here
-              paste(LocationInformation[i,1], "-", ModType, "-", StartYear - 2012, "-", q, "-", m, sep = ""), "\n",    # This is the individual file name
+              paste(LocationInformation[i,1], "-", ModType, "-", StartYear - 2000, "-", q, "-", m, sep = ""), "\n",    # This is the individual file name
             
               paste( c(1, 20000), collapse = " "), "\n",       # Vertical levels, top of model
-              paste(StartYear - 2012, q, m, collapse = " "), "\n",
+              paste(StartYear - 2000, q, m, 0, 0, collapse = " "), "\n",
             
               # This conditionals adjusts the model stop date at the end of each month
               paste(        
               
               (if(q == 12 & m == MonthData[12,2]) {temp <- as.numeric((StartYear + 1)) - 2000} else {StartYear - 2000}),
               
-              (if(j <= (MonthData[q,2]-1)) {q}
-               else if(j == MonthData[q,2] & q != 12) {q+1}
+              (if(m <= (MonthData[q,2]-1)) {q}
+               else if(m == MonthData[q,2] & q != 12) {q+1}
                else if(q == 12 & m == MonthData[12,2]) {1}),
               
-              (if (j <= (MonthData[q,2]-1)) {j+1} else {1}),
+              (if (m <= (MonthData[q,2]-1)) {m+1} else {1}),
               00, 00, collapse = " "), "\n",
               # END stop date management
             
@@ -319,6 +322,7 @@ for(z in 1:6) {     # Begins the "Model Type" loop
               paste(ChemicalParameters2, collapse = " "), "\n",
               paste(ChemicalParameters3, collapse = " "), "\n",
               paste(ChemicalParameters4, collapse = " "), "\n",
+              paste(ChemicalParameters5, collapse = " "), "\n",
             
               sep = "", file = paste(LocationInformation[i, 1], "-", ModType, "-", q, "-", m, sep = ""), append = TRUE
             
