@@ -271,7 +271,8 @@ for(z in 1:6) {     # Begins the "Model Type" loop
           
           # The remaining parameters of the CONTROL file are added here by appending the portion of the CONTROL file generated above.
           
-          y = 1
+          y <- m + sum(MonthData[1:q-1, 2])     # The value of y selects the meteorology file to be used.
+          
           cat(
             
               24, "\n",     # Total run time (hrs)
