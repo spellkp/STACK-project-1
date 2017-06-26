@@ -269,7 +269,7 @@ for(z in 1:6) {     # Begins the "Model Type" loop
               paste(if(q == 1 & j == 1) {paste(StartYear-1, "1231_nam12", sep = "")} else {MeteorologyFileNames[y-1]}), "\n",
               
               paste(NAMpath), "\n",
-              MeteorologyFileNames[y], "\n",
+              paste(MeteorologyFileNames[y]), "\n",
               
               paste(NAMpath), "\n",
               paste(if(q == 12 & j == 31) {paste(StartYear+1, "0101_nam12", sep = "")} else {MeteorologyFileNames[y+1]}), "\n",

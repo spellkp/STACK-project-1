@@ -1,7 +1,7 @@
 #-----------------------------------------------------------------------------------------------#
 # HYSPLIT-FullAutomation                                                                        #
 # Below is a first attempt at a full automation of a sensitivity analysis for any location(s).  #
-# Any year greater than 2000.
+# Any year greater than 2000.                                                                   #
 #-----------------------------------------------------------------------------------------------#
 
 #--------------------------------------------------------------------#
@@ -142,6 +142,13 @@ for(a in 1:12) {
     }
 }
 
+# Check that all 3 required files are present
+if(file.exists("SETUP.CFG") & file.exists("EMITIMES") & file.exists("CONTROL") != TRUE) {
+    
+    print("SETUP, EMITIMES, or CONTROL file missing")
+    stopifnot(file.exists("SETUP.CFG") & file.exists("EMITIMES") & file.exists("CONTROL"))
+    
+} else {}
 
 # Create a temporary directory to store all working and temp files
 TemporaryDirectory <- paste("I WILL REMOVE MYSELF - ", date(), sep = "")
@@ -174,146 +181,146 @@ for(z in 1:6) {     # Begins the "Model Type" loop
       
       MeanLocation <- c( mean(StackInfo[,1]), mean(StackInfo[,2]) )
       
-      StartTime <- c(StartYear - 2000, q, m, 00, 00)
-      
       for(q in 1:12) {     # Starts the loop for each month
         
-        for(m in 1:MonthData[q,2]) {     # Starts the loop for each day of the month
+          for(m in 1:MonthData[q,2]) {     # Starts the loop for each day of the month
           
-          if(q == 1 & m == 1) {m <- 2} else {m <- m}
+              cat(
+            
+                  paste(StartYear - 2000, q, m, 00, collapse = " "),"\n",
+                  if(ModType == "A") {1} else {NumberOfLocations}, "\n",
+            
+                  sep = "", file = paste(LocationInformation[i, 1], "-", ModType, "-", q, "-", m, sep = "")
+            
+              )
+
+              # This break in the CONTROL file is where multiple stacks (if applicaple) get added.
+              # This is achieved by appending the portion of the CONTROL file generated from the above code.
           
-          cat(
+              if(ModType == "A") {
             
-            paste(StartTime[1:4], collapse = " "),"\n",
-            NumberOfLocations, "\n",
+                  line <- paste(LocationInformation[i,4], LocationInformation[i,5])
+                  write(line, file = paste(LocationInformation[i, 1], "-", ModType, "-", q, "-", m, sep = ""), append = TRUE)
             
-            sep = "", file = paste(LocationInformation[i, 1], "-", ModType, "-", q, "-", j, sep = "")
-            
-          )
-          
-          
-          # This break in the CONTROL file is where multiple stacks (if applicaple) get added.
-          # This is achieved by appending the portion of the CONTROL file generated from the above code.
-          for(j in 1:nrow(StackInfo)) {
-            
-            if(ModType == "A") {
+              if(file.exists("SETUP.CFG") == TRUE) {
               
-              line <- paste(LocationInformation[i,4], LocationInformation[i,5])
-              write(line, file = paste(LocationInformation[i, 1], "-", ModType, "-", q, "-", j, sep = ""), append = TRUE)
+                  file.rename("SETUP.CFG", "NO_SETUP.CFG")
               
-              SetupFileStatus <- file.rename("SETUP.CFG", "NO_SETUP.CFG")
-              
-            } else if(ModType == "E") {
-              
-              if(SetupFileStatus == TRUE) {
-                file.rename("NO_SETUP.CFG", "SETUP.CFG")
-                SetupFileStatus <- FALSE
-              } else {}  
-              
-              line <- paste(StackInfo[j,1], StackInfo[j,2], StackInfo[j,3], StackInfo[j,4], StackInfo[j,5], StackInfo[j,6], sep = " ")
-              write(line, file = paste(LocationInformation[i, 1], "-", ModType, "-", q, "-", j, sep = ""), append = TRUE)
-              
-            } else if(ModType == "B") {
-              
-              if(SetupFileStatus == TRUE) {
-                file.rename("NO_SETUP.CFG", "SETUP.CFG")
-                SetupFileStatus <- FALSE
               } else {}
-              
-              line <- paste(StackInfo[j,1], StackInfo[j,2], 0, StackInfo[j,4], StackInfo[j,5], StackInfo[j,6], sep = " ")
-              write(line, file = paste(LocationInformation[i, 1], "-", ModType, "-", q, "-", j, sep = ""), append = TRUE)
-              
-            } else if(ModType == "C") {
-              
-              if(SetupFileStatus == TRUE) {
-                file.rename("NO_SETUP.CFG", "SETUP.CFG")
-                SetupFileStatus <- FALSE
-              } else {}
-              
-              line <- paste(StackInfo[j,1], StackInfo[j,2], StackInfo[j,3], StackInfo[j,4], 0, StackInfo[j,6], sep = " ")
-              write(line, file = paste(LocationInformation[i, 1], "-", ModType, "-", q, "-", j, sep = ""), append = TRUE)
-              
-            } else if(ModType == "D") {
-              
-              if(SetupFileStatus == TRUE) {
-                file.rename("NO_SETUP.CFG", "SETUP.CFG")
-                SetupFileStatus <- FALSE
-              } else {}
-              
-              line <- paste(StackInfo[j,1], StackInfo[j,2], StackInfo[j,3], StackInfo[j,4], StackInfo[j,5], 0, sep = " ")
-              write(line, file = paste(LocationInformation[i, 1], "-", ModType, "-", q, "-", j, sep = ""), append = TRUE)
-              
-            } else if(ModType == "F") {
-              
-              if(SetupFileStatus == TRUE) {
-                file.rename("NO_SETUP.CFG", "SETUP.CFG")
-                SetupFileStatus <- FALSE
-              } else {}
-              
-              line <- paste(StackInfo[j,1], StackInfo[j,2], 0, StackInfo[j,4], 0, 0, sep = " ")
-              write(line, file = paste(LocationInformation[i, 1], "-", ModType, "-", q, "-", j, sep = ""), append = TRUE)
-              
-            }
             
-          }     # This closes StackInfo
+              } else if(ModType == "B") {
+            
+                  if(file.exists("NO_SETUP.CFG") == TRUE) {file.rename("NO_SETUP.CFG", "SETUP.CFG")} else {}
+            
+                  for(j in 1:nrow(StackInfo)) {
+              
+                      line <- paste(StackInfo[j,1], StackInfo[j,2], 0, StackInfo[j,4], StackInfo[j,5], StackInfo[j,6], sep = " ")
+                      write(line, file = paste(LocationInformation[i, 1], "-", ModType, "-", q, "-", m, sep = ""), append = TRUE)
+              
+                  }
+            
+              } else if(ModType == "C") {
+            
+                  if(file.exists("NO_SETUP.CFG") == TRUE) {file.rename("NO_SETUP.CFG", "SETUP.CFG")} else {}
+            
+                  for(j in 1:nrow(StackInfo)) {
+              
+                      line <- paste(StackInfo[j,1], StackInfo[j,2], StackInfo[j,3], StackInfo[j,4], 0, StackInfo[j,6], sep = " ")
+                      write(line, file = paste(LocationInformation[i, 1], "-", ModType, "-", q, "-", m, sep = ""), append = TRUE)
+              
+                  }
+            
+              } else if(ModType == "D") {
+            
+                  if(file.exists("NO_SETUP.CFG") == TRUE) {file.rename("NO_SETUP.CFG", "SETUP.CFG")} else {}
+            
+                  for(i in 1:nrow(StackInfo)) {
+              
+                      line <- paste(StackInfo[j,1], StackInfo[j,2], StackInfo[j,3], StackInfo[j,4], StackInfo[j,5], 0, sep = " ")
+                      write(line, file = paste(LocationInformation[i, 1], "-", ModType, "-", q, "-", m, sep = ""), append = TRUE)
+              
+                  }
+            
+              } else if(ModType == "E") {
+            
+                  if(file.exists("NO_SETUP.CFG") == TRUE) {file.rename("NO_SETUP.CFG", "SETUP.CFG")} else {}
+            
+                      for(i in 1:nrow(StackInfo)) {
+              
+                      line <- paste(StackInfo[j,1], StackInfo[j,2], StackInfo[j,3], StackInfo[j,4], StackInfo[j,5], StackInfo[j,6], sep = " ")
+                      write(line, file = paste(LocationInformation[i, 1], "-", ModType, "-", q, "-", m, sep = ""), append = TRUE)
+              
+                }
+            
+              } else if(ModType == "F") {
+            
+                  if(file.exists("NO_SETUP.CFG") == TRUE) {file.rename("NO_SETUP.CFG", "SETUP.CFG")} else {}
+            
+                  for(i in 1:nrow(StackInfo)) {
+              
+                      line <- paste(StackInfo[j,1], StackInfo[j,2], 0, StackInfo[j,4], 0, 0, sep = " ")
+                      write(line, file = paste(LocationInformation[i, 1], "-", ModType, "-", q, "-", m, sep = ""), append = TRUE)
+              
+                  }
+            
+              }     # This closes StackInfo
           
           
           # The remaining parameters of the CONTROL file are added here by appending the portion of the CONTROL file generated above.
-          y = 1
           
+          y = 1
           cat(
             
-            24, "\n",     # Total run time (hrs)
-            0, "\n",      # Method of vertical motion
-            20000, "\n",  # Top of the model (m)
-            3, "\n",      # Number of NAM12km files loaded in
+              24, "\n",     # Total run time (hrs)
+              0, "\n",      # Method of vertical motion
+              20000, "\n",  # Top of the model (m)
+              3, "\n",      # Number of NAM12km files loaded in
             
-            paste(NAMpath), "\n",
-            paste(if(q == 1 & j == 1) {paste(StartYear-1, "1231_nam12", sep = "")} else {MeteorologyFileNames[y-1]}), "\n",
+              paste(NAMpath), "\n",
+              paste(if(q == 1 & m == 1) {paste(StartYear-1, "1231_nam12", sep = "")} else {MeteorologyFileNames[y-1]}), "\n",
             
-            paste(NAMpath), "\n",
-            MeteorologyFileNames[y], "\n",
+              paste(NAMpath), "\n",
+              paste(MeteorologyFileNames[y]), "\n",
             
-            paste(NAMpath), "\n",
-            paste(if(q == 12 & j == 31) {paste(StartYear+1, "0101_nam12", sep = "")} else {MeteorologyFileNames[y+1]}), "\n",
+              paste(NAMpath), "\n",
+              paste(if(q == 12 & m == 31) {paste(StartYear+1, "0101_nam12", sep = "")} else {MeteorologyFileNames[y+1]}), "\n",
             
+              1, "\n",      # Number of pollutants
+              Pollutant, "\n",
+              LocationInformation[i, 2], "\n",
+              24, "\n",
+              paste(StartYear - 2000, q, m, 0, 0, collapse = " "), "\n",
+              1, "\n",      # Number of grids = number of pollutants
+              c( mean(StackInfo[,1]), mean(StackInfo[,2]) ), "\n",
+              paste( c(0.05, 0.05), collapse = " "), "\n",     # Resolution of the grid (lat, lon)
+              paste( c(80.0, 80.0), collapse = " "), "\n",     # Size of the display grid (lat, lon)
+              paste("./", TemporaryDirectory, sep = "", collapse = " "), "\n",    # Save the files here
+              paste(LocationInformation[i,1], "-", ModType, "-", StartYear - 2012, "-", q, "-", m, sep = ""), "\n",    # This is the individual file name
             
-            1, "\n",      # Number of pollutants
-            Pollutant, "\n",
-            LocationInformation[i, 2], "\n",
-            24, "\n",
-            paste(StartTime, collapse = " "), "\n",
-            1, "\n",      # Number of grids = number of pollutants
-            c( mean(StackInfo[,1]), mean(StackInfo[,2]) ), "\n",
-            paste( c(0.05, 0.05), collapse = " "), "\n",     # Resolution of the grid (lat, lon)
-            paste( c(80.0, 80.0), collapse = " "), "\n",     # Size of the display grid (lat, lon)
-            paste("./", TemporaryDirectory, sep = "", collapse = " "), "\n",    # Save the files here
-            paste(LocationInformation[i,1], "-", ModType, StartTime[1], StartTime[2], StartTime[3], sep = ""), "\n",    # This is the individual file name
+              paste( c(1, 20000), collapse = " "), "\n",       # Vertical levels, top of model
+              paste(StartYear - 2012, q, m, collapse = " "), "\n",
             
-            paste( c(1, 20000), collapse = " "), "\n",       # Vertical levels, top of model
-            paste(StartTime, collapse = " "), "\n",
-            
-            # This conditionals adjusts the model stop date at the end of each month
-            paste(c(        
+              # This conditionals adjusts the model stop date at the end of each month
+              paste(        
               
-              (if(q == 12 & j == MonthData[12,2]) {temp <- as.numeric(StartTime[1]) + 1} else {StartTime[1]}),
+              (if(q == 12 & m == MonthData[12,2]) {temp <- as.numeric((StartYear + 1)) - 2000} else {StartYear - 2000}),
               
               (if(j <= (MonthData[q,2]-1)) {q}
                else if(j == MonthData[q,2] & q != 12) {q+1}
-               else if(q == 12 & j == MonthData[12,2]) {1}),
+               else if(q == 12 & m == MonthData[12,2]) {1}),
               
               (if (j <= (MonthData[q,2]-1)) {j+1} else {1}),
-              00, 00)), "\n",
-            # END stop date management
+              00, 00, collapse = " "), "\n",
+              # END stop date management
             
-            paste( c(00, 24, 00), collapse = " "), "\n",     # Analysis method - averaging
-            1, "\n",      # Number of particles for deposition
-            paste(ChemicalParameters1, collapse = " "), "\n",
-            paste(ChemicalParameters2, collapse = " "), "\n",
-            paste(ChemicalParameters3, collapse = " "), "\n",
-            paste(ChemicalParameters4, collapse = " "), "\n",
+              paste( c(00, 24, 00), collapse = " "), "\n",     # Analysis method - averaging
+              1, "\n",      # Number of particles for deposition
+              paste(ChemicalParameters1, collapse = " "), "\n",
+              paste(ChemicalParameters2, collapse = " "), "\n",
+              paste(ChemicalParameters3, collapse = " "), "\n",
+              paste(ChemicalParameters4, collapse = " "), "\n",
             
-            sep = "", file = paste(LocationInformation[i, 1], "-", ModType, "-", q, "-", j, sep = ""), append = TRUE
+              sep = "", file = paste(LocationInformation[i, 1], "-", ModType, "-", q, "-", m, sep = ""), append = TRUE
             
           )
           
@@ -337,5 +344,5 @@ for(z in 1:6) {     # Begins the "Model Type" loop
 
 # GENERATE PLOTS
     
-        
+setwd("..")        
   
