@@ -248,7 +248,7 @@ for(z in 1:6) {     # Begins the "Model Type" loop
             
                   if(file.exists("NO_SETUP.CFG") == TRUE) {file.rename("NO_SETUP.CFG", "SETUP.CFG")} else {}
             
-                      for(i in 1:nrow(StackInfo)) {
+                  for(i in 1:nrow(StackInfo)) {
               
                       line <- paste(StackInfo[j,1], StackInfo[j,2], StackInfo[j,3], StackInfo[j,4], StackInfo[j,5], StackInfo[j,6], sep = " ")
                       write(line, file = paste(LocationInformation[i, 1], "-", ModType, "-", q, "-", m, sep = ""), append = TRUE)
