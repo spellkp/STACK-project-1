@@ -34,7 +34,7 @@ if( interactive() ) {
   
   names(LocationInformation) <- c("Name", "eGRID_Emissions", "Exhaust_Points", "eGRID_Lat", "eGRID_Lon")
   
-  for(i in 1:NumberOfLocations) {
+  for(i in 1:nrow(LocationInformation)) {
     
     StackParams <- data.frame()
     
@@ -178,11 +178,9 @@ for(z in 1:6) {     # Begins the "Model Type" loop
     ModType <- ModelType[z]
     
     # The *_StackParams file will be needed for each point source.
-    for(i in 1:NumberOfLocations) {     # Starts specific "Stack Information" for each location
+    for(i in 1:nrow(LocationInformation)) {     # Starts specific "Stack Information" for each location
       
       eval(parse(text = paste("StackInfo", "<- ", LocationInformation[i,1], "_StackParams", sep = "")))
-      
-      MeanLocation <- c( mean(StackInfo[,1]), mean(StackInfo[,2]) )
       
       for(q in 1:12) {     # Starts the loop for each month
         
@@ -191,9 +189,9 @@ for(z in 1:6) {     # Begins the "Model Type" loop
               cat(
             
                   paste(StartYear - 2000, q, m, 00, collapse = " "),"\n",
-                  if(ModType == "A") {1} else {NumberOfLocations}, "\n",
+                  if(ModType == "A") {1} else {LocationInformation[i,3]}, "\n",
             
-                  sep = "", file = paste(LocationInformation[i, 1], "-", ModType, "-", q, "-", m, sep = "")
+                  sep = "", file = "CONTROL"
             
               )
 
@@ -203,7 +201,7 @@ for(z in 1:6) {     # Begins the "Model Type" loop
               if(ModType == "A") {
             
                   line <- paste(LocationInformation[i,4], LocationInformation[i,5])
-                  write(line, file = paste(LocationInformation[i, 1], "-", ModType, "-", q, "-", m, sep = ""), append = TRUE)
+                  write(line, file = "CONTROL", append = TRUE)
             
               if(file.exists("SETUP.CFG") == TRUE) {
               
@@ -215,10 +213,10 @@ for(z in 1:6) {     # Begins the "Model Type" loop
             
                   if(file.exists("NO_SETUP.CFG") == TRUE) {file.rename("NO_SETUP.CFG", "SETUP.CFG")} else {}
             
-                  for(j in 1:nrow(StackInfo)) {
+                  for(j in 1:LocationInformation[i,3]) {
               
                       line <- paste(StackInfo[j,1], StackInfo[j,2], 0, StackInfo[j,4], StackInfo[j,5], StackInfo[j,6], sep = " ")
-                      write(line, file = paste(LocationInformation[i, 1], "-", ModType, "-", q, "-", m, sep = ""), append = TRUE)
+                      write(line, file = "CONTROL", append = TRUE)
               
                   }
             
@@ -226,10 +224,10 @@ for(z in 1:6) {     # Begins the "Model Type" loop
             
                   if(file.exists("NO_SETUP.CFG") == TRUE) {file.rename("NO_SETUP.CFG", "SETUP.CFG")} else {}
             
-                  for(j in 1:nrow(StackInfo)) {
+                  for(j in 1:LocationInformation[i,3]) {
               
                       line <- paste(StackInfo[j,1], StackInfo[j,2], StackInfo[j,3], StackInfo[j,4], 0, StackInfo[j,6], sep = " ")
-                      write(line, file = paste(LocationInformation[i, 1], "-", ModType, "-", q, "-", m, sep = ""), append = TRUE)
+                      write(line, file = "CONTROL", append = TRUE)
               
                   }
             
@@ -237,10 +235,10 @@ for(z in 1:6) {     # Begins the "Model Type" loop
             
                   if(file.exists("NO_SETUP.CFG") == TRUE) {file.rename("NO_SETUP.CFG", "SETUP.CFG")} else {}
             
-                  for(i in 1:nrow(StackInfo)) {
+                  for(j in 1:LocationInformation[i,3]) {
               
                       line <- paste(StackInfo[j,1], StackInfo[j,2], StackInfo[j,3], StackInfo[j,4], StackInfo[j,5], 0, sep = " ")
-                      write(line, file = paste(LocationInformation[i, 1], "-", ModType, "-", q, "-", m, sep = ""), append = TRUE)
+                      write(line, file = "CONTROL", append = TRUE)
               
                   }
             
@@ -248,10 +246,10 @@ for(z in 1:6) {     # Begins the "Model Type" loop
             
                   if(file.exists("NO_SETUP.CFG") == TRUE) {file.rename("NO_SETUP.CFG", "SETUP.CFG")} else {}
             
-                  for(i in 1:nrow(StackInfo)) {
+                  for(j in 1:LocationInformation[i,3]) {
               
                       line <- paste(StackInfo[j,1], StackInfo[j,2], StackInfo[j,3], StackInfo[j,4], StackInfo[j,5], StackInfo[j,6], sep = " ")
-                      write(line, file = paste(LocationInformation[i, 1], "-", ModType, "-", q, "-", m, sep = ""), append = TRUE)
+                      write(line, file = "CONTROL", append = TRUE)
               
                 }
             
@@ -259,10 +257,10 @@ for(z in 1:6) {     # Begins the "Model Type" loop
             
                   if(file.exists("NO_SETUP.CFG") == TRUE) {file.rename("NO_SETUP.CFG", "SETUP.CFG")} else {}
             
-                  for(i in 1:nrow(StackInfo)) {
+                  for(j in 1:LocationInformation[i,3]) {
               
                       line <- paste(StackInfo[j,1], StackInfo[j,2], 0, StackInfo[j,4], 0, 0, sep = " ")
-                      write(line, file = paste(LocationInformation[i, 1], "-", ModType, "-", q, "-", m, sep = ""), append = TRUE)
+                      write(line, file = "CONTROL", append = TRUE)
               
                   }
             
@@ -325,12 +323,71 @@ for(z in 1:6) {     # Begins the "Model Type" loop
               paste(ChemicalParameters4, collapse = " "), "\n",
               paste(ChemicalParameters5, collapse = " "), "\n",
             
-              sep = "", file = paste(LocationInformation[i, 1], "-", ModType, "-", q, "-", m, sep = ""), append = TRUE
+              sep = "", file = "CONTROL", append = TRUE
             
           )
           
-          # EMITIMES GOES HERE
+          # EMITIMES file begins here
+          if(ModType != "A") {
           
+              cat(
+            
+                  paste("YYYY MM DD HH   DURATION(hhhh) #RECORDS","\n",
+                        "YYYY MM DD HH MM DURATION(hhmm) LAT LON HGT(m) RATE(/h) AREA(m2) HEAT(w)"), "\n",
+                  paste(StartYear, q, m, 0, 9999, 1, collapse = " "), "\n",
+                  sep = "", file = paste(LocationInformation[i,1], "-", ModType, "-", StartYear - 2000, "-", q, "-", m, sep = "")
+            
+              )
+          
+              if(ModType == "B") {
+            
+                  for(j in 1:LocationInformation[i,3]) {
+              
+                      line <- paste(StartYear, q, m, 0, 2400, StackInfo[j,1], StackInfo[j,2], 0, StackInfo[j,4], StackInfo[j,5], StackInfo[j,6], sep = " ")
+                      write(line, file = paste(LocationInformation[i,1], "-", ModType, "-", StartYear - 2000, "-", q, "-", m, sep = ""), append = TRUE)
+              
+                  }
+            
+              } else if(ModType == "C") {
+            
+                  for(j in 1:LocationInformation[i,3]) {
+              
+                      line <- paste(StartYear, q, m, 0, 2400, StackInfo[j,1], StackInfo[j,2], StackInfo[j,3], StackInfo[j,4], 0, StackInfo[j,6], sep = " ")
+                      write(line, file = paste(LocationInformation[i,1], "-", ModType, "-", StartYear - 2000, "-", q, "-", m, sep = ""), append = TRUE)
+              
+                  }
+            
+              } else if(ModType == "D") {
+            
+                  for(j in 1:LocationInformation[i,3]) {
+              
+                      line <- paste(StartYear, q, m, 0, 2400, StackInfo[j,1], StackInfo[j,2], StackInfo[j,3], StackInfo[j,4], StackInfo[j,5], 0, sep = " ")
+                      write(line, file = paste(LocationInformation[i,1], "-", ModType, "-", StartYear - 2000, "-", q, "-", m, sep = ""), append = TRUE)
+              
+                  }
+            
+              } else if(ModType == "E") {
+            
+                  for(j in 1:LocationInformation[i,3]) {
+              
+                      line <- paste(StartYear, q, m, 0, 2400, StackInfo[j,1], StackInfo[j,2], StackInfo[j,3], StackInfo[j,4], StackInfo[j,5], StackInfo[j,6], sep = " ")
+                      write(line, file = paste(LocationInformation[i,1], "-", ModType, "-", StartYear - 2000, "-", q, "-", m, sep = ""), append = TRUE)
+              
+                  }
+            
+              } else if(ModType == "F") {
+            
+                  for(j in 1:LocationInformation[i,3]) {
+              
+                      line <- paste(StartYear, q, m, 0, 2400, StackInfo[j,1], StackInfo[j,2], 0, StackInfo[j,4], 0, 0, sep = " ")
+                      write(line, file = paste(LocationInformation[i,1], "-", ModType, "-", StartYear - 2000, "-", q, "-", m, sep = ""), append = TRUE)
+              
+                  }
+            
+              }
+            
+          } # This closes the conditional EMITIMES file generation
+
           # HYSPLIT MODEL GOES HERE
           
           # CONVERSION GOES HERE (binary to ascii)
@@ -350,4 +407,3 @@ for(z in 1:6) {     # Begins the "Model Type" loop
 # GENERATE PLOTS
     
 setwd("..")        
-  
