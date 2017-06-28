@@ -153,10 +153,8 @@ if(file.exists("SETUP.CFG") & file.exists("EMITIMES") & file.exists("CONTROL") !
     
 } else {}
 
-# Create a temporary directory to store all working and temp files
-TemporaryDirectory <- paste("I WILL REMOVE MYSELF - ", date(), sep = "")
-dir.create(TemporaryDirectory)
-setwd(TemporaryDirectory)
+# Do work in the SystemFiles directory
+setwd("SystemFiles")
 
 
 # LOOP MODEL TYPE (A-F)
