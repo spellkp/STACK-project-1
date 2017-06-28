@@ -331,12 +331,12 @@ for(z in 1:6) {     # Begins the "Model Type" loop
           if(ModType != "A") {
           
               cat(
-            
-                  paste("YYYY MM DD HH   DURATION(hhhh) #RECORDS","\n",
-                        "YYYY MM DD HH MM DURATION(hhmm) LAT LON HGT(m) RATE(/h) AREA(m2) HEAT(w)"), "\n",
+              
+                  paste("YYYY MM DD HH   DURATION(hhhh) #RECORDS", sep = ""),"\n",
+                  paste("YYYY MM DD HH MM DURATION(hhmm) LAT LON HGT(m) RATE(/h) AREA(m2) HEAT(w)"), "\n",
                   paste(StartYear, q, m, 0, 9999, 1, collapse = " "), "\n",
-                  sep = "", file = paste(LocationInformation[i,1], "-", ModType, "-", StartYear - 2000, "-", q, "-", m, sep = "")
-            
+                  sep = "", file = "EMITIMES"
+              
               )
           
               if(ModType == "B") {
@@ -344,7 +344,7 @@ for(z in 1:6) {     # Begins the "Model Type" loop
                   for(j in 1:LocationInformation[i,3]) {
               
                       line <- paste(StartYear, q, m, 0, 2400, StackInfo[j,1], StackInfo[j,2], 0, StackInfo[j,4], StackInfo[j,5], StackInfo[j,6], sep = " ")
-                      write(line, file = paste(LocationInformation[i,1], "-", ModType, "-", StartYear - 2000, "-", q, "-", m, sep = ""), append = TRUE)
+                      write(line, file = "EMITIMES", append = TRUE)
               
                   }
             
@@ -353,7 +353,7 @@ for(z in 1:6) {     # Begins the "Model Type" loop
                   for(j in 1:LocationInformation[i,3]) {
               
                       line <- paste(StartYear, q, m, 0, 2400, StackInfo[j,1], StackInfo[j,2], StackInfo[j,3], StackInfo[j,4], 0, StackInfo[j,6], sep = " ")
-                      write(line, file = paste(LocationInformation[i,1], "-", ModType, "-", StartYear - 2000, "-", q, "-", m, sep = ""), append = TRUE)
+                      write(line, file = "EMITIMES", append = TRUE)
               
                   }
             
@@ -362,7 +362,7 @@ for(z in 1:6) {     # Begins the "Model Type" loop
                   for(j in 1:LocationInformation[i,3]) {
               
                       line <- paste(StartYear, q, m, 0, 2400, StackInfo[j,1], StackInfo[j,2], StackInfo[j,3], StackInfo[j,4], StackInfo[j,5], 0, sep = " ")
-                      write(line, file = paste(LocationInformation[i,1], "-", ModType, "-", StartYear - 2000, "-", q, "-", m, sep = ""), append = TRUE)
+                      write(line, file = "EMITIMES", append = TRUE)
               
                   }
             
@@ -371,7 +371,7 @@ for(z in 1:6) {     # Begins the "Model Type" loop
                   for(j in 1:LocationInformation[i,3]) {
               
                       line <- paste(StartYear, q, m, 0, 2400, StackInfo[j,1], StackInfo[j,2], StackInfo[j,3], StackInfo[j,4], StackInfo[j,5], StackInfo[j,6], sep = " ")
-                      write(line, file = paste(LocationInformation[i,1], "-", ModType, "-", StartYear - 2000, "-", q, "-", m, sep = ""), append = TRUE)
+                      write(line, file = "EMITIMES", append = TRUE)
               
                   }
             
@@ -380,7 +380,7 @@ for(z in 1:6) {     # Begins the "Model Type" loop
                   for(j in 1:LocationInformation[i,3]) {
               
                       line <- paste(StartYear, q, m, 0, 2400, StackInfo[j,1], StackInfo[j,2], 0, StackInfo[j,4], 0, 0, sep = " ")
-                      write(line, file = paste(LocationInformation[i,1], "-", ModType, "-", StartYear - 2000, "-", q, "-", m, sep = ""), append = TRUE)
+                      write(line, file = "EMITIMES", append = TRUE)
               
                   }
             
