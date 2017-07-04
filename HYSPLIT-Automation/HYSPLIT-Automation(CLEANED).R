@@ -180,6 +180,9 @@ for(z in 1:6) {     # Begins the "Model Type" loop
       
       eval(parse(text = paste("StackInfo", "<- ", LocationInformation[i,1], "_StackParams", sep = "")))
       
+      # This will generate the parent data frame that will be continuously appended. Each point source and model type will receive it's own file. XXX_X.
+      eval(parse(text = paste(LocationInformation[i,1], "_", ModType, "<-", "data.frame()", sep = "")))
+    
       for(q in 1:12) {     # Starts the loop for each month
         
           for(m in 1:MonthData[q,2]) {     # Starts the loop for each day of the month
@@ -294,10 +297,10 @@ for(z in 1:6) {     # Begins the "Model Type" loop
               paste(round(mean(StackInfo[,1]), 5), round(mean(StackInfo[,2]), 5), collapse = " "), "\n",
               paste( c(0.05, 0.05), collapse = " "), "\n",     # Resolution of the grid (lat, lon)
               paste( c(80.0, 80.0), collapse = " "), "\n",     # Size of the display grid (lat, lon)
-              paste("./", TemporaryDirectory, sep = "", collapse = " "), "\n",    # Save the files here
+              "./", "\n",    # Save the files here
               paste(LocationInformation[i,1], "-", ModType, "-", StartYear - 2000, "-", q, "-", m, sep = ""), "\n",    # This is the individual file name
-            
-              paste( c(1, 20000), collapse = " "), "\n",       # Vertical levels, top of model
+              1, "\n",
+              20000, "\n", # Vertical levels, top of model
               paste(StartYear - 2000, q, m, 0, 0, collapse = " "), "\n",
             
               # This conditionals adjusts the model stop date at the end of each month
@@ -332,7 +335,7 @@ for(z in 1:6) {     # Begins the "Model Type" loop
               
                   paste("YYYY MM DD HH   DURATION(hhhh) #RECORDS", sep = ""),"\n",
                   paste("YYYY MM DD HH MM DURATION(hhmm) LAT LON HGT(m) RATE(/h) AREA(m2) HEAT(w)"), "\n",
-                  paste(StartYear, q, m, 0, 9999, 1, collapse = " "), "\n",
+                  paste(StartYear, q, m, 0, 9999, LocationInformation[i,3], collapse = " "), "\n",
                   sep = "", file = "EMITIMES"
               
               )
@@ -386,12 +389,29 @@ for(z in 1:6) {     # Begins the "Model Type" loop
             
           } # This closes the conditional EMITIMES file generation
 
-          # HYSPLIT MODEL GOES HERE
+          # Run the HYSPLIT model to produce a binary file output. Convert this to an ASCII file to be used for the analysis.
+          system2("./hycs_std")
+          system2("./con2asc", paste(LocationInformation[i,1], "-", ModType, "-", StartYear - 2000, "-", q, "-", m, sep = ""))
           
-          # CONVERSION GOES HERE (binary to ascii)
+          # The con2asc appends each output ASCII file with an unwanted delimiter in the file name. That is fixed here.
+          # The original binary file is also overwritten.
+          file.rename(list.files(pattern = "_00"), paste(LocationInformation[i,1], "-", ModType, "-", StartYear - 2000, "-", q, "-", m, sep = ""))
+          
+          # The single ASCII file is then appended to the large file.
+          # 'temp' is a temporary object that reads in the ASCII file
+          temp <- read.delim(paste(LocationInformation[i,1], "-", ModType, "-", StartYear - 2000, "-", q, "-", m, sep = ""), header = TRUE, sep = "")
+          TemporaryBind <- rbind(cat(LocationInformation[i,1], "_", ModType, sep = ""), temp)
+          assign(paste(LocationInformation[i,1], "_", ModType, sep = ""), as.data.frame(TemporaryBind))
+          
+          # The single ASCII file is then deleted in order to save space.
+          file.remove(paste(LocationInformation[i,1], "-", ModType, "-", StartYear - 2000, "-", q, "-", m, sep = ""))
           
         }     # Closes the day
       }     # Closes the Month
+      
+      ParentFileName <- paste("write.csv(", LocationInformation[i,1], "_", ModType, ",", "'", paste(LocationInformation[i,1], "_", ModType, sep = ""), "'", ")", sep = "")
+      eval(parse(text = ParentFileName))
+      
     }     # Closes LocationInformation
 }     # Closes ModelType
 
