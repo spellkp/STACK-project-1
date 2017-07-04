@@ -415,6 +415,7 @@ for(z in 1:6) {     # Begins the "Model Type" loop
     }     # Closes LocationInformation
 }     # Closes ModelType
 
+# CLEAN UP PARENT FILES HERE
 
 # APPEND EACH SET OF OUTPUTS HERE
 
