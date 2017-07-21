@@ -109,6 +109,8 @@ if( interactive() ) {
   ParticleResuspensionFactor <- readline(paste(prompt = "Information is needed about the particle species ", Pollutant, ". ", "\n",
                                                "Please provide the pollutant resuspension factor (1/m) - ", sep = ""))
   
+  Resolution <- as.numeric(readline(paste(prompt = "Please provie a resolution (in degrees) for this analysis - ")))
+  
   
   # Insert a parameter checking method here!
   
@@ -146,12 +148,11 @@ for(a in 1:12) {
 ##### Run from here if parameters are already entered #####
 
 # Check that all 3 required files are present
-if(file.exists("SETUP.CFG") & file.exists("EMITIMES") & file.exists("CONTROL") != TRUE) {
-    
-    print("SETUP, EMITIMES, or CONTROL file missing")
-    stopifnot(file.exists("SETUP.CFG") & file.exists("EMITIMES") & file.exists("CONTROL"))
-    
-} else {}
+##if(file.exists("SETUP.CFG") & file.exists("EMITIMES") & file.exists("CONTROL") != TRUE) {
+##    print("SETUP, EMITIMES, or CONTROL file missing")
+##    stopifnot(file.exists("SETUP.CFG") & file.exists("EMITIMES") & file.exists("CONTROL"))
+##} else {}
+#
 
 # Do work in the SystemFiles directory
 setwd("SystemFiles")
@@ -181,7 +182,12 @@ for(z in 1:6) {     # Begins the "Model Type" loop
       eval(parse(text = paste("StackInfo", "<- ", LocationInformation[i,1], "_StackParams", sep = "")))
       
       # This will generate the parent data frame that will be continuously appended. Each point source and model type will receive it's own file. XXX_X.
-      eval(parse(text = paste(LocationInformation[i,1], "_", ModType, "<-", "data.frame()", sep = "")))
+      
+      ParentFileName <- paste(LocationInformation[i,1], "_", ModType, sep = "")
+      ColumnNames <- c("DA", "HR", "LAT", "LON", paste(Pollutant))
+      ParentDataFrame <- as.data.frame(setNames(replicate(6, numeric(0), simplify = FALSE), ColumnNames))
+      
+      eval(parse(text = paste(write.table(ParentDataFrame, ParentFileName, row.names = FALSE, col.names = TRUE))))
     
       for(q in 1:12) {     # Starts the loop for each month
         
@@ -344,7 +350,7 @@ for(z in 1:6) {     # Begins the "Model Type" loop
             
                   for(j in 1:LocationInformation[i,3]) {
               
-                      line <- paste(StartYear, q, m, 0, 2400, StackInfo[j,1], StackInfo[j,2], 0, StackInfo[j,4], StackInfo[j,5], StackInfo[j,6], sep = " ")
+                      line <- paste(StartYear, q, m, 0, 0, 2400, StackInfo[j,1], StackInfo[j,2], 0, StackInfo[j,4], StackInfo[j,5], StackInfo[j,6], sep = " ")
                       write(line, file = "EMITIMES", append = TRUE)
               
                   }
@@ -353,7 +359,7 @@ for(z in 1:6) {     # Begins the "Model Type" loop
             
                   for(j in 1:LocationInformation[i,3]) {
               
-                      line <- paste(StartYear, q, m, 0, 2400, StackInfo[j,1], StackInfo[j,2], StackInfo[j,3], StackInfo[j,4], 0, StackInfo[j,6], sep = " ")
+                      line <- paste(StartYear, q, m, 0, 0, 2400, StackInfo[j,1], StackInfo[j,2], StackInfo[j,3], StackInfo[j,4], 0, StackInfo[j,6], sep = " ")
                       write(line, file = "EMITIMES", append = TRUE)
               
                   }
@@ -362,7 +368,7 @@ for(z in 1:6) {     # Begins the "Model Type" loop
             
                   for(j in 1:LocationInformation[i,3]) {
               
-                      line <- paste(StartYear, q, m, 0, 2400, StackInfo[j,1], StackInfo[j,2], StackInfo[j,3], StackInfo[j,4], StackInfo[j,5], 0, sep = " ")
+                      line <- paste(StartYear, q, m, 0, 0, 2400, StackInfo[j,1], StackInfo[j,2], StackInfo[j,3], StackInfo[j,4], StackInfo[j,5], 0, sep = " ")
                       write(line, file = "EMITIMES", append = TRUE)
               
                   }
@@ -371,7 +377,7 @@ for(z in 1:6) {     # Begins the "Model Type" loop
             
                   for(j in 1:LocationInformation[i,3]) {
               
-                      line <- paste(StartYear, q, m, 0, 2400, StackInfo[j,1], StackInfo[j,2], StackInfo[j,3], StackInfo[j,4], StackInfo[j,5], StackInfo[j,6], sep = " ")
+                      line <- paste(StartYear, q, m, 0, 0, 2400, StackInfo[j,1], StackInfo[j,2], StackInfo[j,3], StackInfo[j,4], StackInfo[j,5], StackInfo[j,6], sep = " ")
                       write(line, file = "EMITIMES", append = TRUE)
               
                   }
@@ -380,7 +386,7 @@ for(z in 1:6) {     # Begins the "Model Type" loop
             
                   for(j in 1:LocationInformation[i,3]) {
               
-                      line <- paste(StartYear, q, m, 0, 2400, StackInfo[j,1], StackInfo[j,2], 0, StackInfo[j,4], 0, 0, sep = " ")
+                      line <- paste(StartYear, q, m, 0, 0, 2400, StackInfo[j,1], StackInfo[j,2], 0, StackInfo[j,4], 0, 0, sep = " ")
                       write(line, file = "EMITIMES", append = TRUE)
               
                   }
@@ -395,34 +401,95 @@ for(z in 1:6) {     # Begins the "Model Type" loop
           
           # The con2asc appends each output ASCII file with an unwanted delimiter in the file name. That is fixed here.
           # The original binary file is also overwritten.
-          file.rename(list.files(pattern = "_00"), paste(LocationInformation[i,1], "-", ModType, "-", StartYear - 2000, "-", q, "-", m, sep = ""))
+          file.rename(list.files(pattern = "_00", full.names = TRUE), paste(LocationInformation[i,1], "-", ModType, "-", StartYear - 2000, "-", q, "-", m, sep = ""))
           
           # The single ASCII file is then appended to the large file.
           # 'temp' is a temporary object that reads in the ASCII file
-          temp <- read.delim(paste(LocationInformation[i,1], "-", ModType, "-", StartYear - 2000, "-", q, "-", m, sep = ""), header = TRUE, sep = "")
-          TemporaryBind <- rbind(cat(LocationInformation[i,1], "_", ModType, sep = ""), temp)
-          assign(paste(LocationInformation[i,1], "_", ModType, sep = ""), as.data.frame(TemporaryBind))
+          CurrentCSV <- read.csv(paste(LocationInformation[i,1], "-", ModType, "-", StartYear - 2000, "-", q, "-", m, sep = ""), header = TRUE, sep = "")
+          names(CurrentCSV) <- ColumnNames
+          write.table(CurrentCSV, ParentFileName, append = TRUE, row.names = FALSE, col.names = FALSE)
           
           # The single ASCII file is then deleted in order to save space.
           file.remove(paste(LocationInformation[i,1], "-", ModType, "-", StartYear - 2000, "-", q, "-", m, sep = ""))
           
         }     # Closes the day
-      }     # Closes the Month
-      
-      ParentFileName <- paste("write.csv(", LocationInformation[i,1], "_", ModType, ",", "'", paste(LocationInformation[i,1], "_", ModType, sep = ""), "'", ")", sep = "")
-      eval(parse(text = ParentFileName))
-      
+      }     # Closes the Mont
     }     # Closes LocationInformation
 }     # Closes ModelType
 
-# CLEAN UP PARENT FILES HERE
 
-# APPEND EACH SET OF OUTPUTS HERE
 
-# DELETE TEMPORARY DIRECTORY HERE
+##### The section that follows is the MRS measure #####
 
-# RUN MRS MEASURE
 
-# GENERATE PLOTS
-    
+
+for(d in 1:nrow(LocationInformation)) {
+  
+    Model2 <- as.data.frame(read.table(paste(LocationInformation[d,1], "_", "E", sep = ""), header = TRUE, sep = "")[1:5])
+    Model2$DA <- Model2$DA - 1
+    Model2$DA[Model2$DA == 0] <- (c-1)
+  
+    for(e in 1:length(ModelType)) {
+        
+        if(ModelType[e] != "E") {
+        
+            Model1 <- read.table(paste(LocationInformation[d,1], "_", ModelType[e], sep = ""), header = TRUE, sep = "")[1:5]
+            Model1$DA <- Model1$DA - 1
+            Model1$DA[Model1$DA == 0] <- (c-1)
+            
+            Metric = NULL
+            
+            for(f in 1:(c-1) ) {
+              
+                DayModel1 <- subset(Model1, DA == f)
+                DayModel2 <- subset(Model2, DA == f)
+                
+                x_range <- max( max(DayModel1$LON), max(DayModel2$LON)) - min(min(DayModel1$LON), min(DayModel2$LON)) + 1
+                y_range <- max( max(DayModel1$LAT), max(DayModel2$LAT)) - min(min(DayModel1$LAT), min(DayModel2$LAT)) + 1
+                
+                x_steps <- round(x_range/Resolution, 0)
+                y_steps <- round(y_range/Resolution, 0)
+                
+                DayModel1_Matrix <- matrix(0, nrow = y_steps, ncol = x_steps)
+                DayModel2_Matrix <- matrix(0, nrow = y_steps, ncol = x_steps)
+                
+                for (g in 1:y_steps) {
+                  
+                    for(h in 1:x_steps) {
+                      
+                        CellAveragedPollutant_1 <- mean(DayModel1[,5][DayModel1$LON >= min(DayModel1$LON) + Resolution*(h-1) &
+                                                             DayModel1$LON < min(DayModel1$LON) + Resolution*h &
+                                                             DayModel1$LAT >= min(DayModel1$LAT) + Resolution*(g-1) &
+                                                             DayModel1$LAT < min(DayModel1$LAT) + Resolution*g]
+                                                )
+                        
+                        CellAveragedPollutant_2 <- mean(DayModel2[,5][DayModel2$LON >= min(DayModel2$LON) + Resolution*(h-1) &
+                                                                 DayModel2$LON < min(DayModel2$LON) + Resolution*h &
+                                                                 DayModel2$LAT >= min(DayModel2$LAT) + Resolution*(g-1) &
+                                                                 DayModel2$LAT < min(DayModel2$LAT) + Resolution*g]
+                        )
+                        
+                        DayModel1_Matrix <- ifelse(is.nan(CellAveragedPollutant_1), 0, CellAveragedPollutant_1)
+                        DayModel2_Matrix <- ifelse(is.nan(CellAveragedPollutant_2), 0, CellAveragedPollutant_2)
+                        
+                    }
+                  
+                }
+                
+                # Metric calculation is performed here (as a percentage %)
+                Metric[f] <- ((20000*(Resolution*111000)^2)/(LocationInformation[d,2]/(c-1)))*sum(abs(DayModel2_Matrix - DayModel1_Matrix))*100
+                
+            }
+          
+            # Write output file here
+            write.csv(Metric, paste(LocationInformation[d,1], "_", ModelType[e], "_", StartYear, sep = ""))
+            
+        } else {}
+      
+    }
+  
+}
+
+# Reset "c" to 1
+  
 setwd("..")        
