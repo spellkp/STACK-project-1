@@ -469,8 +469,8 @@ for(d in 1:nrow(LocationInformation)) {
                                                                  DayModel2$LAT < min(DayModel2$LAT) + Resolution*g]
                         )
                         
-                        DayModel1_Matrix <- ifelse(is.nan(CellAveragedPollutant_1), 0, CellAveragedPollutant_1)
-                        DayModel2_Matrix <- ifelse(is.nan(CellAveragedPollutant_2), 0, CellAveragedPollutant_2)
+                        DayModel1_Matrix[g,h] <- ifelse(is.nan(CellAveragedPollutant_1), 0, CellAveragedPollutant_1)
+                        DayModel2_Matrix[g,h] <- ifelse(is.nan(CellAveragedPollutant_2), 0, CellAveragedPollutant_2)
                         
                     }
                   
