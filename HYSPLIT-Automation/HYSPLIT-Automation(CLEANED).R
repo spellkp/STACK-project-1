@@ -477,7 +477,7 @@ for(d in 1:nrow(LocationInformation)) {
                 }
                 
                 # Metric calculation is performed here (as a percentage %)
-                Metric[f] <- ((20000*(Resolution*111000)^2)/(LocationInformation[d,2]/(c-1)))*sum(abs(DayModel2_Matrix - DayModel1_Matrix))*100
+                Metric[f] <- ((20000*(Resolution*111000)^2)/(2*LocationInformation[d,2]/(c-1)))*sum(abs(DayModel2_Matrix - DayModel1_Matrix))*100
                 
             }
           
@@ -490,6 +490,31 @@ for(d in 1:nrow(LocationInformation)) {
   
 }
 
-# Reset "c" to 1
+
+
+##### Plot Results Here #####
+
+
+
+library(ggplot2)
+
+for(k in 1:nrow(LocationInformation)) {
+  
+    for(l in 1:length(ModelType)) {
+      
+          if(ModelType[l] != "E") {
+            
+              eval(parse(text = paste("Plot", "_", ModelType[l], "_", StartYear, "_", LocationInformation[k,1], " <- ",
+                                      "as.data.frame(read.csv(", "'", LocationInformation[k,1], "_", ModelType[l], "_", StartYear, "'", ", header = TRUE", "))", sep = "")))
+      
+              eval(parse(text = paste("names(", "Plot", "_", ModelType[l], "_", StartYear, "_", k, ")", " <- ", "c('Day', 'MRS')", sep = "")))
+              
+          } else {}
+      
+    }
+  
+}
+
+
   
 setwd("..")        
