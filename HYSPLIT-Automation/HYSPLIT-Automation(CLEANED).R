@@ -296,7 +296,7 @@ for(z in 1:6) {     # Begins the "Model Type" loop
             
               1, "\n",      # Number of pollutants
               Pollutant, "\n",
-              LocationInformation[i,2]/sum(MonthData[,2]), "\n",
+              (LocationInformation[i,2]/sum(MonthData[,2]))/24, "\n",    # This is an hourly rate
               24, "\n",
               paste(StartYear - 2000, q, m, 0, 0, collapse = " "), "\n",
               1, "\n",      # Number of grids = number of pollutants
