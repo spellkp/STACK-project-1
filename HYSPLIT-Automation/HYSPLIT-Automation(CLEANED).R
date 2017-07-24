@@ -633,5 +633,27 @@ for(r in 1:length(ModelType)) {
 
 
 
+##### The cleaning process begins here #####
+
+
+dir.create(paste("../HYSPLIT-Results-", StartYear, sep = ""))
+
+for(s in 1:length(ModelType)) {
+    
+    file.copy(paste("Results", ModelType[s], ".jpg", sep = ""), paste("../HYSPLIT-Results-", StartYear, sep = ""))
+    file.remove(paste("Results", ModelType[s], ".jpg", sep = ""))
   
+    for(u in 1:nrow(LocationInformation)) {
+      
+        file.copy(paste(LocationInformation[u,1], "_", ModelType[s], sep = ""), paste("../HYSPLIT-Results-", StartYear, sep = ""))
+        file.remove(paste(LocationInformation[u,1], "_", ModelType[s], sep = ""))
+        
+        file.copy(paste(LocationInformation[u,1], "_", ModelType[s], "_", StartYear, sep = ""), paste("../HYSPLIT-Results-", StartYear, sep = ""))
+        file.remove(paste(LocationInformation[u,1], "_", ModelType[s], "_", StartYear, sep = ""))
+          
+    }
+  
+}
+
+print("disregard warnings above") 
 setwd("..")        
