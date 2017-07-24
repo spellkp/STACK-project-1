@@ -477,7 +477,7 @@ for(d in 1:nrow(LocationInformation)) {
                 }
                 
                 # Metric calculation is performed here (as a percentage %)
-                Metric[f] <- ((20000*(Resolution*111000)^2)/(2*LocationInformation[d,2]/(c-1)))*sum(abs(DayModel2_Matrix - DayModel1_Matrix))*100
+                Metric[f] <- ((100*20000*(Resolution*111000)^2)/(2*(LocationInformation[d,2]/(c-1))))*sum(abs(DayModel2_Matrix - DayModel1_Matrix))
                 
             }
           
